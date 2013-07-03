@@ -1,3 +1,5 @@
+# Rubymine project configuration
+.idea
 *.gem
 *.rbc
 .bundle
