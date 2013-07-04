@@ -1,4 +1,4 @@
-# Metasploit::Model
+# Metasploit::Model [![Build Status](https://travis-ci.org/rapid7/metasploit-model.png)](https://travis-ci.org/rapid7/metasploit-model)
 
 TODO: Write a gem description
 
