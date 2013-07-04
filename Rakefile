@@ -39,9 +39,8 @@ rescue LoadError
 else
   require 'rspec/core/rake_task'
 
-  # Depend on app:db:test:prepare so that test database is recreated just like in a full rails app
   # @see http://viget.com/extend/rails-engine-testing-with-rspec-capybara-and-factorygirl
-  RSpec::Core::RakeTask.new(:spec => 'app:db:test:prepare')
+  RSpec::Core::RakeTask.new(:spec)
 
   task :default => :spec
 end

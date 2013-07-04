@@ -10,17 +10,20 @@ group :development, :test do
   gem 'factory_girl', '>= 4.1.0'
   # auto-load factories from spec/factories
   gem 'factory_girl_rails'
-  # rails is only used for the dummy application in spec/dummy
-  # restrict from rails 4.0 as it requires protected_attributes gem and other changes for compatibility
-  # @see https://www.pivotaltracker.com/story/show/52309083
-  gem 'rails', '>= 3.2', '< 4.0.0'
 end
 
 group :test do
-  # used for building markup for webpage factories
-  gem 'builder'
-  # for cleaning the database before suite in case previous run was aborted without clean up
-  gem 'database_cleaner'
+  # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
+  # between its dependencies, which is now handled by this constraint.
+  rails_version_constraint = [
+      '>= 3.2.0',
+      '< 4.0.0'
+  ]
+
+  # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
+  gem 'actionpack', *rails_version_constraint
+  # Engine tasks are loaded using railtie
+  gem 'railties', *rails_version_constraint
   # need rspec-rails >= 2.12.0 as 2.12.0 adds support for redefining named subject in nested context that uses the
   # named subject from the outer context without causing a stack overflow.
   gem 'rspec-rails', '>= 2.12.0'
@@ -30,4 +33,6 @@ group :test do
   gem 'shoulda-matchers'
   # code coverage of tests
   gem 'simplecov', :require => false
+  # defines time zones for activesupport.  Must be explicit since it is normally implicit with activerecord
+  gem 'tzinfo'
 end

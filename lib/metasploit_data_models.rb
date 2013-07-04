@@ -6,7 +6,6 @@ require 'shellwords'
 #
 # Gems
 #
-require 'active_record'
 require 'active_support'
 require 'active_support/all'
 require 'active_support/dependencies'
@@ -14,8 +13,6 @@ require 'active_support/dependencies'
 #
 # Project
 #
-require 'mdm'
-require 'mdm/module'
 require 'metasploit_data_models/base64_serializer'
 require 'metasploit_data_models/models'
 require 'metasploit_data_models/version'

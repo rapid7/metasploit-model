@@ -22,22 +22,14 @@ Gem::Specification.new do |spec|
   # documentation
   spec.add_development_dependency 'yard'
 
-  spec.add_runtime_dependency 'activerecord', '>= 3.2.13'
-  spec.add_runtime_dependency 'activesupport'
-
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard
     spec.add_development_dependency 'kramdown'
-
-    spec.add_runtime_dependency 'jdbc-postgres'
-    spec.add_runtime_dependency 'activerecord-jdbcpostgresql-adapter'
 
     spec.platform = Gem::Platform::JAVA
   else
     # markdown formatting for yard
     spec.add_development_dependency 'redcarpet'
-
-    spec.add_runtime_dependency 'pg'
 
     spec.platform = Gem::Platform::RUBY
   end
