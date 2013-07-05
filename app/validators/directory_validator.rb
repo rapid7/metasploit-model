@@ -8,8 +8,8 @@ class DirectoryValidator < ActiveModel::EachValidator
   # @param value [String, nil] path to directory.
   # @return [void]
   def validate_each(record, attribute, value)
-    unless value and File.directory?(value)
-      record.errors[attribute] << "must be a directory"
+    unless value.nil? or File.directory?(value)
+      record.errors[attribute] << 'must be a directory'
     end
   end
 end
