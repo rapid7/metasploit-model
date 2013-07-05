@@ -18,7 +18,7 @@ Rails.backtrace_cleaner.remove_silencers!
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-support_glob = MetasploitDataModels.root.join('spec', 'support', '**', '*.rb')
+support_glob = Metasploit::Model.root.join('spec', 'support', '**', '*.rb')
 
 Dir.glob(support_glob) do |path|
   require path
@@ -26,13 +26,15 @@ end
 
 RSpec.configure do |config|
   config.before(:suite) do
-    MetasploitDataModels::Spec.temporary_pathname = MetasploitDataModels.root.join('spec', 'tmp')
+    # this must be explicitly set here because it should always be spec/tmp for w/e project is using
+    # Metasploit::Model::Spec to handle file system clean up.
+    Metasploit::Model::Spec.temporary_pathname = Metasploit::Model.root.join('spec', 'tmp')
     # Clean up any left over files from a previously aborted suite
-    MetasploitDataModels::Spec.remove_temporary_pathname
+    Metasploit::Model::Spec.remove_temporary_pathname
   end
 
   config.after(:each) do
-    MetasploitDataModels::Spec.remove_temporary_pathname
+    Metasploit::Model::Spec.remove_temporary_pathname
   end
 
   config.mock_with :rspec

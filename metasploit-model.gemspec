@@ -22,6 +22,9 @@ Gem::Specification.new do |spec|
   # documentation
   spec.add_development_dependency 'yard'
 
+  # Dependency loading
+  spec.add_runtime_dependency 'activesupport'
+
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard
     spec.add_development_dependency 'kramdown'

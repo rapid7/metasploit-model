@@ -1,17 +1,13 @@
 require 'spec_helper'
 
-describe MetasploitDataModels::File do
+describe Metasploit::Model::File do
   context 'realpath' do
-    let(:dummy_pathname) do
-      MetasploitDataModels.root.join('spec', 'dummy')
-    end
-
     let(:real_basename) do
       'real'
     end
 
     let(:real_pathname) do
-      dummy_pathname.join(real_basename)
+      Metasploit::Model::Spec.temporary_pathname.join(real_basename)
     end
 
     let(:symlink_basename) do
@@ -19,20 +15,15 @@ describe MetasploitDataModels::File do
     end
 
     let(:symlink_pathname) do
-      dummy_pathname.join(symlink_basename)
+      Metasploit::Model::Spec.temporary_pathname.join(symlink_basename)
     end
 
     before(:each) do
       real_pathname.mkpath
 
-      Dir.chdir(dummy_pathname.to_path) do
+      Dir.chdir(Metasploit::Model::Spec.temporary_pathname.to_path) do
         File.symlink(real_basename, 'symlink')
       end
-    end
-
-    after(:each) do
-      real_pathname.rmtree
-      symlink_pathname.rmtree
     end
 
     def realpath

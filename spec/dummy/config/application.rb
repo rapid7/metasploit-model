@@ -5,7 +5,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 # require the engine being tested.  In a non-dummy app this would be handled by the engine's gem being in the Gemfile
 # for real app and Bundler.require requiring the gem.
-require 'metasploit_data_models'
+require 'metasploit/model'
 
 module Dummy
   class Application < Rails::Application
