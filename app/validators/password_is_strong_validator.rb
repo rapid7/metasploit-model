@@ -27,19 +27,19 @@ class PasswordIsStrongValidator < ActiveModel::EachValidator
     return if value.blank?
 
     if is_simple?(value)
-      record.errors[attribute] << "must contain letters, numbers, and at least one special character"
+      record.errors[attribute] << 'must contain letters, numbers, and at least one special character'
     end
 
     if contains_username?(record.username, value)
-      record.errors[attribute] << "must not contain the username"
+      record.errors[attribute] << 'must not contain the username'
     end
 
     if is_common_password?(value)
-      record.errors[attribute] << "must not be a common password"
+      record.errors[attribute] << 'must not be a common password'
     end
 
     if contains_repetition?(value)
-      record.errors[attribute] << "must not be a predictable sequence of characters"
+      record.errors[attribute] << 'must not be a predictable sequence of characters'
     end
   end
 
