@@ -3,6 +3,15 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in metasploit-model.gemspec
 gemspec
 
+# used by dummy application
+group :development, :test do
+  # supplies factories for producing model instance for specs
+  # Version 4.1.0 or newer is needed to support generate calls without the 'FactoryGirl.' in factory definitions syntax.
+  gem 'factory_girl', '>= 4.1.0'
+  # auto-load factories from spec/factories
+  gem 'factory_girl_rails'
+end
+
 group :test do
   # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
   # between its dependencies, which is now handled by this constraint.
