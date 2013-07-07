@@ -39,7 +39,7 @@ module Metasploit
       # @raise [Metasploit::Model::Spec::Error] if {temporary_pathname} is not set prior to calling this method.
       def self.temporary_pathname
         unless instance_variable_defined?(:@temporary_pathname)
-          raise Metasploit::Model::Spec::Error, 'MetasploitDataModels::Spec.temporary_pathname not set prior to use'
+          raise Metasploit::Model::Spec::Error, 'Metasploit::Model::Spec.temporary_pathname not set prior to use'
         end
 
         @temporary_pathname
