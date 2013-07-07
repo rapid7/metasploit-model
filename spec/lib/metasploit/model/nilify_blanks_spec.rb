@@ -1,0 +1,156 @@
+require 'spec_helper'
+
+describe Metasploit::Model::NilifyBlanks do
+  let(:base_class) do
+    # capture for class_eval scope
+    described_class = self.described_class
+
+    Class.new do
+      extend ActiveModel::Callbacks
+      include ActiveModel::Validations
+      include ActiveModel::Validations::Callbacks
+
+      include described_class
+    end
+  end
+
+  context 'included' do
+    let(:base_class) do
+      Class.new do
+        extend ActiveModel::Callbacks
+        include ActiveModel::Validations
+        include ActiveModel::Validations::Callbacks
+      end
+    end
+
+    it 'should register #nilify_blanks as a before validation callback' do
+      base_class.should_receive(:before_validation).with(:nilify_blanks)
+
+      # capture for class_eval scope
+      described_class = self.described_class
+
+      base_class.class_eval do
+        include described_class
+      end
+    end
+  end
+
+  context 'nilify_blank' do
+    it 'should support adding multiple attributes' do
+      attributes = [:a, :b]
+
+      base_class.nilify_blank *attributes
+
+      attributes.each do |attribute|
+        base_class.nilify_blank_attribute_set.should include(attribute)
+      end
+    end
+
+    it 'should not add duplicate attributes' do
+      attribute = :a
+
+      base_class.nilify_blank attribute
+      base_class.nilify_blank attribute
+
+      base_class.nilify_blank_attribute_set.length.should == 1
+    end
+  end
+
+  context '#nilify_blanks' do
+    subject(:nilify_blanks) do
+      base_instance.nilify_blanks
+    end
+
+    let(:base_instance) do
+      base_class.new
+    end
+
+    let(:value) do
+      'value'
+    end
+
+    before(:each) do
+      base_class.class_eval do
+        #
+        # Attributes
+        #
+
+        # @!attribute [rw] blank
+        #   @return [String, nil]
+        attr_accessor :blank
+
+        #
+        # Callbacks
+        #
+
+        nilify_blank :blank
+      end
+
+      base_instance.blank = value
+    end
+
+    it 'should check if value responds to blank?' do
+      value.should_receive(:respond_to?).with(:blank?)
+
+      nilify_blanks
+    end
+
+    context 'with value responds to blank?' do
+      it 'should call blank?' do
+        value.should_receive(:blank?)
+
+        nilify_blanks
+      end
+
+      context 'with blank' do
+        let(:value) do
+          ''
+        end
+
+        it 'should set attribute to nil' do
+          nilify_blanks
+
+          base_instance.blank.should be_nil
+        end
+      end
+
+      context 'without blank' do
+        let(:value) do
+          'value'
+        end
+
+        it 'should not change attribute' do
+          expect {
+            nilify_blanks
+          }.to_not change(base_instance, :blank)
+        end
+      end
+    end
+
+    context 'without value responds to blank?' do
+      let(:value) do
+        mock('Value')
+      end
+
+      before(:each) do
+        value.stub(:respond_to?).with(:blank?).and_return(false)
+      end
+
+      it 'should not call blank?' do
+        value.should_not_receive(:blank?)
+
+        nilify_blanks
+      end
+    end
+  end
+
+  context 'nilify_blank_attribute_set' do
+    subject(:nilify_blank_attribute_set) do
+      base_class.nilify_blank_attribute_set
+    end
+
+    it 'should default to an empty Set' do
+      nilify_blank_attribute_set.should == Set.new
+    end
+  end
+end

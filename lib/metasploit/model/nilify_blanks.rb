@@ -38,10 +38,10 @@ module Metasploit
       # @return [void]
       def nilify_blanks
         self.class.nilify_blank_attribute_set.each do |attribute|
-          value = read_attribute(attribute)
+          value = send(attribute)
 
           if value.respond_to? :blank? and value.blank?
-            write_attribute(attribute, nil)
+            send("#{attribute}=", nil)
           end
         end
       end
