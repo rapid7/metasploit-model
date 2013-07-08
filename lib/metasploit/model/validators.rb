@@ -7,7 +7,7 @@ module Metasploit
       #
       # @return [void]
       def autoload_validators
-        validators_path = validators_pathname.to_s
+        validators_path = validators_pathname.to_path
 
         unless ActiveSupport::Dependencies.autoload_paths.include? validators_path
           ActiveSupport::Dependencies.autoload_paths << validators_path
