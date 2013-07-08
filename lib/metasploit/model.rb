@@ -6,6 +6,7 @@ require 'active_support/dependencies'
 #
 # Project
 #
+require 'metasploit/model/validators'
 require 'metasploit/model/version'
 
 # Only include the Rails engine when using Rails.  This allows the non-Rails projects, like metasploit-framework to use
@@ -16,6 +17,8 @@ end
 
 module Metasploit
   module Model
+    extend Metasploit::Model::Validators
+
     # Pathname to the app directory that contains the models and validators.
     #
     # @return [Pathname]
