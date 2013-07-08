@@ -53,7 +53,7 @@ module Metasploit
       end
 
       # Defines class methods include {#derives}, which can be used to declare derived attributes after mixing in
-      # {MetasploitDataModels::Derivation}.
+      # {Metasploit::Model::Derivation}.
       module ClassMethods
         # Declares that the attribute should be derived using the derived_<attribute> method if it is `nil` before
         # validation.

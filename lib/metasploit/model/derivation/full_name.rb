@@ -1,8 +1,8 @@
 module Metasploit
   module Model
     module Derivation
-      # Methods for deriving full_name from module_type and reference_name in {Mdm::Module::Ancestor} and
-      # {Mdm::Module::Class}.
+      # Methods for deriving full_name from module_type and reference_name in `Mdm::Module::Ancestor`,
+      # `Mdm::Module::Class`, `Metasploit::Framework::Module::Ancestor`, and `Metasploit::Framework::Module::Class`.
       module FullName
         # Derives full_name by combining module_type and reference_name in the same way used to create modules using
         # Msf::ModuleManager#create in metasploit-framework.
