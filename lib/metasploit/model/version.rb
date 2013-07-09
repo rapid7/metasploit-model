@@ -4,6 +4,6 @@ module Metasploit
     # considered unstable because certain codde may not be shared between metasploit_data_models, metasploit-framework,
     # and pro, so support code for that may be removed in the future.  Because of the unstable API the version should
     # remain below 1.0.0
-    VERSION = '0.0.1'
+    VERSION = '0.1.0'
   end
 end
