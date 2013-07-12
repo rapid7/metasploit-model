@@ -15,6 +15,13 @@ describe Metasploit::Model::Module::Path do
       include described_class
 
       #
+      # Attributes Methods - used to track changed attributes
+      #
+
+      define_attribute_method :gem
+      define_attribute_method :name
+
+      #
       # Attributes
       #
 
@@ -40,6 +47,19 @@ describe Metasploit::Model::Module::Path do
       # Methods
       #
 
+      # Updates {#gem} value and marks {#gem} as changed if `gem` differs from
+      # {#gem}.
+      #
+      # @param gem [String, nil] (see #gem)
+      # @return [String, nil] `gem`
+      def gem=(gem)
+        unless gem == @gem
+          gem_will_change!
+        end
+
+        @gem = gem
+      end
+
       # @param attributes [Hash{Symbol => String,nil}]
       # @option attributes [String, nil] :gem The gem that owns this path.
       # @option attributes [Stirng, nil] :name The name of this path, scoped to :gem.
@@ -54,6 +74,19 @@ describe Metasploit::Model::Module::Path do
       # @return [ActiveModel::Name]
       define_singleton_method(:model_name) do
         ActiveModel::Name.new(self, described_class, 'BaseClass')
+      end
+
+      # Updates {#name} value and marks {#name} as changed if `name` differs
+      # from {#name}.
+      #
+      # @param name [String, nil] (see #name)
+      # @return [String, nil] `name`
+      def name=(name)
+        unless name == @name
+          name_will_change!
+        end
+
+        @name = name
       end
     end
   end

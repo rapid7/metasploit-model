@@ -1,6 +1,8 @@
 # Tests that code mixed in by including {Metasploit::Module::Module::Path} works in `ActiveModel`
 # (`Metasploit::Model::Framework::Module::Path`) and `ActiveRecord` (`Mdm::Module::Path`).
 shared_examples_for 'Metasploit::Model::Module::Path' do
+  it { should be_a ActiveModel::Dirty }
+
   context 'callbacks' do
     context 'before_validation' do
       context 'nilify blanks' do
@@ -225,6 +227,78 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
       context 'without blank name' do
         let(:name) do
+          FactoryGirl.generate :metasploit_model_module_path_name
+        end
+
+        it { should be_true }
+      end
+    end
+  end
+
+  context '#was_named?' do
+    subject(:was_named?) do
+      path.was_named?
+    end
+
+    let(:gem) do
+      FactoryGirl.generate :metasploit_model_module_path_gem
+    end
+
+    let(:name) do
+      FactoryGirl.generate :metasploit_model_module_path_name
+    end
+
+    let(:path) do
+      path_class.new
+    end
+
+    before(:each) do
+      path.gem = gem_was
+      path.name = name_was
+
+      path.changed_attributes.clear
+
+      path.gem = gem
+      path.name = name
+    end
+
+    context 'with blank gem_was' do
+      let(:gem_was) do
+        nil
+      end
+
+      context 'with blank name_was' do
+        let(:name_was) do
+          nil
+        end
+
+        it { should be_false }
+      end
+
+      context 'without blank name_was' do
+        let(:name_was) do
+          FactoryGirl.generate :metasploit_model_module_path_name
+        end
+
+        it { should be_false }
+      end
+    end
+
+    context 'without blank gem_was' do
+      let(:gem_was) do
+        FactoryGirl.generate :metasploit_model_module_path_gem
+      end
+
+      context 'with blank name_was' do
+        let(:name_was) do
+          nil
+        end
+
+        it { should be_false }
+      end
+
+      context 'without blank name_was' do
+        let(:name_was) do
           FactoryGirl.generate :metasploit_model_module_path_name
         end
 

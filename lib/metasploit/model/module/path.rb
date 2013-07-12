@@ -9,6 +9,7 @@ module Metasploit
         include Metasploit::Model::NilifyBlanks
 
         included do
+          include ActiveModel::Dirty
           include ActiveModel::MassAssignmentSecurity
           include ActiveModel::Validations
           include ActiveModel::Validations::Callbacks
@@ -93,6 +94,21 @@ module Metasploit
           end
 
           named
+        end
+
+        # Returns whether was a named path.  This is the equivalent of {#named?}, but checks the old, pre-change
+        # values for {#gem} and {#name}.
+        #
+        # @return [false] is gem_was is blank or name_was is blank.
+        # @return [true] if gem_was is not blank and name_was is not blank.
+        def was_named?
+          was_named = false
+
+          if gem_was.present? and name_was.present?
+            was_named = true
+          end
+
+          was_named
         end
 
         private
