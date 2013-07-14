@@ -11,16 +11,13 @@ module Metasploit
         # #module_type to the type directory that is used to generate the #real_path from the #module_type and
         # #reference_name.
         DIRECTORY_BY_MODULE_TYPE = {
-            'auxiliary' => 'auxiliary',
-            'encoder' => 'encoders',
-            'exploit' => 'exploits',
-            'nop' => 'nops',
-            'payload' => 'payloads',
-            'post' => 'post'
+            Metasploit::Model::Module::Type::AUX => Metasploit::Model::Module::Type::AUX,
+            Metasploit::Model::Module::Type::ENCODER => Metasploit::Model::Module::Type::ENCODER.pluralize,
+            Metasploit::Model::Module::Type::EXPLOIT => Metasploit::Model::Module::Type::EXPLOIT.pluralize,
+            Metasploit::Model::Module::Type::NOP => Metasploit::Model::Module::Type::NOP.pluralize,
+            Metasploit::Model::Module::Type::PAYLOAD => Metasploit::Model::Module::Type::PAYLOAD.pluralize,
+            Metasploit::Model::Module::Type::POST => Metasploit::Model::Module::Type::POST
         }
-
-        # The modules types from {DIRECTORY_BY_MODULE_TYPE}.
-        MODULE_TYPES = DIRECTORY_BY_MODULE_TYPE.keys.sort
       end
     end
   end

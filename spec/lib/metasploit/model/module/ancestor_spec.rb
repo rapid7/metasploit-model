@@ -13,19 +13,10 @@ describe Metasploit::Model::Module::Ancestor do
       its(['nop']) { should == 'nops' }
       its(['payload']) { should == 'payloads' }
       its(['post']) { should == 'post' }
-    end
 
-    context 'MODULE_TYPES' do
-      subject(:module_types) do
-        described_class::MODULE_TYPES
+      it 'should have same module types as Metasploit::Model::Module::Type::ALL' do
+        directory_by_module_type.keys.should =~ Metasploit::Model::Module::Type::ALL
       end
-
-      it { should include('auxiliary') }
-      it { should include('encoder') }
-      it { should include('exploit') }
-      it { should include('nop') }
-      it { should include('payload') }
-      it { should include('post') }
     end
   end
 end
