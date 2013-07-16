@@ -3,6 +3,16 @@
 shared_examples_for 'Metasploit::Model::Module::Path' do
   it { should be_a ActiveModel::Dirty }
 
+  context 'CONSTANTS' do
+    context 'ARCHIVE_EXTENSION' do
+      subject(:archive_extension) do
+        described_class::ARCHIVE_EXTENSION
+      end
+
+      it { should == '.fastlib' }
+    end
+  end
+
   context 'callbacks' do
     context 'before_validation' do
       context 'nilify blanks' do
@@ -88,6 +98,95 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
   end
 
   context 'validations' do
+    context 'archive_or_directory' do
+      let(:error) do
+        'must be a Fastlib archive or a directory'
+      end
+
+      let(:path) do
+        path_class.new(:real_path => real_path)
+      end
+
+      before(:each) do
+        path.valid?
+      end
+
+      context 'with #real_path' do
+        context 'with directory' do
+          let(:real_path) do
+            FactoryGirl.generate :metasploit_model_module_path_directory_real_path
+          end
+
+          it 'should not record error on real_path' do
+            path.valid?
+
+            path.errors[:real_path].should_not include(error)
+          end
+        end
+
+        context 'with file' do
+          context 'with .fastlib extension' do
+            let(:real_path) do
+              FactoryGirl.generate :metasploit_model_module_path_archive_real_path
+            end
+
+            it 'should not record error on real_path' do
+              path.valid?
+
+              path.errors[:real_path].should_not include(error)
+            end
+          end
+
+          context 'without .fastlib extension' do
+            let(:pathname) do
+              Metasploit::Model::Spec.temporary_pathname.join(
+                  'metasploit',
+                  'model',
+                  'module',
+                  'path',
+                  'archive',
+                  'real',
+                  'path',
+                  'without_extension'
+              )
+            end
+
+            let(:real_path) do
+              pathname.to_path
+            end
+
+            before(:each) do
+              Metasploit::Model::Spec::PathnameCollision.check!(pathname)
+
+              pathname.parent.mkpath
+
+              pathname.open('wb') do |f|
+                f.puts 'Not an fastlib archive'
+              end
+            end
+
+            it 'should record error on real_path' do
+              path.valid?
+
+              path.errors[:real_path].should include(error)
+            end
+          end
+        end
+      end
+
+      context 'without #real_path' do
+        let(:real_path) do
+          nil
+        end
+
+        it 'should record error on real_path' do
+          path.valid?
+
+          path.errors[:real_path].should include(error)
+        end
+      end
+    end
+
     context 'gem and name' do
       let(:gem_error) do
         "can't be blank if name is present"
@@ -175,6 +274,129 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
           end
         end
       end
+    end
+  end
+
+  context '#archive?' do
+    subject(:archive?) do
+      path.archive?
+    end
+
+    let(:path) do
+      path_class.new(:real_path => real_path)
+    end
+
+    context 'with #real_path' do
+      context 'with file' do
+        context 'with .fastlib extension' do
+          let(:real_path) do
+            FactoryGirl.generate :metasploit_model_module_path_archive_real_path
+          end
+
+          it { should be_true }
+        end
+
+        context 'without .fastlib extension' do
+          let(:pathname) do
+            Metasploit::Model::Spec.temporary_pathname.join(
+                'metasploit',
+                'model',
+                'module',
+                'path',
+                'archive',
+                'real',
+                'path',
+                'without_extension'
+            )
+          end
+
+          let(:real_path) do
+            pathname.to_path
+          end
+
+          before(:each) do
+            Metasploit::Model::Spec::PathnameCollision.check!(pathname)
+
+            pathname.parent.mkpath
+
+            pathname.open('wb') do |f|
+              f.puts 'Not an fastlib archive'
+            end
+          end
+
+          it { should be_false }
+        end
+      end
+
+      context 'with directory' do
+        let(:directory_path) do
+          FactoryGirl.generate :metasploit_model_module_path_directory_real_path
+        end
+
+        context 'with .fastlib extension' do
+          let(:real_path) do
+            "#{directory_path}.fastlib"
+          end
+
+          before(:each) do
+            FileUtils.mv(directory_path, real_path)
+          end
+
+          it { should be_false }
+        end
+
+        context 'without .fastlib extension' do
+          let(:real_path) do
+            directory_path
+          end
+
+          it { should be_false }
+        end
+      end
+    end
+
+    context 'without #real_path' do
+      let(:real_path) do
+        nil
+      end
+
+      it { should be_false }
+    end
+  end
+
+  context '#directory?' do
+    subject(:directory?) do
+      path.directory?
+    end
+
+    let(:path) do
+      path_class.new(:real_path => real_path)
+    end
+
+    context 'with #real_path' do
+      context 'with file' do
+        let(:real_path) do
+          FactoryGirl.generate :metasploit_model_module_path_archive_real_path
+        end
+
+        it { should be_false }
+      end
+
+      context 'with directory' do
+        let(:real_path) do
+          FactoryGirl.generate :metasploit_model_module_path_directory_real_path
+        end
+
+        it { should be_true }
+      end
+    end
+
+    context 'without #real_path' do
+      let(:real_path) do
+        nil
+      end
+
+      it { should be_false }
     end
   end
 
