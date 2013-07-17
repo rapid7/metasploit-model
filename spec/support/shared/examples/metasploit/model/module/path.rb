@@ -17,7 +17,8 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
     context 'before_validation' do
       context 'nilify blanks' do
         let(:path) do
-          path_class.new(
+          FactoryGirl.build(
+              path_factory,
               :gem => '',
               :name => ''
           )
@@ -49,7 +50,8 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
         end
 
         let(:path) do
-          path_class.new(
+          FactoryGirl.build(
+              path_factory,
               :real_path => symlink_pathname.to_path
           )
         end
@@ -104,7 +106,10 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
       end
 
       let(:path) do
-        path_class.new(:real_path => real_path)
+        FactoryGirl.build(
+            path_factory,
+            :real_path => real_path
+        )
       end
 
       before(:each) do
@@ -197,7 +202,8 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
       end
 
       subject(:path) do
-        path_class.new(
+        FactoryGirl.build(
+            path_factory,
             :gem => gem,
             :name => name
         )
@@ -283,7 +289,10 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
     end
 
     let(:path) do
-      path_class.new(:real_path => real_path)
+      FactoryGirl.build(
+          path_factory,
+          :real_path => real_path
+      )
     end
 
     context 'with #real_path' do
@@ -370,7 +379,10 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
     end
 
     let(:path) do
-      path_class.new(:real_path => real_path)
+      FactoryGirl.build(
+          path_factory,
+          :real_path => real_path
+      )
     end
 
     context 'with #real_path' do
@@ -406,7 +418,8 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
     end
 
     let(:path) do
-      path_class.new(
+      FactoryGirl.build(
+          path_factory,
           :gem => gem,
           :name => name
       )
@@ -471,7 +484,9 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
     end
 
     let(:path) do
-      path_class.new
+      FactoryGirl.build(
+          path_factory
+      )
     end
 
     before(:each) do
