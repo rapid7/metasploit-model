@@ -1,5 +1,5 @@
 # Implementation of {Metasploit::Model::Module::Ancestor} to allow testing of {Metasploit::Model::Module::Ancestor}
-# using and in-memory ActiveModel and use of factories.
+# using an in-memory ActiveModel and use of factories.
 class Dummy::Module::Ancestor < Metasploit::Model::Base
   include Metasploit::Model::Module::Ancestor
 
