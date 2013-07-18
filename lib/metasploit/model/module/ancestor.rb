@@ -69,7 +69,7 @@ module Metasploit
 
           # full_name is NOT accessible since it's derived and must match {#derived_full_name} so there's no reason for a
           # user to set it.
-          # handler_type is accessible because it's needed to derive {Mdm::Module::Class#reference_name}.
+          # handler_type is accessible because it's needed to derive {Metasploit::Model::Module::Class#reference_name}.
           attr_accessible :handler_type
           # module_type is accessible because it's needed to derive {#full_name} and {#real_path}.
           attr_accessible :module_type
@@ -117,6 +117,7 @@ module Metasploit
                     }
         end
 
+        # Defines class methods added to classes that include {Metasploit::Model::Module::Ancestor}.
         module ClassMethods
           # Returns whether {#handler_type} is required or must be `nil` for the given payload_type.
           #
@@ -142,6 +143,67 @@ module Metasploit
         end
 
         #
+        # Associations
+        #
+
+        # @!attribute [rw] parent_path
+        #   Path under which this ancestor exists on-disk.
+        #
+        #   @return [Metasploit::Model::Module::Path]
+
+        #
+        # Attributes
+        #
+
+        # @!attribute [rw] full_name
+        #   The full name of the module.  The full name is `"#{module_type}/#{reference_name}"`.
+        #
+        #   @return [String]
+
+        # @!attribute [rw] handler_type
+        #   The handler type (in the case of singles) or (in the case of stagers) the handler type alias.  Handler type is
+        #   appended to the end of the single's or stage's {#reference_name} to get the
+        #   {Metasploit::Model::Module::Class#reference_name}.
+        #
+        #   @return [String] if {Metasploit::Model::Module::Ancestor#handled?} is `true`.
+        #   @return [nil] if {Metasploit::Model::Module::Ancestor#handled?} is `false`.
+
+        # @!attribute [rw] module_type
+        #   The type of the module. This would be called #type, but #type is reserved for ActiveRecord's single table
+        #   inheritance.
+        #
+        #   @return [String] key in {Metasploit::Model::Module::Ancestor::DIRECTORY_BY_MODULE_TYPE}.
+
+        # @!attribute [rw] payload_type
+        #   For payload modules, the type of payload, either 'single', 'stage', or 'stager'.
+        #
+        #   @return ['single', 'stage', 'stager'] if `Metasploit::Model::Module::Ancestor#payload?` is `true`.
+        #   @return [nil] if `Metasploit::Model::Module::Ancestor#payload?` is `false`
+        #   @see Metasploit::Model::Module::Ancestor::PAYLOAD_TYPES
+
+        # @!attribute [rw] real_path
+        #   The real (absolute) path to module file on-disk.
+        #
+        #   @return [String]
+
+        # @!attribute [rw] real_path_modified_at
+        #   The modification time of the module {#real_path file on-disk}.
+        #
+        #   @return [DateTime]
+
+        # @!attribute [rw] real_path_sha1_hex_digest
+        #   The SHA1 hexadecimal digest of contents of the file at {#real_path}.  Stored as a string because postgres does not
+        #   have support for a 160 bit numerical type and the hexdigest format is more recognizable when using SQL directly.
+        #
+        #   @see Digest::SHA1#hexdigest
+        #   @return [String]
+
+        # @!attribute [rw] reference_name
+        #   The reference name of the module.  The name of the module under its {#module_type type}.
+        #
+        #   @return [String]
+
+        #
         # Instance Methods
         #
 
@@ -160,13 +222,13 @@ module Metasploit
           derived
         end
 
-        # Derives {#real_path} by combining {Mdm::Module::Path#real_path parent_path.real_path}, {#module_type_directory}, and
-        # {#reference_path} in the same way the module loader does in metasploit-framework.
+        # Derives {#real_path} by combining {Metasploit::Model::Module::Path#real_path parent_path.real_path},
+        # {#module_type_directory}, and {#reference_path} in the same way the module loader does in
+        # metasploit-framework.
         #
-        # @return [String] the real path to the file holding the ruby Module or ruby Class represented by this
-        #   {Mdm::Module::Ancestor}.
+        # @return [String] the real path to the file holding the ruby Module or ruby Class represented by this ancestor.
         # @return [nil] if {#parent_path} is `nil`.
-        # @return [nil] if {Mdm::Module::Path#real_path parent_path.real_path} is `nil`.
+        # @return [nil] if {Metasploit::Model::Module::Path#real_path parent_path.real_path} is `nil`.
         # @return [nil] if {#module_type_directory} is `nil`.
         # @return [nil] if {#reference_name} is `nil`.
         def derived_real_path
@@ -229,7 +291,7 @@ module Metasploit
           )
         end
 
-        # The directory for {#module_type} under {Mdm::Module::Path parent_path.real_path}.
+        # The directory for {#module_type} under {Metasploit::Model::Module::Path parent_path.real_path}.
         #
         # @return [String]
         # @see Metasploit::Model::Module::Ancestor::DIRECTORY_BY_MODULE_TYPE
@@ -265,8 +327,8 @@ module Metasploit
           directory
         end
 
-        # The path relative to the {#module_type_directory} under the {Mdm::Module::Path parent_path.real_path}, including the
-        # file {EXTENSION extension}.
+        # The path relative to the {#module_type_directory} under the {Metasploit::Model::Module::Path
+        # parent_path.real_path}, including the file {EXTENSION extension}.
         #
         # @return [String] {#reference_name} + {EXTENSION}
         # @return [nil] if {#reference_name} is `nil`.
