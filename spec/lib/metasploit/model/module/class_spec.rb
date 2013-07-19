@@ -137,6 +137,31 @@ describe Metasploit::Model::Module::Class do
           )
         end
 
+        if RUBY_PLATFORM =~ /java/
+          def ancestor_count
+            count = 0
+
+            # generalized each_object(<class>) is not turned on in jruby
+            ObjectSpace.each_object(::Class) do |instance|
+              if instance.is_a? Dummy::Module::Ancestor
+                count += 1
+              end
+            end
+
+            count
+          end
+        else
+          def ancestor_count
+            count = 0
+
+            ObjectSpace.each_object(Dummy::Module::Ancestor) do |_ancestor|
+              count += 1
+            end
+
+            count
+          end
+        end
+
         context 'single payload' do
           let!(:ancestors) do
             [
@@ -149,15 +174,7 @@ describe Metasploit::Model::Module::Class do
           it 'should not create any Mdm::Module::Ancestors' do
             expect {
               dummy_module_class
-            }.to_not change {
-              count = 0
-
-              ObjectSpace.each_object(Dummy::Module::Ancestor) do |_ancestor|
-                count += 1
-              end
-
-              count
-            }
+            }.to_not change(self, :ancestor_count)
           end
         end
 
@@ -174,15 +191,7 @@ describe Metasploit::Model::Module::Class do
           it 'should not create any Mdm::Module::Ancestors' do
             expect {
               dummy_module_class
-            }.to_not change {
-              count = 0
-
-              ObjectSpace.each_object(Dummy::Module::Ancestor) { |ancestor|
-                count += 1
-              }
-
-              count
-            }
+            }.to_not change(self, :ancestor_count)
           end
         end
       end
