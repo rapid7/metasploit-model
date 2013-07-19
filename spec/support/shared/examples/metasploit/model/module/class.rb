@@ -456,7 +456,7 @@ shared_examples_for 'Metasploit::Model::Module::Class' do
 
                 let(:many_error) do
                   "needs exactly one ancestor with payload_type (#{ancestor_payload_type}), " \
-                  "but there are #{ancestors.count} (#{ancestors.map(&:full_name).to_sentence})"
+                  "but there are #{ancestors.count} (#{ancestors.map(&:full_name).sort.to_sentence})"
                 end
 
                 context 'single' do
