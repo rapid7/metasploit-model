@@ -259,7 +259,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
       context 'without payload' do
         let(:module_type) do
-          FactoryGirl.generate :metasploit_model_module_ancestor_non_payload_module_type
+          FactoryGirl.generate :metasploit_model_non_payload_module_type
         end
 
         context 'with payload_type' do
@@ -458,7 +458,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
       context 'without payload?' do
         let(:module_type) do
-          FactoryGirl.generate :metasploit_model_module_ancestor_non_payload_module_type
+          FactoryGirl.generate :metasploit_model_non_payload_module_type
         end
 
         context 'with payload_type' do
@@ -621,7 +621,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
     context 'with module_type' do
       let(:module_type) do
-        FactoryGirl.generate :metasploit_model_module_ancestor_module_type
+        FactoryGirl.generate :metasploit_model_module_type
       end
 
       it "should equal <module_type>/<reference_name>" do
@@ -662,7 +662,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
     context 'without payload' do
       let(:module_type) do
-        FactoryGirl.generate :metasploit_model_module_ancestor_non_payload_module_type
+        FactoryGirl.generate :metasploit_model_non_payload_module_type
       end
 
       it { should be_nil }
@@ -710,7 +710,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
         context 'with module_type' do
           let(:module_type) do
-            FactoryGirl.generate :metasploit_model_module_ancestor_module_type
+            FactoryGirl.generate :metasploit_model_module_type
           end
 
           context 'with reference_name' do
@@ -938,7 +938,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
       context 'non-payload' do
         let(:module_type) do
-          FactoryGirl.generate :metasploit_model_module_ancestor_non_payload_module_type
+          FactoryGirl.generate :metasploit_model_non_payload_module_type
         end
 
         context 'with payload_type' do
@@ -1069,7 +1069,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
     context "without 'payload' module_type" do
       let(:module_type) do
-        FactoryGirl.generate :metasploit_model_module_ancestor_non_payload_module_type
+        FactoryGirl.generate :metasploit_model_non_payload_module_type
       end
 
       it { should_not be_payload }
@@ -1120,7 +1120,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     context 'with module_type' do
       context 'in known types' do
         let(:module_type) do
-          FactoryGirl.generate :metasploit_model_module_ancestor_module_type
+          FactoryGirl.generate :metasploit_model_module_type
         end
 
         it 'should use Metasploit::Model::Module::Ancestor::DIRECTORY_BY_MODULE_TYPE' do

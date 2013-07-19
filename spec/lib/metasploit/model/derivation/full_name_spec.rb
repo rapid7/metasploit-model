@@ -50,7 +50,7 @@ describe Metasploit::Model::Derivation::FullName do
 
     context 'with module_type' do
       let(:module_type) do
-        FactoryGirl.generate :metasploit_model_module_ancestor_module_type
+        FactoryGirl.generate :metasploit_model_module_type
       end
 
       context 'with reference_name' do

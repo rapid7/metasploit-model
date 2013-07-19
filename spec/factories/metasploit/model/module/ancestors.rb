@@ -3,11 +3,6 @@ FactoryGirl.define do
     "metasploit_model_module_ancestor_handler_type#{n}"
   end
 
-  sequence :metasploit_model_module_ancestor_module_type, Metasploit::Model::Module::Type::ALL.cycle
-
-  non_payload_ordered_types = Metasploit::Model::Module::Type::ALL - ['payload']
-  sequence :metasploit_model_module_ancestor_non_payload_module_type, non_payload_ordered_types.cycle
-
   sequence :metasploit_model_module_ancestor_payload_type, Metasploit::Model::Module::Ancestor::PAYLOAD_TYPES.cycle
 
   sequence :metasploit_model_module_ancestor_reference_name do |n|
@@ -67,7 +62,7 @@ FactoryGirl.define do
     # Attributes
     #
 
-    module_type { generate :metasploit_model_module_ancestor_module_type }
+    module_type { generate :metasploit_model_module_type }
 
     ignore do
       # depends on module_type
@@ -129,7 +124,7 @@ FactoryGirl.define do
   end
 
   trait :non_payload_metasploit_model_module_ancestor do
-    module_type { generate :metasploit_model_module_ancestor_non_payload_module_type }
+    module_type { generate :metasploit_model_non_payload_module_type }
 
     ignore do
       payload_type nil

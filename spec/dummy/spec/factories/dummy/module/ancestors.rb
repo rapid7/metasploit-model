@@ -5,6 +5,13 @@ FactoryGirl.define do
           :traits => [
               :metasploit_model_module_ancestor
           ] do
+    to_create do |instance|
+      # validate so before validation derivation occurs to mimic create for ActiveRecord.
+      unless instance.valid?
+        raise Metasploit::Model::Invalid.new(instance)
+      end
+    end
+
     #
     # Associations
     #

@@ -49,6 +49,7 @@ module Metasploit
       extend ActiveSupport::Concern
 
       included do
+        include ActiveModel::Validations
         include ActiveModel::Validations::Callbacks
 
         before_validation :derive
