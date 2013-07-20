@@ -5,6 +5,10 @@ describe Metasploit::Model::Authority do
     subject(:authority) do
       FactoryGirl.build :dummy_authority
     end
+
+    def seed_with_abbreviation(abbreviation)
+      Dummy::Authority.with_abbreviation(abbreviation)
+    end
   end
 
   context 'factories' do

@@ -11,10 +11,6 @@ shared_examples_for 'Metasploit::Model::Authority' do
   end
 
   context 'seeds' do
-    def seed_with_abbreviation(abbreviation)
-      Dummy::Authority.with_abbreviation(abbreviation)
-    end
-
     it_should_behave_like 'Metasploit::Model::Authority seed',
                           :abbreviation => 'BID',
                           :extension_name => 'Metasploit::Model::Authority::Bid',
