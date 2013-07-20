@@ -181,7 +181,7 @@ class Dummy::Architecture < Metasploit::Model::Base
   #
   # @param abbreviation [String] {#abbreviation}
   # @return [Dummy::Architecture]
-  def self.by_abbreviation(abbreviation)
+  def self.with_abbreviation(abbreviation)
     unless instance_variable_defined? :@instance_by_abbreviation
       @instance_by_abbreviation = {}
 

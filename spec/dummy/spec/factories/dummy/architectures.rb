@@ -6,7 +6,7 @@ FactoryGirl.define do
     # use abbreviations since they are unique
     abbreviation = abbreviations[n % abbreviations.length]
 
-    architecture = Dummy::Architecture.by_abbreviation(abbreviation)
+    architecture = Dummy::Architecture.with_abbreviation(abbreviation)
 
     architecture
   end

@@ -24,7 +24,7 @@ class Dummy::Module::Rank < Metasploit::Model::Base
   #
   # @param name [String] {#name}
   # @return [Dummy::Module::Rank]
-  def self.by_name(name)
+  def self.with_name(name)
     unless instance_variable_defined? :@instance_by_name
       @instance_by_name = {}
 

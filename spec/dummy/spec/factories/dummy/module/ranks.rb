@@ -7,7 +7,7 @@ FactoryGirl.define do
   sequence :dummy_module_rank do |n|
     name = names[n % names.length]
 
-    rank = Dummy::Module::Rank.by_name(name)
+    rank = Dummy::Module::Rank.with_name(name)
 
     rank
   end
