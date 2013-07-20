@@ -22,20 +22,20 @@ class Dummy::Module::Rank < Metasploit::Model::Base
   # Keep single instance for each pair in {Metasploit::Model::Module::Rank::NUMBER_BY_NAME} to emulate unique database
   # seeds in-memory.
   #
-  # @param name [String] {Dummy::Module::Rank#name}
+  # @param name [String] {#name}
   # @return [Dummy::Module::Rank]
   def self.by_name(name)
     unless instance_variable_defined? :@instance_by_name
       @instance_by_name = {}
 
-      NUMBER_BY_NAME.each do |name, number|
-        instance = new(:name => name, :number => number)
+      NUMBER_BY_NAME.each do |instance_name, number|
+        instance = new(:name => instance_name, :number => number)
 
         unless instance.valid?
-          raise Metasploit::Model::ModelInvalid.new(instance)
+          raise Metasploit::Model::Invalid.new(instance)
         end
 
-        @instance_by_name[name] = instance
+        @instance_by_name[instance_name] = instance
       end
     end
 
