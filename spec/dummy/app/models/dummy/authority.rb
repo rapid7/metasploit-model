@@ -112,6 +112,9 @@ class Dummy::Authority < Metasploit::Model::Base
           raise Metasploit::Model::Invalid.new(instance)
         end
 
+        # freeze object to prevent specs from modifying them and interfering with other specs.
+        instance.freeze
+
         @instance_by_abbreviation[instance.abbreviation] = instance
       end
     end

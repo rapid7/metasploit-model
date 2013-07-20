@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Metasploit::Model::Authority do
   it_should_behave_like 'Metasploit::Model::Authority' do
     subject(:authority) do
-      FactoryGirl.generate :seeded_dummy_authority
+      FactoryGirl.build :dummy_authority
     end
   end
 
