@@ -1,6 +1,6 @@
 # Open Sourced Vulnerability Database authority-specific code.
 module Metasploit::Model::Authority::Osvdb
-  # Returns URL to {Mdm::Reference#designation OSVDB ID's} page.
+  # Returns URL to {Metasploit::Model::Reference#designation OSVDB ID's} page.
   #
   # @param designation [String] N+ OSVDB ID.
   # @return [String] URL

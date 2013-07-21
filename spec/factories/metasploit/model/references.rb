@@ -10,7 +10,7 @@ FactoryGirl.define do
   end
 
   #
-  # Mdm::Authority-specific Mdm::Reference#designation sequences
+  # Metasploit::Model::Authority-specific Metasploit::Model::Reference#designation sequences
   #
 
   sequence :metasploit_model_reference_bid_designation do |n|
@@ -60,5 +60,23 @@ FactoryGirl.define do
 
   sequence :metasploit_model_reference_url do |n|
     "http://example.com/metasploit/model/reference/#{n}"
+  end
+
+  trait :metasploit_model_reference do
+    #
+    # Attributes
+    #
+
+    designation { generate :metasploit_model_reference_designation }
+    url { generate :metasploit_model_reference_url }
+  end
+
+  trait :obsolete_metasploit_model_reference do
+    url nil
+  end
+
+  trait :url_metasploit_model_reference do
+    authority nil
+    designation nil
   end
 end
