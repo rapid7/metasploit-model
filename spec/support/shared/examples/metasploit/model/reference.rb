@@ -270,7 +270,9 @@ shared_examples_for 'Metasploit::Model::Reference' do
 
     context 'with authority' do
       let(:authority) do
-        mock("Metasploit::Model::Authority")
+        FactoryGirl.create(
+            authority_factory
+        )
       end
 
       context 'with blank designation' do
