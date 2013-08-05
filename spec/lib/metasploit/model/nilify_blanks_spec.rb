@@ -129,7 +129,7 @@ describe Metasploit::Model::NilifyBlanks do
 
     context 'without value responds to blank?' do
       let(:value) do
-        mock('Value')
+        double('Value')
       end
 
       before(:each) do

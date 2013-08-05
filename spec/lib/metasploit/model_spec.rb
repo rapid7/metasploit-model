@@ -18,7 +18,7 @@ describe Metasploit::Model do
     end
 
     it 'should join app to root' do
-      root = mock('root Pathname')
+      root = double('root Pathname')
 
       root.should_receive(:join).with('app')
       described_class.should_receive(:root).and_return(root)

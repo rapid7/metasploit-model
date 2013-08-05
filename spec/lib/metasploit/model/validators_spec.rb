@@ -57,7 +57,7 @@ describe Metasploit::Model::Validators do
     end
 
     it 'should be a child of app_pathname' do
-      app_pathname = mock('app Pathname')
+      app_pathname = double('app Pathname')
 
       app_pathname.should_receive(:join).with('validators')
       base_class.should_receive(:app_pathname).and_return(app_pathname)
