@@ -2,15 +2,9 @@ FactoryGirl.define do
   factory :dummy_reference,
           :class => Dummy::Reference,
           :traits => [
+              :metasploit_model_base,
               :metasploit_model_reference
           ] do
-    to_create do |instance|
-      # validate so before validation derivation occurs to mimic create for ActiveRecord.
-      unless instance.valid?
-        raise Metasploit::Model::Invalid.new(instance)
-      end
-    end
-
     #
     # Associations
     #
