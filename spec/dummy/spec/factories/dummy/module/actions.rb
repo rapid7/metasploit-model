@@ -8,6 +8,6 @@ FactoryGirl.define do
     # Associations
     #
 
-    # @todo https://www.pivotaltracker.com/story/show/54626850
+    association :module_instance, :factory => :dummy_module_instance
   end
 end

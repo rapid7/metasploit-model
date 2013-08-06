@@ -13,9 +13,7 @@ describe Metasploit::Model::Module::Author do
         FactoryGirl.build(:dummy_module_author)
       end
 
-      it 'should be valid', :pending => 'https://www.pivotaltracker.com/story/show/54632646' do
-        dummy_module_author.should be_valid
-      end
+      it { should be_valid }
     end
 
     context 'full_dummy_module_author' do
@@ -23,9 +21,7 @@ describe Metasploit::Model::Module::Author do
         FactoryGirl.build(:full_dummy_module_author)
       end
 
-      it 'should be valid', :pending => 'https://www.pivotaltracker.com/story/show/54632646' do
-        full_dummy_module_author.should be_valid
-      end
+      it { should be_valid }
 
       its(:email_address) { should_not be_nil }
     end

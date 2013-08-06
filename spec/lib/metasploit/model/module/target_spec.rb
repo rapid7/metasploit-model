@@ -13,9 +13,7 @@ describe Metasploit::Model::Module::Target do
         FactoryGirl.build :dummy_module_target
       end
 
-      it 'should be valid', :pending => 'https://www.pivotaltracker.com/story/show/54645410' do
-        dummy_module_target.should be_valid
-      end
+      it { should be_valid }
     end
   end
 end

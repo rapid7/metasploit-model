@@ -1,0 +1,155 @@
+# Implementation of {Metasploit::Model::Module::Instance} to allow testing of {Metasploit::Model::Module::Instance}
+# using an in-memory ActiveModel and use of factories.
+class Dummy::Module::Instance < Metasploit::Model::Base
+  include Metasploit::Model::Module::Instance
+
+  #
+  #
+  # Associations
+  #
+  #
+
+  # @!attribute [rw] actions
+  #   Auxiliary actions to perform when this running this module.
+  #
+  #   @return [Array<Dummy::Module::Action>]
+  attr_accessor :actions
+
+  # @!attribute [rw] default_action
+  #   The default action in {#actions}.
+  #
+  #   @return [Dummy::Module::Action]
+  attr_accessor :default_action
+
+  # @!attribute [rw] default_target
+  #   The default target in {#targets}.
+  #
+  #   @return [Dummy::Module::Target]
+  attr_accessor :default_target
+
+  # @!attribute [rw] module_authors
+  #   Joins this with {#authors} and {#email_addresses} to model the name and email address used for an author
+  #   entry in the module metadata.
+  #
+  #   @return [Array<Dummy::Module::Author>]
+  attr_accessor :module_authors
+
+  # @!attribute [rw] module_class
+  #   Class-derived metadata to go along with the instance-derived metadata in this model.
+  #
+  #   @return [Dummy::Module::Class]
+  attr_accessor :module_class
+
+  # @!attribute [rw] targets
+  #   Names of targets with different configurations that can be exploited by this module.
+  #
+  #   @return [Array<Dummy::Module::Target>]
+  attr_accessor :targets
+
+  # @!attribute [r] architectures
+  #   The {Dummy::Module::Architecture architectures} supported by this module.
+  #
+  #   @return [Array<Dummy::Architecture>]
+  attr_accessor :architectures
+
+  # @!attribute [r] authors
+  #   The names of the authors of this module.
+  #
+  #   @return [Array<Dummy::Author>]
+  def authors
+    module_authors.map(&:author)
+  end
+
+  # @!attribute [r] email_addresses
+  #   The email addresses of the authors of this module.
+  #
+  #   @return [Array<Dummy::EmailAddress>]
+  def email_addresses
+    module_authors.map(&email_addresses).uniq
+  end
+
+  # @!attribute [r] platforms
+  #   Platforms supported by this module.
+  #
+  #   @return [Array<Dummy::Module::Platform>]
+  attr_accessor :platforms
+
+  # @!attribute [r] references
+  #   External references to the exploit or proof-of-concept (PoC) code in this module.
+  #
+  #   @return [Array<Dummy::Reference>]
+  attr_accessor :references
+
+  # @!attribute [r] vulns
+  #   Vulnerabilities with same {Dummy::Reference reference} as this module.
+  #
+  #   @return [Array<Dummy::Vuln>]
+  def vulns
+    references.inject(Set.new) { |vuln_set, reference|
+      vuln_set.merge(reference.vulns)
+    }
+  end
+
+  # @!attribute [r] vulnerable_hosts
+  #   Hosts vulnerable to this module.
+  #
+  #   @return [Array<Dummy::Host>]
+  def vulnerable_hosts
+    vulns.inject(Set.new) { |host_set, vuln|
+      host_set.add(vuln.host)
+    }
+  end
+
+  # @!attribute [r] vulnerable_services
+  #   Services vulnerable to this module.
+  #
+  #   @return [Array<Dummy::Service>]
+  def vulnerable_services
+    vulns.inject(Set.new) { |service_set, vuln|
+      service_set.merge(vuln)
+    }
+  end
+
+  #
+  # Attributes
+  #
+
+  # @!attribute [rw] description
+  #   A long, paragraph description of what the module does.
+  #
+  #   @return [String]
+  attr_accessor :description
+
+  # @!attribute [rw] disclosed_on
+  #   The date the vulnerability exploited by this module was disclosed to the public.
+  #
+  #   @return [Date, nil]
+  attr_accessor :disclosed_on
+
+  # @!attribute [rw] license
+  #   The name of the software license for the module's code.
+  #
+  #   @return [String]
+  attr_accessor :license
+
+  # @!attribute [rw] name
+  #   The human readable name of the module.  It is unrelated to {Dummy::Module::Class#full_name} or
+  #   {Dummy::Module::Class#reference_name} and is better thought of as a short summary of the
+  #   {#description}.
+  #
+  #   @return [String]
+  attr_accessor :name
+
+  # @!attribute [rw] privileged
+  #   Whether this module requires privileged access to run.
+  #
+  #   @return [Boolean]
+  attr_accessor :privileged
+
+  # @!attribute [rw] stance
+  #   Whether the module is active or passive.  `nil` if the
+  #   {Dummy::Module::Class#module_type module type} does not {#supports_stance? support stances}.
+  #
+  #   @return ['active', 'passive', nil]
+  attr_accessor :stance
+end
