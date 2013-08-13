@@ -5,6 +5,10 @@ describe Metasploit::Model::Author do
     subject(:author) do
       FactoryGirl.build(:dummy_author)
     end
+
+    let(:author_class) do
+      Dummy::Author
+    end
   end
 
   context 'factories' do

@@ -1,0 +1,77 @@
+en:
+  metasploit:
+    model:
+      architecture:
+        search_attribute:
+          abbreviation:
+            help: "Abbreviation for architecture, such as x86, etc."
+          bits:
+            help: "Number of bits supported by the architecture.  Certain architectures, such as those for programming langauges like Ruby and PHP, do not have bits."
+          endianness:
+            help: "Whether the architecture is big or little endian.  Certain architectures, such as those for programming languages like Ruby and PHP, do not have an endianness."
+          family:
+            help: "The CPU architecture family.  For example x86_64 and x86 are both in the x86 family.  Certain architectures, such as those for programming languages like Ruby and PHP, do not have a family."
+      author:
+        search_attribute:
+          name:
+            help: "Full name (first + last name) or handle of the author."
+      authority:
+        search_attribute:
+          abbreviation:
+            help:  "Abbreviation or initialism for authority, such as CVE for 'Common Vulnerability and Exposures'."
+      email_address:
+        search_attribute:
+          domain:
+            help: "The domain part of the email address after the '@'."
+          local:
+            help: "The local part of the email address before the '@'."
+      invalid: "Validation failed: %{errors}"
+      module:
+        action:
+          search_attribute:
+            name:
+              help: "The name of the module action."
+        class:
+          search_attribute:
+            full_name:
+              help: "<module_type>/<reference_name>"
+            module_type:
+              help: "The type of this module."
+            payload_type:
+              help: "For payload modules, the type of payload, either 'single' or 'staged'."
+            reference_name:
+              help: "The reference name relative to the module_type."
+        instance:
+          search_attribute:
+            description:
+              help: "A long, paragraph description of what the module does."
+            disclosed_on:
+              help: "The date the vulnerability exploited by this module was disclosed to the public."
+            license:
+              help: "The name of the software license for the module's code."
+            name:
+              help: "The human readable name of the module.  It can be thought of as the summary or title of the module."
+            privileged:
+              help: "Whether the module requires privileged access to run."
+            stance:
+              help: "Whether the module is active or passive."
+        rank:
+          search_attribute:
+            name:
+              help: "Name of the rank."
+            number:
+              help: "Numerical value of the rank.  Higher numbers are better."
+        target:
+          search_attribute:
+            name:
+              help: "Name of module target."
+      platform:
+        search_attribute:
+          name:
+            help: "Name of the platform."
+      reference:
+        search_attribute:
+          designation:
+            help: "A designation (usually a string of numbers and dashes) assigned by the reference's authority.  If the reference has no authority, then only url will be set, such as for references to proof-of-concept (PoC) blog posts."
+          url:
+            help: "URL to web page with information about referenced exploit.  The URL may be null if the authority is obsolete."

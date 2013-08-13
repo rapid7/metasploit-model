@@ -4,6 +4,7 @@ module Metasploit
       # Code shared between `Mdm::Module::Instance` and `Metasploit::Framework::Module::Instance`.
       module Instance
         extend ActiveSupport::Concern
+        extend Metasploit::Model::Search::Translation
 
         #
         # CONSTANTS
@@ -24,6 +25,39 @@ module Metasploit
 
         included do
           include ActiveModel::Validations
+          include Metasploit::Model::Search
+
+          #
+          #
+          # Search
+          #
+          #
+
+          #
+          # Search Associations
+          #
+
+          search_association :actions
+          search_association :architectures
+          search_association :authorities
+          search_association :authors
+          search_association :email_addresses
+          search_association :module_class
+          search_association :platforms
+          search_association :rank
+          search_association :references
+          search_association :targets
+
+          #
+          # Search Attributes
+          #
+
+          search_attribute :description, :type => :string
+          search_attribute :disclosed_on, :type => :date
+          search_attribute :license, :type => :string
+          search_attribute :name, :type => :string
+          search_attribute :privileged, :type => :boolean
+          search_attribute :stance, :type => :string
 
           #
           # Validations

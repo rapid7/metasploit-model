@@ -5,5 +5,9 @@ describe Metasploit::Model::Platform do
     subject(:platform) do
       FactoryGirl.build(:dummy_platform)
     end
+
+    let(:platform_class) do
+      Dummy::Platform
+    end
   end
 end

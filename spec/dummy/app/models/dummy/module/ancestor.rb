@@ -13,9 +13,10 @@ class Dummy::Module::Ancestor < Metasploit::Model::Base
   #   @return [String] <module_type>/<reference_name>
   attr_accessor :full_name
 
-  # The handler type (in the case of singles) or (in the case of stagers) the handler type alias.  Handler type is
-  # appended to the end of the single's or stage's {#reference_name} to get the
-  # {Metasploit::Model::Module::Class#reference_name}.
+  # @!attribute [rw] handler_type
+  #   The handler type (in the case of singles) or (in the case of stagers) the handler type alias.  Handler type is
+  #   appended to the end of the single's or stage's {#reference_name} to get the
+  #   {Metasploit::Model::Module::Class#reference_name}.
   #
   #   @return [String] if {#handled?} is `true`.
   #   @return [nil] if {#handled?} is `false`.

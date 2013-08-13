@@ -64,6 +64,27 @@ shared_examples_for 'Metasploit::Model::Architecture' do
     end
   end
 
+  context 'search' do
+    context 'i18n_scope' do
+      subject(:search_i18n_scope) do
+        described_class.search_i18n_scope
+      end
+
+      it { should == 'metasploit.model.architecture' }
+    end
+
+    context 'attributes' do
+      let(:base_class) do
+        architecture_class
+      end
+
+      it_should_behave_like 'search_attribute', :abbreviation, :type => :string
+      it_should_behave_like 'search_attribute', :bits, :type => :integer
+      it_should_behave_like 'search_attribute', :endianness, :type => :string
+      it_should_behave_like 'search_attribute', :family, :type => :string
+    end
+  end
+
   context 'validations' do
     context 'abbreviation' do
       # have to test inclusion validation manually because

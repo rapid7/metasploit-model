@@ -9,6 +9,10 @@ describe Metasploit::Model::Authority do
     def seed_with_abbreviation(abbreviation)
       Dummy::Authority.with_abbreviation(abbreviation)
     end
+
+    let(:authority_class) do
+      Dummy::Authority
+    end
   end
 
   context 'factories' do

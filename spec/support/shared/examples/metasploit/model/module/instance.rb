@@ -21,8 +21,68 @@ shared_examples_for 'Metasploit::Model::Module::Instance' do
     end
   end
 
+  context 'search' do
+    context 'search_i18n_scope' do
+      subject(:search_i18n_scope) do
+        described_class.search_i18n_scope
+      end
+
+      it { should == 'metasploit.model.module.instance' }
+    end
+
+    context 'associations' do
+      it_should_behave_like 'search_association', :actions
+      it_should_behave_like 'search_association', :architectures
+      it_should_behave_like 'search_association', :authorities
+      it_should_behave_like 'search_association', :authors
+      it_should_behave_like 'search_association', :email_addresses
+      it_should_behave_like 'search_association', :module_class
+      it_should_behave_like 'search_association', :platforms
+      it_should_behave_like 'search_association', :rank
+      it_should_behave_like 'search_association', :references
+      it_should_behave_like 'search_association', :targets
+    end
+
+    context 'attributes' do
+      it_should_behave_like 'search_attribute', :description, :type => :string
+      it_should_behave_like 'search_attribute', :disclosed_on, :type => :date
+      it_should_behave_like 'search_attribute', :license, :type => :string
+      it_should_behave_like 'search_attribute', :name, :type => :string
+      it_should_behave_like 'search_attribute', :privileged, :type => :boolean
+      it_should_behave_like 'search_attribute', :stance, :type => :string
+    end
+  end
+
   context 'validations' do
-    it { should validate_presence_of :module_class }
+    context 'validate presence of module_class' do
+      subject(:module_instance) do
+        FactoryGirl.build(module_instance_factory, :module_class => module_class)
+      end
+
+      before(:each) do
+        module_instance.valid?
+      end
+
+      context 'with module_class' do
+        let(:module_class) do
+          FactoryGirl.build(module_class_factory)
+        end
+
+        it 'should not record error on module_class' do
+          module_instance.errors[:module_class].should be_empty
+        end
+      end
+
+      context 'without module_class' do
+        let(:module_class) do
+          nil
+        end
+
+        it 'should record error on module_class' do
+          module_instance.errors[:module_class].should include("can't be blank")
+        end
+      end
+    end
 
     context 'ensure inclusion of privileged is boolean' do
       let(:error) do

@@ -6,6 +6,10 @@ describe Metasploit::Model::Module::Instance do
   end
 
   it_should_behave_like 'Metasploit::Model::Module::Instance' do
+    let(:base_class) do
+      Dummy::Module::Instance
+    end
+
     let(:module_class_factory) do
       :dummy_module_class
     end
