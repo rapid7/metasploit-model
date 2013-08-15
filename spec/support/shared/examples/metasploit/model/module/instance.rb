@@ -51,6 +51,46 @@ shared_examples_for 'Metasploit::Model::Module::Instance' do
       it_should_behave_like 'search_attribute', :privileged, :type => :boolean
       it_should_behave_like 'search_attribute', :stance, :type => :string
     end
+
+    context 'query' do
+      it_should_behave_like 'search query', :formatted_operator => 'actions.name'
+
+      context 'architectures' do
+        it_should_behave_like 'search query', :formatted_operator => 'architectures.abbreviation'
+        it_should_behave_like 'search query', :formatted_operator => 'architectures.bits'
+        it_should_behave_like 'search query', :formatted_operator => 'architectures.endianness'
+        it_should_behave_like 'search query', :formatted_operator => 'architectures.family'
+      end
+
+      it_should_behave_like 'search query', :formatted_operator => 'authorities.abbreviation'
+      it_should_behave_like 'search query', :formatted_operator => 'authors.name'
+
+      context 'email_addresses' do
+        it_should_behave_like 'search query', :formatted_operator => 'email_addresses.domain'
+        it_should_behave_like 'search query', :formatted_operator => 'email_addresses.local'
+      end
+
+      context 'module_class' do
+        it_should_behave_like 'search query', :formatted_operator => 'module_class.full_name'
+        it_should_behave_like 'search query', :formatted_operator => 'module_class.module_type'
+        it_should_behave_like 'search query', :formatted_operator => 'module_class.payload_type'
+        it_should_behave_like 'search query', :formatted_operator => 'module_class.reference_name'
+      end
+
+      it_should_behave_like 'search query', :formatted_operator => 'platforms.name'
+
+      context 'rank' do
+        it_should_behave_like 'search query', :formatted_operator => 'rank.name'
+        it_should_behave_like 'search query', :formatted_operator => 'rank.number'
+      end
+
+      context 'references' do
+        it_should_behave_like 'search query', :formatted_operator => 'references.designation'
+        it_should_behave_like 'search query', :formatted_operator => 'references.url'
+      end
+
+      it_should_behave_like 'search query', :formatted_operator => 'targets.name'
+    end
   end
 
   context 'validations' do
