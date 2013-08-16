@@ -64,6 +64,25 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
     @operations
   end
 
+  # @note Query is validated before grouping the operations as {Metasploit::Model::Search::Operation::Null operation
+  # using unknown operators} with the same name should not be grouped together when processing this query into an actual
+  # search of record and/or models.
+  #
+  # Groups {#operations} together by {Metasploit::Model::Search::Operation::Base#operator}.
+  #
+  # @return [Hash{Metasploit::Model::Search::Operator::Base => Metasploit::Model::Search::Operation::Base}] Maps
+  #   operator to all its operations.
+  # @raise [Metasploit::Model::Invalid] if query is invalid due to invalid operations.
+  def operations_by_operator
+    unless instance_variable_defined? :@operations_by_operator
+      valid!
+
+      @operations_by_operator = operations.group_by(&:operator)
+    end
+
+    @operations_by_operator ||= operations.group_by(&:operator)
+  end
+
   # Converts formatted operator extracted from formatted operation to its {Metasploit::Model::Search::Operator::Base}
   # instance.
   #
@@ -81,6 +100,23 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
     end
 
     operator
+  end
+
+  # Groups {#operations} together by {Metasploit::Model::Search::Operation::Base#operator} into
+  # {Metasploit::Model::Search::Group::Union unions} that are
+  # {Metasploit::Model::Search::Group::Intersection intersected}.
+  #
+  # @return [Metasploit::Model::Search::Group::Intersection<Metasploit::Model::Search::Group::Union<Metasploit::Model::Search::Operation::Base>>]
+  def tree
+    unless instance_variable_defined? :@tree
+      unions = operations_by_operator.collect do |_operator, operations|
+        Metasploit::Model::Search::Group::Union.new(:children => operations)
+      end
+
+      @tree = Metasploit::Model::Search::Group::Intersection.new(:children => unions)
+    end
+
+    @tree
   end
 
   private

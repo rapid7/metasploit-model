@@ -14,6 +14,10 @@ en:
           attributes:
             name:
               unknown: "is unknown"
+        metasploit/model/search/query:
+          attributes:
+            operations:
+              :too_short: "is too short (minimum is %{count} operations)"
   metasploit:
     model:
       architecture:

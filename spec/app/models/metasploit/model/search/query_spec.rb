@@ -29,7 +29,10 @@ describe Metasploit::Model::Search::Query do
 
       context 'length' do
         let(:error) do
-          I18n.translate('errors.messages.too_short', :count => 1)
+          I18n.translate(
+              'activemodel.errors.models.metasploit/model/search/query.attributes.operations.too_short',
+              :count => 1
+          )
         end
 
         before(:each) do
@@ -346,6 +349,87 @@ describe Metasploit::Model::Search::Query do
     end
   end
 
+  context '#operations_by_operator' do
+    subject(:operations_by_operator) do
+      query.operations_by_operator
+    end
+
+    let(:klass) do
+      Class.new
+    end
+
+    let(:query) do
+      described_class.new(
+          :formatted => formatted,
+          :klass => klass
+      )
+    end
+
+    before(:each) do
+      stub_const('Queried', klass)
+
+      klass.send(:include, Metasploit::Model::Search)
+
+      @operators = [:first, :second].collect { |attribute|
+        klass.search_attribute attribute, :type => :string
+      }
+    end
+
+    context 'with valid' do
+      let(:formatted) do
+        formatted_operators = []
+
+        @operators.each_with_index do |operator, i|
+          2.times.each do |j|
+            formatted_operator = "#{operator.name}:formatted_value(#{i},#{j})"
+            formatted_operators << formatted_operator
+          end
+        end
+
+        formatted_operators.join(' ')
+      end
+
+      it 'should have correct number of groups' do
+        operations_by_operator.length.should == @operators.length
+      end
+
+      it 'should have correct value for each operator' do
+        @operators.each_with_index do |operator, i|
+          expected_formatted_values = 2.times.collect { |j|
+            "formatted_value(#{i},#{j})"
+          }
+
+          operations = operations_by_operator[operator]
+          actual_formatted_values = operations.map(&:value)
+
+          expect(actual_formatted_values).to match_array(expected_formatted_values)
+        end
+      end
+
+      context 'query' do
+        subject do
+          query
+        end
+
+        it { should be_valid }
+      end
+    end
+
+    context 'without valid' do
+      let(:formatted) do
+        'unknown_formatted_operator:formatted_value'
+      end
+
+      context 'query' do
+        subject do
+          query
+        end
+
+        it { should_not be_valid }
+      end
+    end
+  end
+
   context '#parse_operator' do
     subject(:parse_operator) do
       query.parse_operator(formatted_operator)
@@ -401,6 +485,84 @@ describe Metasploit::Model::Search::Query do
       end
 
       it { should be_a Metasploit::Model::Search::Operator::Null }
+    end
+  end
+
+  context '#tree' do
+    subject(:tree) do
+      query.tree
+    end
+
+    let(:formatted) do
+      'thing_one:1 thing_two:2 thing_one:a thing_two:b'
+    end
+
+    let(:klass) do
+      Class.new
+    end
+
+    let(:query) do
+      described_class.new(
+          :formatted => formatted,
+          :klass => klass
+      )
+    end
+
+    before(:each) do
+      stub_const('Queried', klass)
+
+      klass.send(:include, Metasploit::Model::Search)
+      klass.search_attribute :thing_one, :type => :string
+      klass.search_attribute :thing_two, :type => :string
+    end
+
+
+    context 'root' do
+      subject(:root) do
+        tree
+      end
+
+      it { should be_a Metasploit::Model::Search::Group::Intersection }
+
+      context 'children' do
+        subject(:children) do
+          root.children
+        end
+
+        it 'should be an Array<Metasploit::Model::Search::Group::Union>' do
+          children.each do |child|
+            child.should be_a Metasploit::Model::Search::Group::Union
+          end
+        end
+
+        it 'should have same operator for each child of a union' do
+          children.each do |child|
+            operator_set = child.children.inject(Set.new) { |operator_set, operation|
+              operator_set.add operation.operator
+            }
+
+            operator_set.length.should == 1
+          end
+        end
+
+        context 'grandchildren' do
+          let(:grandchildren) do
+            grandchildren = []
+
+            children.each do |child|
+              grandchildren.concat child.children
+            end
+
+            grandchildren
+          end
+
+          it 'should be Array<Metasploit::Model::Search::Operation::Base>' do
+            grandchildren.each do |grandchild|
+              grandchild.should be_a Metasploit::Model::Search::Operation::Base
+            end
+          end
+        end
+      end
     end
   end
 end
