@@ -17,6 +17,12 @@ module Metasploit
             true
         ]
 
+        # {Metasploit::Model::Module::Class#module_type Module types} that {#supports_stance? support stance}.
+        STANCED_MODULE_TYPES = [
+            Metasploit::Model::Module::Type::AUX,
+            Metasploit::Model::Module::Type::EXPLOIT
+        ]
+
         # Valid values for {#stance}.
         STANCES = [
             'aggressive',
@@ -205,7 +211,7 @@ module Metasploit
         def supports_stance?
           supports_stance = false
 
-          if module_class and ['auxiliary', 'exploit'].include?(module_class.module_type)
+          if module_class and STANCED_MODULE_TYPES.include?(module_class.module_type)
             supports_stance = true
           end
 

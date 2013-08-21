@@ -21,5 +21,13 @@ FactoryGirl.define do
         nil
       end
     }
+
+    factory :stanced_dummy_module_instance do
+      #
+      # Associations
+      #
+
+      association :module_class, :factory => :stanced_dummy_module_class
+    end
   end
 end

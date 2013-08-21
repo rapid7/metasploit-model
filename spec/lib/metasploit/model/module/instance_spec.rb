@@ -65,5 +65,16 @@ describe Metasploit::Model::Module::Instance do
         end
       end
     end
+
+    context 'stanced_dummy_module_instance' do
+      subject(:stanced_dummy_module_instance) do
+        FactoryGirl.build(:stanced_dummy_module_instance)
+      end
+
+      it { should be_valid }
+
+      its(:stance) { should_not be_nil }
+      its(:supports_stance?) { should be_true }
+    end
   end
 end

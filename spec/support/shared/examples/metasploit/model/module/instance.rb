@@ -11,6 +11,15 @@ shared_examples_for 'Metasploit::Model::Module::Instance' do
       end
     end
 
+    context 'STANCED_MODULE_TYPES' do
+      subject(:stanced_module_types) do
+        described_class::STANCED_MODULE_TYPES
+      end
+
+      it { should include(Metasploit::Model::Module::Type::AUX) }
+      it { should include(Metasploit::Model::Module::Type::EXPLOIT) }
+    end
+
     context 'STANCES' do
       subject(:stances) do
         described_class::STANCES
