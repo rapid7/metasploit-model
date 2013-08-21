@@ -53,6 +53,13 @@ shared_examples_for 'Metasploit::Model::Module::Instance' do
     end
 
     context 'query' do
+      it_should_behave_like 'search query', :formatted_operator => 'description'
+      it_should_behave_like 'search query', :formatted_operator => 'disclosed_on'
+      it_should_behave_like 'search query', :formatted_operator => 'license'
+      it_should_behave_like 'search query', :formatted_operator => 'name'
+      it_should_behave_like 'search query', :formatted_operator => 'privileged'
+      it_should_behave_like 'search query', :formatted_operator => 'stance'
+
       it_should_behave_like 'search query', :formatted_operator => 'actions.name'
 
       context 'architectures' do
