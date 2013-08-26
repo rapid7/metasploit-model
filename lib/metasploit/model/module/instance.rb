@@ -66,6 +66,27 @@ module Metasploit
           search_attribute :stance, :type => :string
 
           #
+          # Search Withs
+          #
+
+          search_with Metasploit::Model::Search::Operator::Deprecated::App
+          search_with Metasploit::Model::Search::Operator::Deprecated::Author
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :bid
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :cve
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :edb
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :osvdb
+          search_with Metasploit::Model::Search::Operator::Deprecated::Platform,
+                      :name => :os
+          search_with Metasploit::Model::Search::Operator::Deprecated::Platform,
+                      :name => :platform
+          search_with Metasploit::Model::Search::Operator::Deprecated::Ref
+          search_with Metasploit::Model::Search::Operator::Deprecated::Text
+
+          #
           # Validations
           #
 

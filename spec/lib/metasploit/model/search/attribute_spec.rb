@@ -25,10 +25,22 @@ describe Metasploit::Model::Search::Attribute do
             base_class.search_attribute attribute, :type => type
           end
 
-          it 'should be in search_operator_by_attribute' do
-            # grab operator first since it calls search_attribute and populates search_operator_by_attribute
+          it 'should call search_with' do
+            base_class.should_receive(:search_with).with(
+                Metasploit::Model::Search::Operator::Attribute,
+                hash_including(
+                    :attribute => attribute,
+                    :type => type
+                )
+            )
+
+            operator
+          end
+
+          it 'should be in search_attribute_operator_by_attribute' do
+            # grab operator first since it calls search_attribute and populates search_attribute_operator_by_attribute
             cached = operator
-            base_class.search_operator_by_attribute[attribute].should == cached
+            base_class.search_with_operator_by_name[attribute].should == cached
           end
 
           context 'attribute' do
@@ -82,16 +94,6 @@ describe Metasploit::Model::Search::Attribute do
           base_class.search_attribute attribute, :type => :string
         }.to raise_error(Metasploit::Model::Invalid)
       end
-    end
-  end
-
-  context 'search_operator_by_attribute' do
-    subject(:search_operator_by_attribute) do
-      base_class.search_operator_by_attribute
-    end
-
-    it 'should default to empty Hash' do
-      search_operator_by_attribute.should == {}
     end
   end
 end

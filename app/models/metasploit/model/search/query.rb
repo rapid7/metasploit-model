@@ -53,7 +53,7 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
     unless instance_variable_defined? :@operations
       formatted_operations = self.class.formatted_operations(formatted)
 
-      @operations = formatted_operations.collect { |formatted_operation|
+      @operations = formatted_operations.flat_map { |formatted_operation|
         Metasploit::Model::Search::Operation.parse(
             :formatted_operation => formatted_operation,
             :query => self

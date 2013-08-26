@@ -7,6 +7,7 @@ module Metasploit
 
       include Metasploit::Model::Search::Association
       include Metasploit::Model::Search::Attribute
+      include Metasploit::Model::Search::With
 
       included do
         # ensure search_i18n_scope is either derived from base or copied from Metasploit::Model::* ancestor.
@@ -25,7 +26,7 @@ module Metasploit
           unless instance_variable_defined? :@search_operator_by_name
             @search_operator_by_name = {}
 
-            search_operator_by_attribute.each_value do |operator|
+            search_with_operator_by_name.each_value do |operator|
               @search_operator_by_name[operator.name] = operator
             end
 
@@ -44,13 +45,17 @@ module Metasploit
 
               association_class = reflection.klass
 
-              association_class.search_operator_by_name.each_value do |attribute_operator|
-                association_operator = Metasploit::Model::Search::Operator::Association.new(
-                    :association => association,
-                    :attribute_operator => attribute_operator,
-                    :klass => self
-                )
-                @search_operator_by_name[association_operator.name] = association_operator
+              # don't use search_operator_by_name as association operators on operators won't work
+              association_class.search_with_operator_by_name.each_value do |with_operator|
+                # non-attribute operators on association are assumed not to work
+                if with_operator.respond_to? :attribute
+                  association_operator = Metasploit::Model::Search::Operator::Association.new(
+                      :association => association,
+                      :attribute_operator => with_operator,
+                      :klass => self
+                  )
+                  @search_operator_by_name[association_operator.name] = association_operator
+                end
               end
             end
           end

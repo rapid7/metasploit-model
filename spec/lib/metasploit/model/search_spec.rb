@@ -33,6 +33,7 @@ describe Metasploit::Model::Search do
 
     it { should be_a Metasploit::Model::Search::Association }
     it { should be_a Metasploit::Model::Search::Attribute }
+    it { should be_a Metasploit::Model::Search::With }
 
     context 'search_operator_by_name' do
       subject(:search_operator_by_name) do
@@ -201,9 +202,43 @@ describe Metasploit::Model::Search do
         end
       end
 
+      context 'with search with' do
+        let(:name) do
+          :searched_with
+        end
+
+        let(:operator) do
+          double(
+              'Operator',
+              :name => name,
+              :valid! => nil
+          )
+        end
+
+        let(:operator_class) do
+          double('Operator Class', :new => operator)
+        end
+
+        before(:each) do
+          base_class.search_with operator_class
+        end
+
+        context 'operator' do
+          subject(:named_operator) do
+            search_operator_by_name[name]
+          end
+
+          it 'should be in search_operator_by_name' do
+            named_operator.should == operator
+          end
+        end
+      end
+
       context 'without search attribute' do
         context 'without search association' do
-          it { should be_empty }
+          context 'without search with' do
+            it { should be_empty }
+          end
         end
       end
     end

@@ -1,9 +1,14 @@
 # Operator used when the formatted operator name does not match a class's operators.
-class Metasploit::Model::Search::Operator::Null < Metasploit::Model::Search::Operator::Base
+class Metasploit::Model::Search::Operator::Null < Metasploit::Model::Search::Operator::Single
   #
   # Attributes
   #
 
+  # @!attribute [rw] name
+  #   The name of this operator that was not the name of a search operator for
+  #   {Metasploit::Model::Search::Operator::Base#klass}.
+  #
+  #   @return [Symbol]
   attr_accessor :name
 
   #

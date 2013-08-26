@@ -1,6 +1,8 @@
 # A search operator declared with
 # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute search_attribute}.
-class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search::Operator::Base
+class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search::Operator::Single
+  include Metasploit::Model::Search::Operator::Help
+
   #
   # CONSTANTS
   #
@@ -43,25 +45,5 @@ class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search
   # Methods
   #
 
-  # @note This uses I18n.translate along with {Metasploit::Model::Search::Operator::Base#search_i18n_scope},
-  #   the value is not cached to support changing the I18n.locale and getting the correct help message for that locale.
-  #
-  # The help for this operator.
-  def help
-    I18n.translate(help_translation_key)
-  end
-
-  # The key passed to `I18n.translate` to generate {#help}.
-  #
-  # @return [String]
-  def help_translation_key
-    @help_translation_key ||= "#{klass.search_i18n_scope}.search_attribute.#{attribute}.help"
-  end
-
-  # The name of this operator.
-  #
-  # @return [String] <attribute>
-  def name
-    @name ||= attribute
-  end
+  alias_method :name, :attribute
 end

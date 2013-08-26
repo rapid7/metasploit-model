@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Metasploit::Model::Search::Operator::Association do
+  it { should be_a Metasploit::Model::Search::Operator::Single }
+
   context 'validations' do
     it { should validate_presence_of(:association) }
     it { should validate_presence_of(:attribute_operator) }

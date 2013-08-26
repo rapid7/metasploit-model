@@ -13,7 +13,7 @@ class Metasploit::Model::Base
   # Validates the model.
   #
   # @return [void]
-  # @raise [Metasploit::Model::Invalid] if self is invalid
+  # @raise [Metasploit::Model::Invalid] if invalid
   def valid!
     unless valid?
       raise Metasploit::Model::Invalid.new(self)

@@ -10,6 +10,10 @@ en:
           attributes:
             operator:
               type: "is not a %{type}"
+        metasploit/model/search/operation/union:
+          attributes:
+            children:
+              too_short: "is too short (minimum is %{count} child)"
         metasploit/model/search/operator/null:
           attributes:
             name:
@@ -17,11 +21,11 @@ en:
         metasploit/model/search/query:
           attributes:
             operations:
-              :too_short: "is too short (minimum is %{count} operations)"
+              too_short: "is too short (minimum is %{count} operation)"
   metasploit:
     model:
       architecture:
-        search_attribute:
+        search_with:
           abbreviation:
             help: "Abbreviation for architecture, such as x86, etc."
           bits:
@@ -31,15 +35,15 @@ en:
           family:
             help: "The CPU architecture family.  For example x86_64 and x86 are both in the x86 family.  Certain architectures, such as those for programming languages like Ruby and PHP, do not have a family."
       author:
-        search_attribute:
+        search_with:
           name:
             help: "Full name (first + last name) or handle of the author."
       authority:
-        search_attribute:
+        search_with:
           abbreviation:
             help:  "Abbreviation or initialism for authority, such as CVE for 'Common Vulnerability and Exposures'."
       email_address:
-        search_attribute:
+        search_with:
           domain:
             help: "The domain part of the email address after the '@'."
           local:
@@ -47,11 +51,11 @@ en:
       invalid: "Validation failed: %{errors}"
       module:
         action:
-          search_attribute:
+          search_with:
             name:
               help: "The name of the module action."
         class:
-          search_attribute:
+          search_with:
             full_name:
               help: "<module_type>/<reference_name>"
             module_type:
@@ -61,7 +65,13 @@ en:
             reference_name:
               help: "The reference name relative to the module_type."
         instance:
-          search_attribute:
+          search_with:
+            app:
+              help: "The type of application. either client or server, which maps to stance:passive or stance:aggressive, respectively."
+            author:
+              help: "Either the author's name or email address.  Maps to authors.name, email_addresses.local, and/or email_addresses.domain."
+            authority:
+              help: "Modules with reference from the %{abbreviation} authority.  Maps to `authorities.abbreviation:%{abbreviation} references.designation:<value>`."
             description:
               help: "A long, paragraph description of what the module does."
             disclosed_on:
@@ -70,26 +80,34 @@ en:
               help: "The name of the software license for the module's code."
             name:
               help: "The human readable name of the module.  It can be thought of as the summary or title of the module."
+            os:
+              help: "Module OS in platforms.name or targets.name."
+            platform:
+              help: "Module platform in platforms.name or targets.name."
             privileged:
               help: "Whether the module requires privileged access to run."
+            ref:
+              help: "Reference to module using obsolete \"<context>-<id>\" syntax, which maps to the newer authorities.abbreviation, references.designation or references.url."
             stance:
               help: "Whether the module is active or passive."
+            text:
+              help: "Search most of the text fields of the module metadata.  Maps to description, name, actions.name, architectures.abbreviation, platform, or ref."
         rank:
-          search_attribute:
+          search_with:
             name:
               help: "Name of the rank."
             number:
               help: "Numerical value of the rank.  Higher numbers are better."
         target:
-          search_attribute:
+          search_with:
             name:
               help: "Name of module target."
       platform:
-        search_attribute:
+        search_with:
           name:
             help: "Name of the platform."
       reference:
-        search_attribute:
+        search_with:
           designation:
             help: "A designation (usually a string of numbers and dashes) assigned by the reference's authority.  If the reference has no authority, then only url will be set, such as for references to proof-of-concept (PoC) blog posts."
           url:

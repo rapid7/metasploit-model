@@ -5,6 +5,8 @@ describe Metasploit::Model::Search::Operator::Null do
     described_class.new
   end
 
+  it { should be_a Metasploit::Model::Search::Operator::Single }
+
   context 'validations' do
     context 'name' do
       let(:error) do

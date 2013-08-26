@@ -5,6 +5,8 @@ module Metasploit
       module Attribute
         extend ActiveSupport::Concern
 
+        include Metasploit::Model::Search::With
+
         # Adds {#search_attribute} DSL to make {Metasploit::Model::Search::Operator::Attribute attribute search
         # operators}.
         module ClassMethods
@@ -34,30 +36,13 @@ module Metasploit
           # @param options [Hash{Symbol => String}]
           # @option options [Symbol] :type The type of the attribute.  Used to determine how to parse the search values
           #   and which modifiers are supported.
-          # @return [void]
+          # @return (see Metasploit::Model::Search::With::ClassMethods#search_with)
           # @raise [Metasploit::Model::Invalid] unless attribute is present
           # @raise [Metasploit::Model::Invalid] unless :type is present
           def search_attribute(attribute, options={})
-            operator = Metasploit::Model::Search::Operator::Attribute.new(
-                :attribute => attribute,
-                :klass => self,
-                :type => options[:type]
-            )
-            operator.valid!
-
-            search_operator_by_attribute[operator.attribute] = operator
-          end
-
-          # Set of all attributes that are searchable.
-          #
-          # @example Adding attribute to search
-          #   search_attribute :name, :help => 'The name of the object.'
-          #
-          # @return [Hash{Symbol => Metasploit::Model::Search::Operator::Attribute}] Maps
-          #   {Metasploit::Model::Search::Operator::Attribute#attribute} to its
-          #   {Metasploit::Model::Search::Operator::Attribute}.
-          def search_operator_by_attribute
-            @search_operator_by_attribute ||= {}
+            search_with Metasploit::Model::Search::Operator::Attribute,
+                        :attribute => attribute,
+                        :type => options[:type]
           end
         end
       end

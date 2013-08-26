@@ -61,13 +61,63 @@ shared_examples_for 'Metasploit::Model::Module::Instance' do
       it_should_behave_like 'search_attribute', :stance, :type => :string
     end
 
+    context 'withs' do
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::App,
+                            :name => :app
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Author,
+                            :name => :author
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Authority,
+                            :abbreviation => :bid,
+                            :name => :bid
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Authority,
+                            :abbreviation => :cve,
+                            :name => :cve
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Authority,
+                            :abbreviation => :edb,
+                            :name => :edb
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Authority,
+                            :abbreviation => :osvdb,
+                            :name => :osvdb
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Platform,
+                            :name => :os
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Platform,
+                            :name => :platform
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Ref,
+                            :name => :ref
+      it_should_behave_like 'search_with',
+                            Metasploit::Model::Search::Operator::Deprecated::Text,
+                            :name => :text
+    end
+
     context 'query' do
+      it_should_behave_like 'search query with Metasploit::Model::Search::Operator::Deprecated::App'
+      it_should_behave_like 'search query with Metasploit::Model::Search::Operator::Deprecated::Authority',
+                            :formatted_operator => 'bid'
+      it_should_behave_like 'search query with Metasploit::Model::Search::Operator::Deprecated::Authority',
+                            :formatted_operator => 'cve'
       it_should_behave_like 'search query', :formatted_operator => 'description'
       it_should_behave_like 'search query', :formatted_operator => 'disclosed_on'
+      it_should_behave_like 'search query with Metasploit::Model::Search::Operator::Deprecated::Authority',
+                            :formatted_operator => 'edb'
       it_should_behave_like 'search query', :formatted_operator => 'license'
       it_should_behave_like 'search query', :formatted_operator => 'name'
+      it_should_behave_like 'search query', :formatted_operator => 'os'
+      it_should_behave_like 'search query with Metasploit::Model::Search::Operator::Deprecated::Authority',
+                            :formatted_operator => 'osvdb'
+      it_should_behave_like 'search query', :formatted_operator => 'platform'
       it_should_behave_like 'search query', :formatted_operator => 'privileged'
+      it_should_behave_like 'search query', :formatted_operator => 'ref'
       it_should_behave_like 'search query', :formatted_operator => 'stance'
+      it_should_behave_like 'search query', :formatted_operator => 'text'
 
       it_should_behave_like 'search query', :formatted_operator => 'actions.name'
 
