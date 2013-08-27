@@ -1,11 +1,14 @@
 shared_examples_for 'Metasploit::Model::Architecture seed' do |attributes={}|
-	attributes.assert_valid_keys(:abbreviation, :bits, :endianness, :family, :summary)
+  attributes.assert_valid_keys(:abbreviation, :bits, :endianness, :family, :summary)
 
-	context_abbreviation = attributes.fetch(:abbreviation)
+  context_abbreviation = attributes.fetch(:abbreviation)
 
-	context "with #{context_abbreviation}" do
-    # put in a let so that `subject(:seed)` from block passed to
-    # `it_should_behave_like 'Metasploit::Model::Architecture seed'` has access to abbreviation.
+  context "with #{context_abbreviation}" do
+    subject do
+      seed
+    end
+
+    # put in a let so that `let(:seed)` has access to abbreviation.
     let(:abbreviation) do
       context_abbreviation
     end
