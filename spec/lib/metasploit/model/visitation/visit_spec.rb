@@ -11,11 +11,23 @@ describe Metasploit::Model::Visitation::Visit do
 
   context 'visit' do
     subject(:visit) do
-      base_class.visit(options, &block)
+      base_class.visit(*module_names, &block)
     end
 
-    let(:options) do
-      {}
+    context 'with 0 Module#names' do
+      let(:block) do
+        nil
+      end
+
+      let(:module_names) do
+        []
+      end
+
+      it 'should raise ArgumentError' do
+        expect {
+          visit
+        }.to raise_error(ArgumentError)
+      end
     end
 
     context 'with block' do
@@ -25,15 +37,15 @@ describe Metasploit::Model::Visitation::Visit do
         }
       end
 
-      context 'with :module_name' do
-        let(:mod) do
-          Module.new
+      context 'with 1 Module#name' do
+        let(:module_names) do
+          [
+              mod.name
+          ]
         end
 
-        let(:options) do
-          {
-              :module_name => mod.name
-          }
+        let(:mod) do
+          Module.new
         end
 
         before(:each) do
@@ -41,20 +53,53 @@ describe Metasploit::Model::Visitation::Visit do
           stub_const('Visited', mod)
         end
 
-        it { should be_a Metasploit::Model::Visitation::Visitor }
+        it 'should return Array(Metasploit::Model::Visitation::Visitor)' do
+          visit.should be_an Array
+          visit.length.should == 1
+          visit.first.should be_a Metasploit::Model::Visitation::Visitor
+        end
 
         it 'should add Metasploit::Model::Visitation::Visitor to visitor_by_module_name' do
-          visitor = visit
+          visitor = visit.first
 
           base_class.visitor_by_module_name[mod.name].should == visitor
         end
       end
 
-      context 'without :module_name' do
-        it 'should raise Metasploit::Model::Invalid' do
-          expect {
-            visit
-          }.to raise_error(Metasploit::Model::Invalid)
+      context 'with multiple Module#names' do
+        let(:first_module) do
+          Module.new
+        end
+
+        let(:module_names) do
+          [
+              first_module.name,
+              second_module.name
+          ]
+        end
+
+        let(:second_module) do
+          Module.new
+        end
+
+        before(:each) do
+          stub_const('Visited::First', first_module)
+          stub_const('Visited::Second', second_module)
+        end
+
+        it 'should return Array<Metasploit::Model::Visitation::Visitor>' do
+          visit.should be_an Array
+          visit.length.should == module_names.length
+
+          visit.all? { |visitor|
+            visitor.is_a? Metasploit::Model::Visitation::Visitor
+          }.should be_true
+        end
+
+        it 'should each Metasploit::Model::Visitation::Visitor to visitor_by_module_name' do
+          module_names.all? { |module_name|
+            visit.include? base_class.visitor_by_module_name[module_name]
+          }.should be_true
         end
       end
     end
@@ -62,6 +107,10 @@ describe Metasploit::Model::Visitation::Visit do
     context 'without block' do
       let(:block) do
         nil
+      end
+
+      let(:module_names) do
+        ['Visited']
       end
 
       it 'should raise Metasploit::Model::Invalid' do
@@ -220,7 +269,8 @@ describe Metasploit::Model::Visitation::Visit do
     before(:each) do
       stub_const('Visited::Class', node_class)
 
-      @visitor = base_class.visit :module_name => node.class.name, &block
+      visitors = base_class.visit node.class.name, &block
+      @visitor = visitors.first
     end
 
     it 'should find visitor for node.class' do

@@ -9,25 +9,31 @@ module Metasploit
 
         # Adds {#visit} DSL to class to declare {Metasploit::Model::Visitation::Visitor visitors}.
         module ClassMethods
-          # Defines how to visit a node where `Module#name` is `:module_name`.
+          # Defines how to visit a node with one or more `Module#names` in its `Module#ancestors`.
           #
-          # @param options [Hash{Symbol => String}]
-          # @option options [String] :module_name Name of class/module to be visited with block.
+          # @param module_names [Array<String>] Names of class/module to be visited with block.
           # @yield [node] Block instance_exec'd on instance of the class {#visit} was called.
           # @yieldparam node [Object]
+          # @return [Array<Metasploit::Model::Visitation::Visitor>] visitors created.
+          # @raise [ArgumentError] if `module_names` is empty
           # @raise [Metasploit::Model::Invalid] unless `block` is given.
-          # @raise [Metasploit::Model::Invalid] unless :module_name is given.
-          def visit(options={}, &block)
-            options.assert_valid_keys(:module_name)
+          def visit(*module_names, &block)
+            if module_names.empty?
+              raise ArgumentError,
+                    "At least one Modul#name must be passed to #{__method__} so the visitor(s) knows which Modules " \
+                    "it/they can visit."
+            end
 
-            visitor = Metasploit::Model::Visitation::Visitor.new(
-                :module_name => options[:module_name],
-                :parent => self,
-                &block
-            )
-            visitor.valid!
+            module_names.collect do |module_name|
+              visitor = Metasploit::Model::Visitation::Visitor.new(
+                  :module_name => module_name,
+                  :parent => self,
+                  &block
+              )
+              visitor.valid!
 
-            visitor_by_module_name[visitor.module_name] = visitor
+              visitor_by_module_name[visitor.module_name] = visitor
+            end
           end
 
           # {Metasploit::Model::Visitation::Visitor Visitor} for `klass` or one of its `Class#ancestors`.
