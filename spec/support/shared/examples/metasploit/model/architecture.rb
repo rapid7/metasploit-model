@@ -27,6 +27,10 @@ shared_examples_for 'Metasploit::Model::Architecture' do
         abbreviations.should include('cmd')
       end
 
+      it 'should include dalvik for Dalvik Virtual Machine in Google Android' do
+        abbreviations.should include('dalvik')
+      end
+
       it 'should include java for Java Virtual Machine' do
         abbreviations.should include('java')
       end
@@ -43,6 +47,10 @@ shared_examples_for 'Metasploit::Model::Architecture' do
       it 'should include 32-bit and 64-bit PowerPC' do
         abbreviations.should include('ppc')
         abbreviations.should include('ppc64')
+      end
+
+      it 'should include python for Python code' do
+        abbreviations.should include('python')
       end
 
       it 'should include ruby for Ruby code' do
@@ -101,6 +109,13 @@ shared_examples_for 'Metasploit::Model::Architecture' do
                           :summary => 'Command Injection'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          :abbreviation => 'dalvik',
+                          :bits => nil,
+                          :endianness => nil,
+                          :family => nil,
+                          :summary => 'Dalvik process virtual machine used in Google Android'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'java',
                           :bits => nil,
                           :endianness => 'big',
@@ -141,6 +156,13 @@ shared_examples_for 'Metasploit::Model::Architecture' do
                           :endianness => 'big',
                           :family => 'ppc',
                           :summary => '64-bit Performance Optimization With Enhanced RISC - Performance Computing'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          :abbreviation => 'python',
+                          :bits => nil,
+                          :endianness => nil,
+                          :family => nil,
+                          :summary => 'Python'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'ruby',
@@ -194,12 +216,14 @@ shared_examples_for 'Metasploit::Model::Architecture' do
             'cbea',
             'cbea64',
             'cmd',
+            'dalvik',
             'java',
             'mipsbe',
             'mipsle',
             'php',
             'ppc',
             'ppc64',
+            'python',
             'ruby',
             'sparc',
             'tty',
