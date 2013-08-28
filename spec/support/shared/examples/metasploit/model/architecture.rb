@@ -27,6 +27,10 @@ shared_examples_for 'Metasploit::Model::Architecture' do
         abbreviations.should include('cmd')
       end
 
+      it 'should include dalvik for Dalvik Virtual Machine in Google Android' do
+        abbreviations.should include('dalvik')
+      end
+
       it 'should include java for Java Virtual Machine' do
         abbreviations.should include('java')
       end
@@ -99,6 +103,13 @@ shared_examples_for 'Metasploit::Model::Architecture' do
                           :endianness => nil,
                           :family => nil,
                           :summary => 'Command Injection'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          :abbreviation => 'dalvik',
+                          :bits => nil,
+                          :endianness => nil,
+                          :family => nil,
+                          :summary => 'Dalvik process virtual machine used in Google Android'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'java',
@@ -194,6 +205,7 @@ shared_examples_for 'Metasploit::Model::Architecture' do
             'cbea',
             'cbea64',
             'cmd',
+            'dalvik',
             'java',
             'mipsbe',
             'mipsle',

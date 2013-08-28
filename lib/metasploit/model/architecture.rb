@@ -15,6 +15,7 @@ module Metasploit
           'cbea',
           'cbea64',
           'cmd',
+          'dalvik',
           'java',
           'mipsbe',
           'mipsle',
@@ -83,6 +84,13 @@ module Metasploit
               :endianness => nil,
               :family => nil,
               :summary => 'Command Injection'
+          },
+          {
+              :abbreviation => 'dalvik',
+              :bits => nil,
+              :endianness => nil,
+              :family => nil,
+              :summary => 'Dalvik process virtual machine used in Google Android'
           },
           {
               :abbreviation => 'java',
