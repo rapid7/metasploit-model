@@ -22,6 +22,7 @@ module Metasploit
           'php',
           'ppc',
           'ppc64',
+          'python',
           'ruby',
           'sparc',
           'tty',
@@ -133,6 +134,13 @@ module Metasploit
               :endianness => 'big',
               :family => 'ppc',
               :summary => '64-bit Performance Optimization With Enhanced RISC - Performance Computing'
+          },
+          {
+              :abbreviation => 'python',
+              :bits => nil,
+              :endianness => nil,
+              :family => nil,
+              :summary => 'Python'
           },
           {
               :abbreviation => 'ruby',

@@ -49,6 +49,10 @@ shared_examples_for 'Metasploit::Model::Architecture' do
         abbreviations.should include('ppc64')
       end
 
+      it 'should include python for Python code' do
+        abbreviations.should include('python')
+      end
+
       it 'should include ruby for Ruby code' do
         abbreviations.should include('ruby')
       end
@@ -154,6 +158,13 @@ shared_examples_for 'Metasploit::Model::Architecture' do
                           :summary => '64-bit Performance Optimization With Enhanced RISC - Performance Computing'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          :abbreviation => 'python',
+                          :bits => nil,
+                          :endianness => nil,
+                          :family => nil,
+                          :summary => 'Python'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'ruby',
                           :bits => nil,
                           :endianness => nil,
@@ -212,6 +223,7 @@ shared_examples_for 'Metasploit::Model::Architecture' do
             'php',
             'ppc',
             'ppc64',
+            'python',
             'ruby',
             'sparc',
             'tty',
