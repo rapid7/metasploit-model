@@ -21,6 +21,12 @@ class Dummy::Authority < Metasploit::Model::Base
           :url => 'http://cvedetails.com'
       },
       {
+          :abbreviation => 'CWE',
+          :obsolete => false,
+          :summary => 'Common Weakness Enumeration',
+          :url => 'https://cwe.mitre.org/data/index.html'
+      },
+      {
           :abbreviation => 'MIL',
           :obsolete => true,
           :summary => 'milw0rm',

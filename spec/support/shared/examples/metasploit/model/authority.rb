@@ -26,6 +26,13 @@ shared_examples_for 'Metasploit::Model::Authority' do
                           :url => 'http://cvedetails.com'
 
     it_should_behave_like 'Metasploit::Model::Authority seed',
+                          :abbreviation => 'CWE',
+                          :extension_name => 'Metasploit::Model::Authority::Cwe',
+                          :obsolete => false,
+                          :summary => 'Common Weakness Enumeration',
+                          :url => 'https://cwe.mitre.org/data/index.html'
+
+    it_should_behave_like 'Metasploit::Model::Authority seed',
                           :abbreviation => 'MIL',
                           :extension_name => nil,
                           :obsolete => true,

@@ -24,6 +24,10 @@ FactoryGirl.define do
     "%04d-%04d" % [year, number]
   end
 
+  sequence :metasploit_model_reference_cwe_designation do |n|
+    n.to_s
+  end
+
   sequence :metasploit_model_reference_msb_designation do |n|
     number = n % 1000
     year = n / 1000
