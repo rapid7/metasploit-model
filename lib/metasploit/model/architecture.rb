@@ -15,12 +15,14 @@ module Metasploit
           'cbea',
           'cbea64',
           'cmd',
+          'dalvik',
           'java',
           'mipsbe',
           'mipsle',
           'php',
           'ppc',
           'ppc64',
+          'python',
           'ruby',
           'sparc',
           'tty',
@@ -85,6 +87,13 @@ module Metasploit
               :summary => 'Command Injection'
           },
           {
+              :abbreviation => 'dalvik',
+              :bits => nil,
+              :endianness => nil,
+              :family => nil,
+              :summary => 'Dalvik process virtual machine used in Google Android'
+          },
+          {
               :abbreviation => 'java',
               :bits => nil,
               :endianness => 'big',
@@ -125,6 +134,13 @@ module Metasploit
               :endianness => 'big',
               :family => 'ppc',
               :summary => '64-bit Performance Optimization With Enhanced RISC - Performance Computing'
+          },
+          {
+              :abbreviation => 'python',
+              :bits => nil,
+              :endianness => nil,
+              :family => nil,
+              :summary => 'Python'
           },
           {
               :abbreviation => 'ruby',
