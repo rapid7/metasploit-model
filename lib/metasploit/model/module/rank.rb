@@ -4,6 +4,7 @@ module Metasploit
       # Code shared between `Mdm::Module::Rank` and `Metasploit::Framework::Module::Rank`.
       module Rank
         extend ActiveSupport::Concern
+        extend Metasploit::Model::Search::Translation
 
         #
         # CONSTANTS
@@ -27,6 +28,7 @@ module Metasploit
         included do
           include ActiveModel::MassAssignmentSecurity
           include ActiveModel::Validations
+          include Metasploit::Model::Search
 
           #
           # Mass Assignment Security
@@ -34,6 +36,13 @@ module Metasploit
 
           attr_accessible :name
           attr_accessible :number
+
+          #
+          # Search Attributes
+          #
+
+          search_attribute :name, :type => :string
+          search_attribute :number, :type => :integer
 
           #
           # Validations

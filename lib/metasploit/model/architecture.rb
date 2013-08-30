@@ -3,6 +3,7 @@ module Metasploit
     # Code shared between `Mdm::Architecture` and `Metasploit::Framework::Architecture`.
     module Architecture
       extend ActiveSupport::Concern
+      extend Metasploit::Model::Search::Translation
 
       #
       # CONSTANTS
@@ -181,6 +182,16 @@ module Metasploit
 
       included do
         include ActiveModel::Validations
+        include Metasploit::Model::Search
+
+        #
+        # Search Attributes
+        #
+
+        search_attribute :abbreviation, :type => :string
+        search_attribute :bits, :type => :integer
+        search_attribute :endianness, :type => :string
+        search_attribute :family, :type => :string
 
         #
         # Validations

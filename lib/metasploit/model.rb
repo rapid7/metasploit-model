@@ -6,7 +6,7 @@ require 'active_support/dependencies'
 #
 # Project
 #
-require 'metasploit/model/validators'
+require 'metasploit/model/autoload'
 require 'metasploit/model/version'
 
 # Only include the Rails engine when using Rails.  This allows the non-Rails projects, like metasploit-framework to use
@@ -22,7 +22,7 @@ module Metasploit
   # separate gem for this shard code outside of metasploit_data_models is necessary as metasploit_data_models is an
   # optional dependency for metasploit-framework as metasploit-framework can work without a database.
   module Model
-    extend Metasploit::Model::Validators
+    extend Metasploit::Model::Autoload
 
     # Pathname to the app directory that contains the models and validators.
     #
@@ -47,8 +47,4 @@ module Metasploit
   end
 end
 
-lib_pathname = Metasploit::Model.root.join('lib')
-lib_path = lib_pathname.to_path
-# Add path to gem's lib so that concerns for models are loaded correctly if models are reloaded
-ActiveSupport::Dependencies.autoload_paths << lib_path
-ActiveSupport::Dependencies.autoload_once_paths << lib_path
+Metasploit::Model.set_autoload_paths

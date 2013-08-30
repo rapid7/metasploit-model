@@ -3,10 +3,12 @@ module Metasploit
     # Code shared between `Mdm::EmailAddress` and `Metasploit::Framework::EmailAddress`.
     module EmailAddress
       extend ActiveSupport::Concern
+      extend Metasploit::Model::Search::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity
         include ActiveModel::Validations
+        include Metasploit::Model::Search
 
         #
         # Mass Assignment Security
@@ -14,6 +16,13 @@ module Metasploit
 
         attr_accessible :domain
         attr_accessible :local
+
+        #
+        # Search Attributes
+        #
+
+        search_attribute :domain, :type => :string
+        search_attribute :local, :type => :string
 
         #
         # Validations

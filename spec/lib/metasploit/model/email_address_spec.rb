@@ -5,6 +5,10 @@ describe Metasploit::Model::EmailAddress do
     subject(:email_address) do
       FactoryGirl.build(:dummy_email_address)
     end
+
+    let(:email_address_class) do
+      Dummy::EmailAddress
+    end
   end
 
   context 'factories' do

@@ -6,8 +6,22 @@ shared_examples_for 'Metasploit::Model::Authority' do
     it { should allow_mass_assignment_of(:url) }
   end
 
-  context 'validations' do
-    it { should validate_presence_of(:abbreviation) }
+  context 'search' do
+    context 'i18n_scope' do
+      subject(:search_i18n_scope) do
+        described_class.search_i18n_scope
+      end
+
+      it { should == 'metasploit.model.authority' }
+    end
+
+    context 'attributes' do
+      let(:base_class) do
+        authority_class
+      end
+
+      it_should_behave_like 'search_attribute', :abbreviation, :type => :string
+    end
   end
 
   context 'seeds' do
@@ -73,5 +87,9 @@ shared_examples_for 'Metasploit::Model::Authority' do
                           :obsolete => false,
                           :summary => 'Waraxe Advisories',
                           :url => 'http://www.waraxe.us/content-cat-1.html'
+  end
+
+  context 'validations' do
+    it { should validate_presence_of(:abbreviation) }
   end
 end

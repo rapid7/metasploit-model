@@ -84,6 +84,23 @@ shared_examples_for 'Metasploit::Model::Module::Class' do
     it_should_behave_like 'derives', :module_type, :validates => true
   end
 
+  context 'search' do
+    context 'search_i18n_scope' do
+      subject(:search_i18n_scope) do
+        described_class.search_i18n_scope
+      end
+
+      it { should == 'metasploit.model.module.class' }
+    end
+
+    context 'attributes' do
+      it_should_behave_like 'search_attribute', :full_name, :type => :string
+      it_should_behave_like 'search_attribute', :module_type, :type => :string
+      it_should_behave_like 'search_attribute', :payload_type, :type => :string
+      it_should_behave_like 'search_attribute', :reference_name, :type => :string
+    end
+  end
+
   context 'validations' do
     context 'ancestors' do
       context 'count' do

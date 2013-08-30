@@ -9,27 +9,7 @@ describe Metasploit::Model do
     spec_pathname.parent
   end
 
-  it { should respond_to :autoload_validators }
-  it { should respond_to :validators_pathname }
-
-  context 'app_pathname' do
-    subject(:app_pathname) do
-      described_class.app_pathname
-    end
-
-    it 'should join app to root' do
-      root = double('root Pathname')
-
-      root.should_receive(:join).with('app')
-      described_class.should_receive(:root).and_return(root)
-
-      app_pathname
-    end
-
-    it 'should be app' do
-      app_pathname.should == root_pathname.join('app')
-    end
-  end
+  it { should respond_to :set_autoload_paths }
 
   context 'root' do
     subject(:root) do
