@@ -5,6 +5,10 @@ describe Metasploit::Model::Module::Target do
     subject(:target) do
       FactoryGirl.build(:dummy_module_target)
     end
+
+    let(:base_class) do
+      Dummy::Module::Target
+    end
   end
 
   context 'factories' do

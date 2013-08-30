@@ -3,16 +3,24 @@ module Metasploit
     # Code shared between `Mdm::Author` and `Metasploit::Framework::Author`.
     module Author
       extend ActiveSupport::Concern
+      extend Metasploit::Model::Search::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity
         include ActiveModel::Validations
+        include Metasploit::Model::Search
 
         #
         # Mass Assignment Security
         #
 
         attr_accessible :name
+
+        #
+        # Search Attributes
+        #
+
+        search_attribute :name, :type => :string
 
         #
         # Validations

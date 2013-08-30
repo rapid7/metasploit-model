@@ -1,4 +1,8 @@
 shared_examples_for 'Metasploit::Model::Reference' do
+  let(:base_class) do
+    reference_class
+  end
+
   context 'derivation' do
     subject(:reference) do
       FactoryGirl.build(
@@ -116,6 +120,21 @@ shared_examples_for 'Metasploit::Model::Reference' do
   context 'mass assignment security' do
     it { should allow_mass_assignment_of(:designation) }
     it { should allow_mass_assignment_of(:url) }
+  end
+
+  context 'search' do
+    context 'i18n_scope' do
+      subject(:search_i18n_scope) do
+        described_class.search_i18n_scope
+      end
+
+      it { should == 'metasploit.model.reference' }
+    end
+
+    context 'attributes' do
+      it_should_behave_like 'search_attribute', :designation, :type => :string
+      it_should_behave_like 'search_attribute', :url, :type => :string
+    end
   end
 
   context 'validations' do

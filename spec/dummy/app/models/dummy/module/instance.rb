@@ -1,6 +1,7 @@
 # Implementation of {Metasploit::Model::Module::Instance} to allow testing of {Metasploit::Model::Module::Instance}
 # using an in-memory ActiveModel and use of factories.
 class Dummy::Module::Instance < Metasploit::Model::Base
+  include Metasploit::Model::Association
   include Metasploit::Model::Module::Instance
 
   #
@@ -8,6 +9,17 @@ class Dummy::Module::Instance < Metasploit::Model::Base
   # Associations
   #
   #
+
+  association :actions, :class_name => 'Dummy::Module::Action'
+  association :architectures, :class_name => 'Dummy::Architecture'
+  association :authorities, :class_name => 'Dummy::Authority'
+  association :authors, :class_name => 'Dummy::Author'
+  association :email_addresses, :class_name => 'Dummy::EmailAddress'
+  association :module_class, :class_name => 'Dummy::Module::Class'
+  association :platforms, :class_name => 'Dummy::Platform'
+  association :rank, :class_name => 'Dummy::Module::Rank'
+  association :references, :class_name => 'Dummy::Reference'
+  association :targets, :class_name => 'Dummy::Module::Target'
 
   # @!attribute [rw] actions
   #   Auxiliary actions to perform when this running this module.

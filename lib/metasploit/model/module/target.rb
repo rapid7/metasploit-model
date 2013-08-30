@@ -4,10 +4,12 @@ module Metasploit
       # Code shared between `Mdm::Module::Target` and `Metasploit::Framework::Module::Target`.
       module Target
         extend ActiveSupport::Concern
+        extend Metasploit::Model::Search::Translation
 
         included do
           include ActiveModel::MassAssignmentSecurity
           include ActiveModel::Validations
+          include Metasploit::Model::Search
 
           #
           # Mass Assignment Security
@@ -15,6 +17,12 @@ module Metasploit
 
           attr_accessible :index
           attr_accessible :name
+
+          #
+          # Search Attributes
+          #
+
+          search_attribute :name, :type => :string
 
           #
           # Validators

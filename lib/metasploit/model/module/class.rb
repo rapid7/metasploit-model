@@ -4,6 +4,7 @@ module Metasploit
       # Code shared between `Mdm::Module::Class` and `Metasploit::Framework::Module::Class`.
       module Class
         extend ActiveSupport::Concern
+        extend Metasploit::Model::Search::Translation
 
         #
         # CONSTANTS
@@ -25,6 +26,7 @@ module Metasploit
           include ActiveModel::Validations
           include Metasploit::Model::Derivation
           include Metasploit::Model::Derivation::FullName
+          include Metasploit::Model::Search
 
           #
           # Derivations
@@ -37,6 +39,15 @@ module Metasploit
 
           # full_name depends on module_type and reference_name
           derives :full_name, :validate => true
+
+          #
+          # Search Attributes
+          #
+
+          search_attribute :full_name, :type => :string
+          search_attribute :module_type, :type => :string
+          search_attribute :payload_type, :type => :string
+          search_attribute :reference_name, :type => :string
 
           #
           # Validations

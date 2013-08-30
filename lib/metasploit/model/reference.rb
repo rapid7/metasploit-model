@@ -3,11 +3,13 @@ module Metasploit
     # Code shared between `Mdm::Reference` and `Metasploit::Framework::Reference`.
     module Reference
       extend ActiveSupport::Concern
+      extend Metasploit::Model::Search::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity
         include ActiveModel::Validations
         include Metasploit::Model::Derivation
+        include Metasploit::Model::Search
 
         #
         # Derivations
@@ -21,6 +23,13 @@ module Metasploit
 
         attr_accessible :designation
         attr_accessible :url
+
+        #
+        # Search Attributes
+        #
+
+        search_attribute :designation, :type => :string
+        search_attribute :url, :type => :string
 
         #
         # Validations

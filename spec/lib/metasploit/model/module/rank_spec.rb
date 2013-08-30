@@ -10,4 +10,26 @@ describe Metasploit::Model::Module::Rank do
       Dummy::Module::Rank
     end
   end
+
+  context 'sequences' do
+    context 'metasploit_model_module_rank_name' do
+      subject(:metasploit_model_module_rank_name) do
+        FactoryGirl.generate :metasploit_model_module_rank_name
+      end
+
+      it 'should be key in Metasploit::Model::Module::Rank::NUMBER_BY_NAME' do
+        Metasploit::Model::Module::Rank::NUMBER_BY_NAME.should have_key(metasploit_model_module_rank_name)
+      end
+    end
+
+    context 'metasploit_model_module_rank_number' do
+      subject(:metasploit_model_module_rank_number) do
+        FactoryGirl.generate :metasploit_model_module_rank_number
+      end
+
+      it 'should be value in Metasploit::Model::Module::Rank::NUMBER_BY_NAME' do
+        Metasploit::Model::Module::Rank::NUMBER_BY_NAME.should have_value(metasploit_model_module_rank_number)
+      end
+    end
+  end
 end

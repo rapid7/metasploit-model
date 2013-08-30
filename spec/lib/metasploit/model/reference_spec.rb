@@ -25,7 +25,7 @@ describe Metasploit::Model::Reference do
       :dummy_authority
     end
 
-    let(:base_class) do
+    let(:reference_class) do
       Dummy::Reference
     end
 

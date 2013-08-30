@@ -38,6 +38,25 @@ shared_examples_for 'Metasploit::Model::Module::Rank' do
     it { should allow_mass_assignment_of(:number) }
   end
 
+  context 'search' do
+    context 'search_i18n_scope' do
+      subject(:search_i18n_scope) do
+        described_class.search_i18n_scope
+      end
+
+      it { should == 'metasploit.model.module.rank' }
+    end
+
+    context 'attributes' do
+      let(:base_class) do
+        rank_class
+      end
+
+      it_should_behave_like 'search_attribute', :name, :type => :string
+      it_should_behave_like 'search_attribute', :number, :type => :integer
+    end
+  end
+
   context 'validations' do
     context 'name' do
       it { should ensure_inclusion_of(:name).in_array(described_class::NUMBER_BY_NAME.keys) }

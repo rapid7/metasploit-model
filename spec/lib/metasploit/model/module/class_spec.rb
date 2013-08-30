@@ -196,5 +196,15 @@ describe Metasploit::Model::Module::Class do
         end
       end
     end
+
+    context 'stanced_dummy_module_class' do
+      subject(:stanced_dummy_module_class) do
+        FactoryGirl.build(:stanced_dummy_module_class)
+      end
+
+      it { should be_valid }
+
+      its(:derived_module_type) { should be_in Metasploit::Model::Module::Instance::STANCED_MODULE_TYPES }
+    end
   end
 end

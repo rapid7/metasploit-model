@@ -4,6 +4,7 @@ module Metasploit
       # Code shared between `Mdm::Module::Instance` and `Metasploit::Framework::Module::Instance`.
       module Instance
         extend ActiveSupport::Concern
+        extend Metasploit::Model::Search::Translation
 
         #
         # CONSTANTS
@@ -16,6 +17,12 @@ module Metasploit
             true
         ]
 
+        # {Metasploit::Model::Module::Class#module_type Module types} that {#supports_stance? support stance}.
+        STANCED_MODULE_TYPES = [
+            Metasploit::Model::Module::Type::AUX,
+            Metasploit::Model::Module::Type::EXPLOIT
+        ]
+
         # Valid values for {#stance}.
         STANCES = [
             'aggressive',
@@ -24,6 +31,60 @@ module Metasploit
 
         included do
           include ActiveModel::Validations
+          include Metasploit::Model::Search
+
+          #
+          #
+          # Search
+          #
+          #
+
+          #
+          # Search Associations
+          #
+
+          search_association :actions
+          search_association :architectures
+          search_association :authorities
+          search_association :authors
+          search_association :email_addresses
+          search_association :module_class
+          search_association :platforms
+          search_association :rank
+          search_association :references
+          search_association :targets
+
+          #
+          # Search Attributes
+          #
+
+          search_attribute :description, :type => :string
+          search_attribute :disclosed_on, :type => :date
+          search_attribute :license, :type => :string
+          search_attribute :name, :type => :string
+          search_attribute :privileged, :type => :boolean
+          search_attribute :stance, :type => :string
+
+          #
+          # Search Withs
+          #
+
+          search_with Metasploit::Model::Search::Operator::Deprecated::App
+          search_with Metasploit::Model::Search::Operator::Deprecated::Author
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :bid
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :cve
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :edb
+          search_with Metasploit::Model::Search::Operator::Deprecated::Authority,
+                      :abbreviation => :osvdb
+          search_with Metasploit::Model::Search::Operator::Deprecated::Platform,
+                      :name => :os
+          search_with Metasploit::Model::Search::Operator::Deprecated::Platform,
+                      :name => :platform
+          search_with Metasploit::Model::Search::Operator::Deprecated::Ref
+          search_with Metasploit::Model::Search::Operator::Deprecated::Text
 
           #
           # Validations
@@ -171,7 +232,7 @@ module Metasploit
         def supports_stance?
           supports_stance = false
 
-          if module_class and ['auxiliary', 'exploit'].include?(module_class.module_type)
+          if module_class and STANCED_MODULE_TYPES.include?(module_class.module_type)
             supports_stance = true
           end
 

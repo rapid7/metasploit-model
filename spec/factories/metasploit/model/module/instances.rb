@@ -11,6 +11,8 @@ FactoryGirl.define do
     "Module License #{n}"
   end
 
+  sequence :metasploit_model_module_instance_stanced_module_type, Metasploit::Model::Module::Instance::STANCED_MODULE_TYPES.cycle
+
   sequence :metasploit_model_module_instance_name do |n|
     "Module Name #{n}"
   end

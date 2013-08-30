@@ -3,10 +3,12 @@ module Metasploit
     # Code shared between `Mdm::Authority` and `Metasploit::Framework::Authority`.
     module Authority
       extend ActiveSupport::Concern
+      extend Metasploit::Model::Search::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity
         include ActiveModel::Validations
+        include Metasploit::Model::Search
 
         #
         # Mass Assignment Security
@@ -16,6 +18,12 @@ module Metasploit
         attr_accessible :obsolete
         attr_accessible :summary
         attr_accessible :url
+
+        #
+        # Search Attributes
+        #
+
+        search_attribute :abbreviation, :type => :string
 
         #
         # Validations
