@@ -9,6 +9,10 @@ describe Metasploit::Model::Architecture do
     let(:architecture_class) do
       Dummy::Architecture
     end
+
+    let(:seed) do
+      Dummy::Architecture.with_abbreviation(abbreviation)
+    end
   end
 
   context 'sequences' do
