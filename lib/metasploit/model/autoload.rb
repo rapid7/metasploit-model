@@ -42,9 +42,8 @@ module Metasploit
       # @return [Array<String>]
       def relative_autoload_paths
         @relative_autoload_paths ||= [
-            # Have to use ::File as File resolves to Metasploit::Model::File.
-            ::File.join('app', 'models'),
-            ::File.join('app', 'validators')
+            File.join('app', 'models'),
+            File.join('app', 'validators')
         ]
       end
 

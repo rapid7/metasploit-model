@@ -95,9 +95,8 @@ module Metasploit
         def archive?
           archive = false
 
-          # have to use ::File as File resolves to {Metasploit::Model::File}.
-          if real_path and ::File.file?(real_path)
-            extension = ::File.extname(real_path)
+          if real_path and File.file?(real_path)
+            extension = File.extname(real_path)
 
             if extension == ARCHIVE_EXTENSION
               archive = true
@@ -114,8 +113,7 @@ module Metasploit
         def directory?
           directory = false
 
-          # have to use ::File as File resolves to {Metasploit::Model::File}.
-          if real_path and ::File.directory?(real_path)
+          if real_path and File.directory?(real_path)
             directory = true
           end
 
@@ -178,9 +176,9 @@ module Metasploit
         # If {#real_path} is set and exists on disk, then converts it to a real path to eliminate any symlinks.
         #
         # @return [void]
-        # @see MetasploitDataModels::File.realpath
+        # @see Metasploit::Model::File.realpath
         def normalize_real_path
-          if real_path and ::File.exist?(real_path)
+          if real_path and File.exist?(real_path)
             self.real_path = Metasploit::Model::File.realpath(real_path)
           end
         end

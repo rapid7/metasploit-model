@@ -237,12 +237,10 @@ module Metasploit
           if real_path
             # rescue around both File calls since file could be deleted before size or after size and before read
             begin
-              # ::File as File resolves to Metasploit::Model::File
-              size = ::File.size(real_path)
+              size = File.size(real_path)
               # Specify full size of file for faster read on Windows (less chance of context switching mid-read).
               # Open in binary mode in Windows to handle non-text content embedded in file.
-              # ::File as File resolves to Metasploit::Model::File
-              contents = ::File.read(real_path, size, 0, mode: 'rb')
+              contents = File.read(real_path, size, 0, mode: 'rb')
             rescue Errno::ENOENT
               contents = nil
             end
@@ -291,8 +289,7 @@ module Metasploit
           derived_real_path = nil
 
           if parent_path and parent_path.real_path and module_type_directory and reference_path
-            # Have to use ::File as File resolves to Metasploit::Model::File
-            derived_real_path = ::File.join(
+            derived_real_path = File.join(
                 parent_path.real_path,
                 module_type_directory,
                 reference_path
@@ -311,8 +308,7 @@ module Metasploit
           real_path_string = real_path.to_s
 
           begin
-            # Have to use ::File as File resolves to Metasploit::Model::File
-            mtime = ::File.mtime(real_path_string)
+            mtime = File.mtime(real_path_string)
           rescue Errno::ENOENT
             nil
           else
@@ -346,10 +342,8 @@ module Metasploit
           reference_name_base_name = reference_name_file_names[-1]
 
           if reference_name_base_name
-            # have to use ::File as File resolves to {Metasploit::Model::File}
-            if ::File.extname(reference_name_base_name) == EXTENSION
-              # have to use ::File as File resolves to {Metasploit::Model::File}
-              reference_name_file_names[-1] = ::File.basename(reference_name_base_name, EXTENSION)
+            if File.extname(reference_name_base_name) == EXTENSION
+              reference_name_file_names[-1] = File.basename(reference_name_base_name, EXTENSION)
               derived = reference_name_file_names.join(REFERENCE_NAME_SEPARATOR)
             end
           end

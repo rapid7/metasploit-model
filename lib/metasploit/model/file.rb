@@ -18,13 +18,30 @@ module Metasploit
 
           file.canonical_path
         end
-      else
-        # On MRI Ruby, File.realpath does resolve symlinks, so just delegate to File.realpath.
+      end
+
+      class << self
+        # Delegates to `::File` if `::File` supports the method when {Metasploit::Model::File} does not implement an
+        # override to fix different platform incompatibilities.
         #
-        # @param path [String] a path that may contain `'.'`, `'..'`, or symlinks
-        # @return [String] canonical path
-        def self.realpath(path)
-          ::File.realpath(path)
+        # @param method_name [Symbol] name of method.
+        # @param args [Array] arguments passed to method with name `method_name`.
+        # @param block [Proc] block to pass after `args` to method with name `method_name`.
+        def method_missing(method_name, *args, &block)
+          if ::File.respond_to?(method_name)
+            ::File.public_send(method_name, *args, &block)
+          else
+            super
+          end
+        end
+
+        # Whether this module or `::File` responds to `method_name`.
+        #
+        # @param method_name [Symbol] name of method.
+        # @param include_private [Boolean] whether to include private methods.
+        # @return [Boolean]
+        def respond_to?(method_name, include_private=false)
+          ::File.respond_to?(method_name, include_private) || super
         end
       end
     end
