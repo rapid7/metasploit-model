@@ -1,0 +1,17 @@
+module Metasploit
+  module Model
+    module RealPathname
+      # {#real_path} as a `Pathname`.
+      #
+      # @return [Pathname] unless {#real_path} is `nil`.
+      # @return [nil] if {#real_path} is `nil`.
+      def real_pathname
+        if real_path
+          Pathname.new(real_path)
+        else
+          nil
+        end
+      end
+    end
+  end
+end

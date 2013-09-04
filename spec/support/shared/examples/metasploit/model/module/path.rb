@@ -1,6 +1,12 @@
 # Tests that code mixed in by including {Metasploit::Module::Module::Path} works in `ActiveModel`
 # (`Metasploit::Model::Framework::Module::Path`) and `ActiveRecord` (`Mdm::Module::Path`).
 shared_examples_for 'Metasploit::Model::Module::Path' do
+  it_should_behave_like 'Metasploit::Model::RealPathname' do
+    let(:base_instance) do
+      FactoryGirl.build(path_factory)
+    end
+  end
+
   it { should be_a ActiveModel::Dirty }
 
   context 'CONSTANTS' do

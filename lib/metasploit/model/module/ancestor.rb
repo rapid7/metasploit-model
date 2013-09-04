@@ -9,7 +9,7 @@ module Metasploit
         # CONSTANTS
         #
 
-        # The directory for a given #module_type is a not always the pluralization of #module_type, so this maps the
+        # The directory for a given {#module_type} is a not always the pluralization of #module_type, so this maps the
         # #module_type to the type directory that is used to generate the #real_path from the #module_type and
         # #reference_name.
         DIRECTORY_BY_MODULE_TYPE = {
@@ -30,6 +30,9 @@ module Metasploit
             'stager'
         ]
 
+        # Maps directory to {#module_type} for converting a {#real_path} into a {#module_type} and {#reference_name}
+        MODULE_TYPE_BY_DIRECTORY = DIRECTORY_BY_MODULE_TYPE.invert
+
         # Valid values for {#payload_type} if {#payload?} is `true`.
         PAYLOAD_TYPES = [
             'single',
@@ -40,6 +43,10 @@ module Metasploit
         # Regexp to keep '\' out of reference names
         REFERENCE_NAME_REGEXP = /\A[a-z][a-z_0-9]*(?:\/[a-z][a-z_0-9]*)*\Z/
 
+        # Separator used to join names in {#reference_name}.  It is always '/', even on Windows, where '\' is a valid
+        # file separator.
+        REFERENCE_NAME_SEPARATOR = '/'
+
         # Regular expression matching a full SHA-1 hex digest.
         SHA1_HEX_DIGEST_REGEXP = /\A[0-9a-z]{40}\Z/
 
@@ -49,10 +56,22 @@ module Metasploit
           include ActiveModel::Validations::Callbacks
           include Metasploit::Model::Derivation
           include Metasploit::Model::Derivation::FullName
-
+          include Metasploit::Model::RealPathname
 
           #
           # Derivations
+          #
+
+          #
+          # Module Cache Construction derivation of {#module_type} and {#reference_name} from {#real_path} and
+          # {Metasploit::Model::Module::Path#real_path}.
+          #
+
+          derives :module_type, :validate => false
+          derives :reference_name, :validate => false
+
+          #
+          # Normal derivation from setting {#module_type} and {#reference_name}
           #
 
           derives :full_name, :validate => true
@@ -207,6 +226,18 @@ module Metasploit
         # Instance Methods
         #
 
+        # Derives {#module_type} from {#real_path} and {Metasploit::Model::Module::Path#real_path}.
+        #
+        # @return [String]
+        # @return [nil] if {#real_path} is `nil`
+        # @return [nil] if {#relative_file_names} does not start with a module type directory.
+        def derived_module_type
+          module_type_directory = relative_file_names.first
+          derived = MODULE_TYPE_BY_DIRECTORY[module_type_directory]
+
+          derived
+        end
+
         # Derives {#payload_type} from {#reference_name}.
         #
         # @return [String]
@@ -280,6 +311,27 @@ module Metasploit
           hex_digest
         end
 
+        # Derives {#reference_name} from {#real_path} and {Metasploit::Model::Module::Path#real_path}.
+        #
+        # @return [String]
+        # @return [nil] if {#real_path} is `nil`.
+        def derived_reference_name
+          derived = nil
+          reference_name_file_names = relative_file_names.drop(1)
+          reference_name_base_name = reference_name_file_names[-1]
+
+          if reference_name_base_name
+            # have to use ::File as File resolves to {Metasploit::Model::File}
+            if ::File.extname(reference_name_base_name) == EXTENSION
+              # have to use ::File as File resolves to {Metasploit::Model::File}
+              reference_name_file_names[-1] = ::File.basename(reference_name_base_name, EXTENSION)
+              derived = reference_name_file_names.join(REFERENCE_NAME_SEPARATOR)
+            end
+          end
+
+          derived
+        end
+
         # Returns whether {#handler_type} is required or must be `nil`.
         #
         # @return (see handled?)
@@ -320,11 +372,47 @@ module Metasploit
           directory = nil
 
           if payload? and reference_name
-            head, _tail = reference_name.split('/', 2)
+            head, _tail = reference_name.split(REFERENCE_NAME_SEPARATOR, 2)
             directory = head.singularize
           end
 
           directory
+        end
+
+        # File names on {#relative_pathname}.
+        #
+        # @return [Enumerator<String>]
+        def relative_file_names
+          relative_pathname = self.relative_pathname
+
+          if relative_pathname
+            relative_pathname.each_filename
+          else
+            # empty enumerator
+            Enumerator.new { }
+          end
+        end
+
+        # {#real_path} relative to {Metasploit::Model::Module::Path#real_path}
+        #
+        # @return [Pathname]
+        def relative_pathname
+          relative_pathname = nil
+          real_pathname = self.real_pathname
+
+          if real_pathname
+            parent_path = self.parent_path
+
+            if parent_path
+              parent_path_real_pathname = parent_path.real_pathname
+
+              if parent_path_real_pathname
+                relative_pathname = real_pathname.relative_path_from parent_path_real_pathname
+              end
+            end
+          end
+
+          relative_pathname
         end
 
         # The path relative to the {#module_type_directory} under the {Metasploit::Model::Module::Path

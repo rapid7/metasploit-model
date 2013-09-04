@@ -20,6 +20,7 @@ module Metasploit
           include ActiveModel::MassAssignmentSecurity
           include ActiveModel::Validations
           include ActiveModel::Validations::Callbacks
+          include Metasploit::Model::RealPathname
 
           #
           # Callbacks

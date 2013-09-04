@@ -1,4 +1,10 @@
 shared_examples_for 'Metasploit::Model::Module::Ancestor' do
+  it_should_behave_like 'Metasploit::Model::RealPathname' do
+    let(:base_instance) do
+      FactoryGirl.build(ancestor_factory)
+    end
+  end
+
   context 'CONSTANTS' do
     context 'DIRECTORY_BY_MODULE_TYPE' do
       subject(:directory_by_module_type) do
@@ -48,6 +54,23 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       end
     end
 
+    context 'MODULE_TYPE_BY_DIRECTORY' do
+      subject(:module_type_by_directory) do
+        described_class::MODULE_TYPE_BY_DIRECTORY
+      end
+
+      its(['auxiliary']) { should == 'auxiliary' }
+      its(['encoders']) { should == 'encoder' }
+      its(['exploits']) { should == 'exploit' }
+      its(['nops']) { should == 'nop' }
+      its(['payloads']) { should == 'payload' }
+      its(['post']) { should == 'post' }
+
+      it 'should have same module types as Metasploit::Model::Module::Type::ALL' do
+        module_type_by_directory.values.should =~ Metasploit::Model::Module::Type::ALL
+      end
+    end
+
     context 'PAYLOAD_TYPES' do
       subject(:payload_types) do
         described_class::PAYLOAD_TYPES
@@ -63,6 +86,14 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       described_class::REFERENCE_NAME_REGEXP.should be_a Regexp
     end
 
+    context 'REFERENCE_NAME_SEPARATOR' do
+      subject(:reference_name_separator) do
+        described_class::REFERENCE_NAME_SEPARATOR
+      end
+
+      it { should == '/' }
+    end
+
     # pattern is tested in validation tests below
     it 'should define SHA_HEX_DIGEST_REGEXP' do
       described_class::SHA1_HEX_DIGEST_REGEXP.should be_a Regexp
@@ -73,10 +104,12 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     def attribute_type(attribute)
       type_by_attribute = {
           :full_name => :text,
+          :module_type => :string,
           :payload_type => :string,
           :real_path => :text,
           :real_path_modified_at => :datetime,
-          :real_path_sha1_hex_digest => :string
+          :real_path_sha1_hex_digest => :string,
+          :reference_name => :text
       }
 
       type_by_attribute.fetch(attribute)
@@ -108,17 +141,25 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       it_should_behave_like 'derives', :payload_type, :validates => true
     end
 
-    # {Metasploit::Model::Module::Ancestor#derived_real_path_modified_at} and
-    # {Metasploi::Model::Module::Ancestor#derived_real_path_sha1_hex_digest} both depend on real_path being populated
-    # or they will return nil, so need set real_path = derived_real_path before testing as would happen with the normal
-    # order of before validation callbacks.
     context 'with real_path' do
       before(:each) do
+        # {Metasploit::Model::Module::Ancestor#derived_real_path_modified_at} and
+        # {Metasploit::Model::Module::Ancestor#derived_real_path_sha1_hex_digest} both depend on real_path being
+        # populated or they will return nil, so need set real_path = derived_real_path before testing as would happen
+        # with the normal order of before validation callbacks.
         ancestor.real_path = ancestor.derived_real_path
+
+        # blank out {Metasploit::Model::Module::Ancestor#module_type} and
+        # {Metasploit::Model::Module::Ancestor#reference_name} so they will be rederived from
+        # {Metasploit::Model::Module::Ancestor#real_path} to simulate module cache construction usage.
+        ancestor.module_type = nil
+        ancestor.reference_name = nil
       end
 
+      it_should_behave_like 'derives', :module_type, :validates => false
       it_should_behave_like 'derives', :real_path_modified_at, :validates => false
       it_should_behave_like 'derives', :real_path_sha1_hex_digest, :validates => false
+      it_should_behave_like 'derives', :reference_name, :validates => false
     end
   end
 
@@ -638,6 +679,68 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     end
   end
 
+  context '#derived_module_type' do
+    subject(:derived_module_type) do
+      ancestor.derived_module_type
+    end
+
+    before(:each) do
+      ancestor.real_path = real_path
+    end
+
+    context 'with #real_path' do
+      let(:real_path) do
+        ancestor.derived_real_path
+      end
+
+      before(:each) do
+        ancestor.parent_path = module_path
+      end
+
+      context 'with Metasploit::Model::Module::Path' do
+        let(:module_path) do
+          ancestor.parent_path
+        end
+
+        before(:each) do
+          module_path.real_path = module_path_real_path
+        end
+
+        context 'with Metasploit::Model::Module::Path#real_path' do
+          let(:module_path_real_path) do
+            module_path.real_path
+          end
+
+          it { should_not be_nil }
+        end
+
+        context 'without Metasploit::Model::Module::Path#real_path' do
+          let(:module_path_real_path) do
+            nil
+          end
+
+          it { should be_nil }
+        end
+      end
+
+      context 'without Metasploit::Model::Module::Path' do
+        let(:module_path) do
+          nil
+        end
+
+        it { should be_nil }
+      end
+    end
+
+    context 'without #real_path' do
+      let(:real_path) do
+        nil
+      end
+
+      it { should be_nil }
+    end
+  end
+
   context '#derived_payload_type' do
     subject(:derived_payload_type) do
       ancestor.derived_payload_type
@@ -886,6 +989,64 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     end
   end
 
+  context '#derived_reference_name' do
+    subject(:derived_reference_name) do
+      ancestor.derived_reference_name
+    end
+
+    before(:each) do
+      ancestor.stub(relative_file_names: relative_file_names)
+    end
+
+    context 'with empty #relative_file_names' do
+      let(:relative_file_names) do
+        Enumerator.new { }
+      end
+
+      it { should be_nil }
+    end
+
+    context 'without empty #relative_file_names' do
+      context 'with one element' do
+        let(:relative_file_names) do
+          ['a'].each
+        end
+      end
+
+      context 'with more than one element' do
+        context 'with EXTENSION' do
+          let(:relative_file_names) do
+            ['a', 'b', "c#{described_class::EXTENSION}"].each
+          end
+
+          it 'should not include first file name' do
+            derived_reference_name.split(described_class::REFERENCE_NAME_SEPARATOR).should_not include('a')
+          end
+
+          it 'should match REFERENCE_NAME_REGEXP' do
+            derived_reference_name.should match(described_class::REFERENCE_NAME_REGEXP)
+          end
+
+          it 'should not include EXTENSION' do
+            derived_reference_name.should_not end_with(described_class::EXTENSION)
+          end
+
+          it 'should be all file names except the first joined with the REFERENCE_NAME_SEPARATOR with EXTENSION' do
+            derived_reference_name.should == "b#{described_class::REFERENCE_NAME_SEPARATOR}c"
+          end
+        end
+
+        context 'without EXTENSION' do
+          let(:relative_file_names) do
+            ['a', 'b', 'c'].each
+          end
+
+          it { should be_nil }
+        end
+      end
+    end
+  end
+
   # class method
   context 'handled?' do
     subject(:handled?) do
@@ -1073,6 +1234,112 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       end
 
       it { should_not be_payload }
+    end
+  end
+
+  context '#relative_file_names' do
+    subject(:relative_file_names) do
+      ancestor.relative_file_names
+    end
+
+    before(:each) do
+      ancestor.stub(relative_pathname: relative_pathname)
+    end
+
+    context 'with #relative_pathnames' do
+      let(:file_names) do
+        [
+            'a',
+            'b',
+            'c'
+        ]
+      end
+
+      let(:relative_pathname) do
+        Pathname.new(file_names.join('/'))
+      end
+
+      it { should be_an Enumerator }
+
+      it 'should include all file names, in order' do
+        relative_file_names.to_a.should == file_names
+      end
+    end
+
+    context 'without #relative_pathnames' do
+      let(:relative_pathname) do
+        nil
+      end
+
+      it { should be_an Enumerator }
+      its(:to_a) { should be_empty }
+    end
+  end
+
+  context '#relative_pathname' do
+    subject(:relative_pathname) do
+      ancestor.relative_pathname
+    end
+
+    before(:each) do
+      ancestor.stub(real_pathname: real_pathname)
+    end
+
+    context 'with #real_pathname' do
+      let(:real_pathname) do
+        Pathname.new('a/b/c')
+      end
+
+      before(:each) do
+        ancestor.parent_path = parent_path
+      end
+
+      context 'with #parent_path' do
+        let(:parent_path) do
+          ancestor.parent_path
+        end
+
+        before(:each) do
+          parent_path.stub(real_pathname: parent_path_real_pathname)
+        end
+
+        context 'with Metasploit::Model::Module::Path#real_pathname' do
+          let(:parent_path_real_pathname) do
+            Pathname.new('a')
+          end
+
+          it { should be_a Pathname }
+          it { should be_relative }
+
+          it 'should be relative to parent_path.real_pathname' do
+            relative_pathname.should == Pathname.new('b/c')
+          end
+        end
+
+        context 'without Metasploit::Model::Module::Path#real_pathname' do
+          let(:parent_path_real_pathname) do
+            nil
+          end
+
+          it { should be_nil }
+        end
+      end
+
+      context 'without #parent_path' do
+        let(:parent_path) do
+          nil
+        end
+
+        it { should be_nil }
+      end
+    end
+
+    context 'without #real_pathname' do
+      let(:real_pathname) do
+        nil
+      end
+
+      it { should be_nil }
     end
   end
 
