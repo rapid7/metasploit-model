@@ -237,10 +237,12 @@ module Metasploit
           if real_path
             # rescue around both File calls since file could be deleted before size or after size and before read
             begin
-              size = File.size(real_path)
+              # ::File as File resolves to Metasploit::Model::File
+              size = ::File.size(real_path)
               # Specify full size of file for faster read on Windows (less chance of context switching mid-read).
               # Open in binary mode in Windows to handle non-text content embedded in file.
-              contents = File.read(real_path, size, 0, mode: 'rb')
+              # ::File as File resolves to Metasploit::Model::File
+              contents = ::File.read(real_path, size, 0, mode: 'rb')
             rescue Errno::ENOENT
               contents = nil
             end
