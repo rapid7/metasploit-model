@@ -226,6 +226,29 @@ module Metasploit
         # Instance Methods
         #
 
+        # The contents of {#real_path}.
+        #
+        # @return [String] contents of file at {#real_path}.
+        # @return [nil] if {#real_path} is `nil`.
+        # @return [nil] if {#real_path} does not exist on-disk.
+        def contents
+          contents = nil
+
+          if real_path
+            # rescue around both File calls since file could be deleted before size or after size and before read
+            begin
+              size = File.size(real_path)
+              # Specify full size of file for faster read on Windows (less chance of context switching mid-read).
+              # Open in binary mode in Windows to handle non-text content embedded in file.
+              contents = File.read(real_path, size, 0, mode: 'rb')
+            rescue Errno::ENOENT
+              contents = nil
+            end
+          end
+
+          contents
+        end
+
         # Derives {#module_type} from {#real_path} and {Metasploit::Model::Module::Path#real_path}.
         #
         # @return [String]

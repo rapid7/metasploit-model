@@ -646,6 +646,54 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     end
   end
 
+  context '#contents' do
+    subject(:contents) do
+      ancestor.contents
+    end
+
+    before(:each) do
+      ancestor.real_path = real_path
+    end
+
+    context 'with #real_path' do
+      let(:real_path) do
+        ancestor.derived_real_path
+      end
+
+      context 'with file' do
+        let(:file_contents) do
+          "# Contents"
+        end
+
+        before(:each) do
+          File.open(real_path, 'wb') do |f|
+            f.write(file_contents)
+          end
+        end
+
+        it 'should be contents of file' do
+          contents.should == file_contents
+        end
+      end
+
+      context 'without file' do
+        before(:each) do
+          File.delete(real_path)
+        end
+
+        it { should be_nil }
+      end
+    end
+
+    context 'without #real_path' do
+      let(:real_path) do
+        nil
+      end
+
+      it { should be_nil }
+    end
+  end
+
   context '#derived_full_name' do
     subject(:derived_full_name) do
       ancestor.derived_full_name
