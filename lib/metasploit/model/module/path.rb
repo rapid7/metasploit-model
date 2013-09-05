@@ -8,13 +8,6 @@ module Metasploit
 
         include Metasploit::Model::NilifyBlanks
 
-        #
-        # CONSTANTS
-        #
-
-        # The extension for Fastlib archives.
-        ARCHIVE_EXTENSION = '.fastlib'
-
         included do
           include ActiveModel::Dirty
           include ActiveModel::MassAssignmentSecurity
@@ -42,7 +35,7 @@ module Metasploit
           # Validations
           #
 
-          validate :archive_or_directory
+          validate :directory
           validate :gem_and_name
         end
 
@@ -87,24 +80,6 @@ module Metasploit
         #
         # Instance Methods
         #
-
-        # Returns whether {#real_path} is a fastlib archive.
-        #
-        # @return [true] if {#real_path} is a file with {ARCHIVE_EXTENSION}.
-        # @return [false] otherwise
-        def archive?
-          archive = false
-
-          if real_path and File.file?(real_path)
-            extension = File.extname(real_path)
-
-            if extension == ARCHIVE_EXTENSION
-              archive = true
-            end
-          end
-
-          archive
-        end
 
         # Returns whether {#real_path} is a directory.
         #
@@ -151,12 +126,12 @@ module Metasploit
 
         private
 
-        # Validates that either {#archive?} or {#directory?} is `true`.
+        # Validates that either {#directory?} is `true`.
         #
         # @return [void]
-        def archive_or_directory
-          unless archive? or directory?
-            errors[:real_path] << 'must be a Fastlib archive or a directory'
+        def directory
+          unless directory?
+            errors[:real_path] << 'must be a directory'
           end
         end
 
