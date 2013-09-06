@@ -95,7 +95,8 @@ module Metasploit
           # payload_type is NOT accessible since it's derived and must match {#derived_payload_type}.
           # reference_name is accessible because it's needed to derive {#full_name} and {#real_path}.
           attr_accessible :reference_name
-          # real_path is NOT accessible since it must match {#derived_real_path}.
+          # real_path is accessible since {#module_type} and {#reference_name} can be derived from real_path.
+          attr_accessible :real_path
           # real_path_modified_at is NOT accessible since it's derived
           # real_path_sha1_hex_digest is NOT accessible since it's derived
 

@@ -127,10 +127,13 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
         # make sure real_path is derived
         real_path_creator.should be_valid
 
-        ancestor_class.new(
-            parent_path: real_path_creator.parent_path,
-            real_path: real_path_creator.real_path
-        )
+        ancestor = ancestor_class.new
+
+        # work-around mass-assignment security
+        ancestor.parent_path = real_path_creator.parent_path
+        ancestor.real_path = real_path_creator.real_path
+
+        ancestor
       end
 
       before(:each) do
@@ -273,8 +276,8 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       ancestor.should_not allow_mass_assignment_of(:payload_type)
     end
 
-    it 'should not allow mass assignment of real_path since it must match derived_real_path' do
-      ancestor.should_not allow_mass_assignment_of(:real_path)
+    it 'should allow mass assignment of real_path to allow derivation of module_type and reference_name' do
+      ancestor.should allow_mass_assignment_of(:real_path)
     end
 
     it 'should not allow mass assignment of real_path_modified_at since it is derived' do
