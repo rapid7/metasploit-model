@@ -104,6 +104,7 @@ module Metasploit
           #
 
           validates :handler_type,
+                    :unless => :loading_context?,
                     :nil => {
                         :unless => :handled?
                     },
@@ -447,6 +448,16 @@ module Metasploit
           end
 
           path
+        end
+
+        private
+
+        # Whether this ancestor is being validated for loading.
+        #
+        # @return [true] if `#validation_context` is `:loading`
+        # @return [false] otherwise
+        def loading_context?
+          validation_context == :loading
         end
       end
     end

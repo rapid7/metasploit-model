@@ -122,6 +122,104 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     it_should_behave_like 'derives', :full_name, :validates => true
     it_should_behave_like 'derives', :real_path, :validates => true
 
+    context 'with only module_path and real_path' do
+      subject(:ancestor) do
+        # make sure real_path is derived
+        real_path_creator.should be_valid
+
+        ancestor_class.new(
+            parent_path: real_path_creator.parent_path,
+            real_path: real_path_creator.real_path
+        )
+      end
+
+      before(:each) do
+        # run before validation callbacks to trigger derivations
+        ancestor.valid?
+      end
+
+      context 'with payload' do
+        let(:real_path_creator) do
+          FactoryGirl.build(
+              ancestor_factory,
+              module_type: 'payload',
+              payload_type: payload_type
+          )
+        end
+
+        context 'with single' do
+          let(:payload_type) do
+            'single'
+          end
+
+          it 'should be handled' do
+            ancestor.should be_handled
+          end
+
+          it { should_not be_valid }
+
+          it 'should be valid for loading' do
+            ancestor.valid?(:loading)
+          end
+        end
+
+        context 'with stage' do
+          let(:payload_type) do
+            'stage'
+          end
+
+          it 'should not be handled' do
+            ancestor.should_not be_handled
+          end
+
+          it { should be_valid }
+
+          it 'should be valid for loading' do
+            ancestor.valid?(:loading)
+          end
+        end
+
+        context 'with stager' do
+          let(:payload_type) do
+            'stager'
+          end
+
+          it 'should be handled' do
+            ancestor.should be_handled
+          end
+
+          it { should_not be_valid }
+
+          it 'should be valid for loading' do
+            ancestor.valid?(:loading)
+          end
+        end
+      end
+
+      context 'without payload' do
+        let(:real_path_creator) do
+          FactoryGirl.build(
+              ancestor_factory,
+              module_type: module_type
+          )
+        end
+
+        let(:module_type) do
+          FactoryGirl.generate :metasploit_model_non_payload_module_type
+        end
+
+        it 'should not be handled' do
+          ancestor.should_not be_handled
+        end
+
+        it { should be_valid }
+
+        it 'should be valid for loading' do
+          ancestor.valid?(:loading)
+        end
+      end
+    end
+
     context 'with payload' do
       subject(:ancestor) do
         FactoryGirl.build(
@@ -230,12 +328,24 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
                 nil
               end
 
-              it { should_not be_valid }
+              context 'with :loading validation_context' do
+                let(:validation_context) do
+                  :loading
+                end
 
-              it 'should record error on handler_type' do
-                ancestor.valid?
+                it 'should be valid' do
+                  ancestor.valid?(validation_context).should be_true
+                end
+              end
 
-                ancestor.errors[:handler_type].should include("can't be blank")
+              context 'without validation_context' do
+                it { should_not be_valid }
+
+                it 'should record error on handler_type' do
+                  ancestor.valid?
+
+                  ancestor.errors[:handler_type].should include("can't be blank")
+                end
               end
             end
           end
@@ -1260,6 +1370,32 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       )
 
       handled?
+    end
+  end
+
+  context '#loading_context?' do
+    subject(:loading_context?) do
+      ancestor.send(:loading_context?)
+    end
+
+    context 'with valid?' do
+      it 'should be false' do
+        ancestor.should_receive(:run_validations!) do
+          loading_context?.should be_false
+        end
+
+        ancestor.valid?
+      end
+    end
+
+    context 'with valid?(:loading)' do
+      it 'should be true' do
+        ancestor.should_receive(:run_validations!) do
+          loading_context?.should be_true
+        end
+
+        ancestor.valid?(:loading)
+      end
     end
   end
 
