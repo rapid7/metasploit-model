@@ -41,7 +41,7 @@ module Metasploit
         ]
 
         # Regexp to keep '\' out of reference names
-        REFERENCE_NAME_REGEXP = /\A[a-z][a-z_0-9]*(?:\/[a-z][a-z_0-9]*)*\Z/
+        REFERENCE_NAME_REGEXP = /\A[\-0-9A-Z_a-z]+(?:\/[\-0-9A-Z_a-z]+)*\Z/
 
         # Separator used to join names in {#reference_name}.  It is always '/', even on Windows, where '\' is a valid
         # file separator.

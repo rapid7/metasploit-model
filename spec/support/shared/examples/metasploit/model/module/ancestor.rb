@@ -676,20 +676,28 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       context 'validates format with REFERENCE_NAME_REGEXP' do
         context 'without slashes' do
           context 'first character' do
+            it 'should not allow space' do
+              ancestor.should_not allow_value(' ').for(:reference_name)
+            end
+
+            it 'should allow dash' do
+              ancestor.should allow_value('-').for(:reference_name)
+            end
+
+            it 'should allow digit' do
+              ancestor.should allow_value('0').for(:reference_name)
+            end
+
+            it 'should allow uppercase letter' do
+              ancestor.should allow_value('A').for(:reference_name)
+            end
+
+            it 'should allow underscore' do
+              ancestor.should allow_value('_').for(:reference_name)
+            end
+
             it 'should allow lowercase letter' do
               ancestor.should allow_value('a').for(:reference_name)
-            end
-
-            it 'should not allow uppercase letter' do
-              ancestor.should_not allow_value('A').for(:reference_name)
-            end
-
-            it 'should not allow digit' do
-              ancestor.should_not allow_value('9').for(:reference_name)
-            end
-
-            it 'should not allow underscore' do
-              ancestor.should_not allow_value('_').for(:reference_name)
             end
           end
 
@@ -702,27 +710,35 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               lowercase_letters.sample
             end
 
-            it 'should allow lowercase letter' do
-              ancestor.should allow_value("#{first_letter}a").for(:reference_name)
+            it 'should not allow space' do
+              ancestor.should_not allow_value("#{first_letter} ").for(:reference_name)
             end
 
-            it 'should not allow uppercase letter' do
-              ancestor.should_not allow_value("#{first_letter}A").for(:reference_name)
+            it 'should allow dash' do
+              ancestor.should allow_value("#{first_letter}-").for(:reference_name)
             end
 
             it 'should allow digit' do
               ancestor.should allow_value("#{first_letter}1").for(:reference_name)
             end
 
+            it 'should allow uppercase letter' do
+              ancestor.should allow_value("#{first_letter}A").for(:reference_name)
+            end
+
             it 'should allow underscore' do
               ancestor.should allow_value("#{first_letter}_").for(:reference_name)
+            end
+
+            it 'should allow lowercase letter' do
+              ancestor.should allow_value("#{first_letter}a").for(:reference_name)
             end
           end
         end
 
         context 'with slashes' do
           let(:section) do
-            "a_1"
+            "-_0a"
           end
 
           context 'leading' do
@@ -754,6 +770,15 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               ancestor.should_not allow_value("#{section}\\").for(:reference_name)
             end
           end
+        end
+
+        context 'real-world examples' do
+          it { should allow_value('admin/2wire/xslt_password_reset').for(:reference_name) }
+          it { should allow_value('dos/http/3com_superstack_switch').for(:reference_name) }
+          it { should allow_value('windows/brightstor/tape_engine_8A').for(:reference_name) }
+          it { should allow_value('windows/fileformat/a-pdf_wav_to_mp3').for(:reference_name) }
+          it { should allow_value('windows/ftp/32bitftp_list_reply').for(:reference_name) }
+          it { should allow_value('windows/ftp/3cdaemon_ftp_user').for(:reference_name) }
         end
       end
     end
