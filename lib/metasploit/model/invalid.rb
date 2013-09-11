@@ -6,7 +6,7 @@ module Metasploit
         @model = model
 
         errors = @model.errors.full_messages.join(', ')
-        translated_message = I18n.translate('metasploit.model.invalid', :errors => errors)
+        translated_message = ::I18n.translate('metasploit.model.invalid', :errors => errors)
         super(translated_message)
       end
 

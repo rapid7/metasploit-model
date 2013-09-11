@@ -7,6 +7,7 @@ require 'active_support/dependencies'
 # Project
 #
 require 'metasploit/model/autoload'
+require 'metasploit/model/i18n'
 require 'metasploit/model/version'
 
 # Only include the Rails engine when using Rails.  This allows the non-Rails projects, like metasploit-framework to use
@@ -23,6 +24,7 @@ module Metasploit
   # optional dependency for metasploit-framework as metasploit-framework can work without a database.
   module Model
     extend Metasploit::Model::Autoload
+    extend Metasploit::Model::I18n
 
     # Pathname to the app directory that contains the models and validators.
     #
@@ -48,3 +50,4 @@ module Metasploit
 end
 
 Metasploit::Model.set_autoload_paths
+Metasploit::Model.set_i18n_load_paths

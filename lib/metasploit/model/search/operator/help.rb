@@ -10,7 +10,7 @@ module Metasploit
           #
           # The help for this operator.
           def help
-            I18n.translate(help_translation_key)
+            ::I18n.translate(help_translation_key)
           end
 
           # The key passed to `I18n.translate` to generate {#help}.

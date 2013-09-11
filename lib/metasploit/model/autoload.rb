@@ -23,8 +23,8 @@ module Metasploit
       #
       # @return [Array<String>]
       def autoload_paths
-        @autoload_paths ||= relative_autoload_paths.collect { |relative_autoload_once_path|
-          root.join(relative_autoload_once_path).to_path
+        @autoload_paths ||= relative_autoload_paths.collect { |relative_autoload_path|
+          root.join(relative_autoload_path).to_path
         }
       end
 
