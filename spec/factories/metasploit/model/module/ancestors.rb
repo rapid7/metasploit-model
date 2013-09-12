@@ -3,6 +3,16 @@ FactoryGirl.define do
     "metasploit_model_module_ancestor_handler_type#{n}"
   end
 
+  minimum_version = 1
+  maximum_version = 4
+  range = maximum_version - minimum_version + 1
+
+  sequence :metasploit_model_module_ancestor_metasploit_module_relative_name do |n|
+    version = (n % range) + minimum_version
+
+    "Metasploit#{version}"
+  end
+
   sequence :metasploit_model_module_ancestor_payload_type, Metasploit::Model::Module::Ancestor::PAYLOAD_TYPES.cycle
 
   sequence :metasploit_model_module_ancestor_reference_name do |n|
@@ -118,6 +128,28 @@ FactoryGirl.define do
         pathname.open('w') do |f|
           f.puts "# Module Type: #{ancestor.module_type}"
           f.puts "# Reference Name: #{ancestor.reference_name}"
+
+          # Needs a Module<n> constant so that `Metasploit::Framework::Module::Ancestor::Load`` can load it
+          keyword = 'class'
+
+          if ancestor.module_type == Metasploit::Model::Module::Type::PAYLOAD
+            keyword = 'module'
+          end
+
+          metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
+          f.puts "#{keyword} #{metasploit_module_relative_name}"
+
+          if ancestor.handler_type
+            # `Metasploit::Framework::Module::Ancestor::Namespace#module_ancestor_eval` uses `Module.handler_type_alias`
+            # to set Metasploit::Model::Module::Ancestor#handler_type.  The method is not called `handler_type` on
+            # `Module` due to how the metasploit-framework API allows overriding the handler_type with a more unique
+            # name to make staged payload reference names unique.
+            f.puts "  def self.handler_type_alias"
+            f.puts "    #{ancestor.handler_type.inspect}"
+            f.puts "  end"
+          end
+
+          f.puts "end"
         end
       end
     end

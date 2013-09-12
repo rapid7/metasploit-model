@@ -26,6 +26,21 @@ describe Metasploit::Model::Module::Ancestor do
       end
 
       it { should be_valid }
+
+      context 'contents' do
+        include_context 'Metasploit::Model::Module::Ancestor factory contents'
+
+        let(:module_ancestor) do
+          dummy_module_ancestor
+        end
+
+        context 'metasploit_module' do
+          include_context 'Metasploit::Model::Module::Ancestor factory contents metasploit_module'
+
+          # Classes are Modules, so this checks that it is either a Class or a Module.
+          it { should be_a Module }
+        end
+      end
     end
 
     context 'payload_dummy_module_ancestor' do
@@ -35,8 +50,13 @@ describe Metasploit::Model::Module::Ancestor do
 
       it { should be_valid }
 
-      its(:module_type) { should == 'payload' }
       its(:derived_payload_type) { should_not be_nil }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory' do
+        let(:module_ancestor) do
+          payload_dummy_module_ancestor
+        end
+      end
     end
 
     context 'single_payload_dummy_module_ancestor' do
@@ -46,8 +66,13 @@ describe Metasploit::Model::Module::Ancestor do
 
       it { should be_valid }
 
-      its(:module_type) { should == 'payload' }
       its(:derived_payload_type) { should == 'single' }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory', handler_type: true do
+        let(:module_ancestor) do
+          single_payload_dummy_module_ancestor
+        end
+      end
     end
 
     context 'stage_payload_dummy_module_ancestor' do
@@ -57,8 +82,13 @@ describe Metasploit::Model::Module::Ancestor do
 
       it { should be_valid }
 
-      its(:module_type) { should == 'payload' }
       its(:derived_payload_type) { should == 'stage' }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory', handler_type: false do
+        let(:module_ancestor) do
+          stage_payload_dummy_module_ancestor
+        end
+      end
     end
 
     context 'stager_payload_dummy_module_ancestor' do
@@ -68,8 +98,13 @@ describe Metasploit::Model::Module::Ancestor do
 
       it { should be_valid }
 
-      its(:module_type) { should == 'payload' }
       its(:derived_payload_type) { should == 'stager' }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory', handler_type: true do
+        let(:module_ancestor) do
+          stager_payload_dummy_module_ancestor
+        end
+      end
     end
   end
 end
