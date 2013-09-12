@@ -1,7 +1,35 @@
-shared_examples_for 'Metasploit::Model::Module::Ancestor' do
+shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
+  options.assert_valid_keys(:namespace_name)
+  namespace_name = options.fetch(:namespace_name)
+
+  class_name = "#{namespace_name}::Module::Ancestor"
+  module_ancestor_class = class_name.constantize
+
+  factory_namespace = namespace_name.underscore.gsub('/', '_')
+
+  #
+  # Module::Ancestor factories
+  #
+
+  module_ancestor_factory = "#{factory_namespace}_module_ancestor".to_sym
+  payload_module_ancestor_factory = "payload_#{module_ancestor_factory}".to_sym
+  single_payload_module_ancestor_factory = "single_#{payload_module_ancestor_factory}".to_sym
+  stage_payload_module_ancestor_factory = "stage_#{payload_module_ancestor_factory}".to_sym
+  stager_payload_module_ancestor_factory = "stager_#{payload_module_ancestor_factory}".to_sym
+
+  #
+  # Module::Path factories
+  #
+
+  module_path_factory = "#{factory_namespace}_module_path".to_sym
+
+  subject(:module_ancestor) do
+    FactoryGirl.build(module_ancestor_factory)
+  end
+
   it_should_behave_like 'Metasploit::Model::RealPathname' do
     let(:base_instance) do
-      FactoryGirl.build(ancestor_factory)
+      FactoryGirl.build(module_ancestor_factory)
     end
   end
 
@@ -116,35 +144,35 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     end
 
     let(:base_class) do
-      ancestor_class
+      module_ancestor_class
     end
 
     it_should_behave_like 'derives', :full_name, :validates => true
     it_should_behave_like 'derives', :real_path, :validates => true
 
     context 'with only module_path and real_path' do
-      subject(:ancestor) do
+      subject(:module_ancestor) do
         # make sure real_path is derived
         real_path_creator.should be_valid
 
-        ancestor = ancestor_class.new
+        module_ancestor = module_ancestor_class.new
 
         # work-around mass-assignment security
-        ancestor.parent_path = real_path_creator.parent_path
-        ancestor.real_path = real_path_creator.real_path
+        module_ancestor.parent_path = real_path_creator.parent_path
+        module_ancestor.real_path = real_path_creator.real_path
 
-        ancestor
+        module_ancestor
       end
 
       before(:each) do
         # run before validation callbacks to trigger derivations
-        ancestor.valid?
+        module_ancestor.valid?
       end
 
       context 'with payload' do
         let(:real_path_creator) do
           FactoryGirl.build(
-              ancestor_factory,
+              module_ancestor_factory,
               module_type: 'payload',
               payload_type: payload_type
           )
@@ -156,13 +184,13 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
           end
 
           it 'should be handled' do
-            ancestor.should be_handled
+            module_ancestor.should be_handled
           end
 
           it { should_not be_valid }
 
           it 'should be valid for loading' do
-            ancestor.valid?(:loading)
+            module_ancestor.valid?(:loading)
           end
         end
 
@@ -172,13 +200,13 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
           end
 
           it 'should not be handled' do
-            ancestor.should_not be_handled
+            module_ancestor.should_not be_handled
           end
 
           it { should be_valid }
 
           it 'should be valid for loading' do
-            ancestor.valid?(:loading)
+            module_ancestor.valid?(:loading)
           end
         end
 
@@ -188,13 +216,13 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
           end
 
           it 'should be handled' do
-            ancestor.should be_handled
+            module_ancestor.should be_handled
           end
 
           it { should_not be_valid }
 
           it 'should be valid for loading' do
-            ancestor.valid?(:loading)
+            module_ancestor.valid?(:loading)
           end
         end
       end
@@ -202,7 +230,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       context 'without payload' do
         let(:real_path_creator) do
           FactoryGirl.build(
-              ancestor_factory,
+              module_ancestor_factory,
               module_type: module_type
           )
         end
@@ -212,21 +240,21 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
         end
 
         it 'should not be handled' do
-          ancestor.should_not be_handled
+          module_ancestor.should_not be_handled
         end
 
         it { should be_valid }
 
         it 'should be valid for loading' do
-          ancestor.valid?(:loading)
+          module_ancestor.valid?(:loading)
         end
       end
     end
 
     context 'with payload' do
-      subject(:ancestor) do
+      subject(:module_ancestor) do
         FactoryGirl.build(
-            ancestor_factory,
+            module_ancestor_factory,
             # {Mdm::Module::Ancestor#derived_payload_type} will be `nil` unless {Mdm::Module::Ancestor#module_type} is
             # `'payload'`
             :module_type => 'payload',
@@ -248,13 +276,13 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
         # {Metasploit::Model::Module::Ancestor#derived_real_path_sha1_hex_digest} both depend on real_path being
         # populated or they will return nil, so need set real_path = derived_real_path before testing as would happen
         # with the normal order of before validation callbacks.
-        ancestor.real_path = ancestor.derived_real_path
+        module_ancestor.real_path = module_ancestor.derived_real_path
 
         # blank out {Metasploit::Model::Module::Ancestor#module_type} and
         # {Metasploit::Model::Module::Ancestor#reference_name} so they will be rederived from
         # {Metasploit::Model::Module::Ancestor#real_path} to simulate module cache construction usage.
-        ancestor.module_type = nil
-        ancestor.reference_name = nil
+        module_ancestor.module_type = nil
+        module_ancestor.reference_name = nil
       end
 
       it_should_behave_like 'derives', :module_type, :validates => false
@@ -264,43 +292,132 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     end
   end
 
+  context 'factories' do
+    context module_ancestor_factory.to_s do
+      subject(module_ancestor_factory) do
+        FactoryGirl.build(module_ancestor_factory)
+      end
+
+      it { should be_valid }
+
+      context 'contents' do
+        include_context 'Metasploit::Model::Module::Ancestor factory contents'
+
+        let(:module_ancestor) do
+          send(module_ancestor_factory)
+        end
+
+        context 'metasploit_module' do
+          include_context 'Metasploit::Model::Module::Ancestor factory contents metasploit_module'
+
+          # Classes are Modules, so this checks that it is either a Class or a Module.
+          it { should be_a Module }
+        end
+      end
+    end
+
+    context payload_module_ancestor_factory.to_s do
+      subject(payload_module_ancestor_factory) do
+        FactoryGirl.build(payload_module_ancestor_factory)
+      end
+
+      it { should be_valid }
+
+      its(:derived_payload_type) { should_not be_nil }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory' do
+        let(:module_ancestor) do
+          send(payload_module_ancestor_factory)
+        end
+      end
+    end
+
+    context single_payload_module_ancestor_factory.to_s do
+      subject(single_payload_module_ancestor_factory) do
+        FactoryGirl.build(single_payload_module_ancestor_factory)
+      end
+
+      it { should be_valid }
+
+      its(:derived_payload_type) { should == 'single' }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory', handler_type: true do
+        let(:module_ancestor) do
+          send(single_payload_module_ancestor_factory)
+        end
+      end
+    end
+
+    context stage_payload_module_ancestor_factory.to_s do
+      subject(stage_payload_module_ancestor_factory) do
+        FactoryGirl.build(stage_payload_module_ancestor_factory)
+      end
+
+      it { should be_valid }
+
+      its(:derived_payload_type) { should == 'stage' }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory', handler_type: false do
+        let(:module_ancestor) do
+          send(stage_payload_module_ancestor_factory)
+        end
+      end
+    end
+
+    context 'stager_payload_module_ancestor_factory' do
+      subject(stager_payload_module_ancestor_factory) do
+        FactoryGirl.build(stager_payload_module_ancestor_factory)
+      end
+
+      it { should be_valid }
+
+      its(:derived_payload_type) { should == 'stager' }
+
+      it_should_behave_like 'Metasploit::Model::Module::Ancestor payload factory', handler_type: true do
+        let(:module_ancestor) do
+          send(stager_payload_module_ancestor_factory)
+        end
+      end
+    end
+  end
+
   context 'mass assignment security' do
     it 'should not allow mass assignment of full_name since it must match derived_full_name' do
-      ancestor.should_not allow_mass_assignment_of(:full_name)
+      module_ancestor.should_not allow_mass_assignment_of(:full_name)
     end
 
     it { should allow_mass_assignment_of(:handler_type) }
     it { should allow_mass_assignment_of(:module_type) }
 
     it 'should not allow mass assignment of payload_type since it must match derived_payload_type' do
-      ancestor.should_not allow_mass_assignment_of(:payload_type)
+      module_ancestor.should_not allow_mass_assignment_of(:payload_type)
     end
 
     it 'should allow mass assignment of real_path to allow derivation of module_type and reference_name' do
-      ancestor.should allow_mass_assignment_of(:real_path)
+      module_ancestor.should allow_mass_assignment_of(:real_path)
     end
 
     it 'should not allow mass assignment of real_path_modified_at since it is derived' do
-      ancestor.should_not allow_mass_assignment_of(:real_path_modified_at)
+      module_ancestor.should_not allow_mass_assignment_of(:real_path_modified_at)
     end
 
     it 'should not allow mass assignment of real_path_sha1_hex_digest since it is derived' do
-      ancestor.should_not allow_mass_assignment_of(:real_path_sha1_hex_digest)
+      module_ancestor.should_not allow_mass_assignment_of(:real_path_sha1_hex_digest)
     end
 
     it { should_not allow_mass_assignment_of(:parent_path_id) }
   end
 
   context 'validations' do
-    subject(:ancestor) do
+    subject(:module_ancestor) do
       # Don't use factory so that nil values can be tested without the nil being replaced with derived value
-      ancestor_class.new
+      module_ancestor_class.new
     end
 
     context 'handler_type' do
-      subject(:ancestor) do
+      subject(:module_ancestor) do
         FactoryGirl.build(
-            ancestor_factory,
+            module_ancestor_factory,
             :handler_type => handler_type,
             :module_type => module_type,
             :payload_type => payload_type
@@ -337,7 +454,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
                 end
 
                 it 'should be valid' do
-                  ancestor.valid?(validation_context).should be_true
+                  module_ancestor.valid?(validation_context).should be_true
                 end
               end
 
@@ -345,9 +462,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
                 it { should_not be_valid }
 
                 it 'should record error on handler_type' do
-                  ancestor.valid?
+                  module_ancestor.valid?
 
-                  ancestor.errors[:handler_type].should include("can't be blank")
+                  module_ancestor.errors[:handler_type].should include("can't be blank")
                 end
               end
             end
@@ -366,9 +483,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               it { should_not be_valid }
 
               it 'should record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should include('must be nil')
+                module_ancestor.errors[:handler_type].should include('must be nil')
               end
             end
 
@@ -402,9 +519,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               it { should_not be_valid }
 
               it 'should record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should include("can't be blank")
+                module_ancestor.errors[:handler_type].should include("can't be blank")
               end
             end
           end
@@ -419,7 +536,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
         context 'with payload_type' do
           # force payload_type to NOT be derived to check invalid setups
           before(:each) do
-            ancestor.payload_type = payload_type
+            module_ancestor.payload_type = payload_type
           end
 
           context 'single' do
@@ -435,9 +552,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               it { should be_invalid }
 
               it 'should record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should include('must be nil')
+                module_ancestor.errors[:handler_type].should include('must be nil')
               end
             end
 
@@ -447,9 +564,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               end
 
               it 'should not record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should be_empty
+                module_ancestor.errors[:handler_type].should be_empty
               end
             end
           end
@@ -467,9 +584,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               it { should_not be_valid }
 
               it 'should record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should include('must be nil')
+                module_ancestor.errors[:handler_type].should include('must be nil')
               end
             end
 
@@ -479,9 +596,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               end
 
               it 'should not record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should be_empty
+                module_ancestor.errors[:handler_type].should be_empty
               end
             end
           end
@@ -499,9 +616,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               it { should_not be_valid }
 
               it 'should record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should include('must be nil')
+                module_ancestor.errors[:handler_type].should include('must be nil')
               end
             end
 
@@ -511,9 +628,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
               end
 
               it 'should not record error on handler_type' do
-                ancestor.valid?
+                module_ancestor.valid?
 
-                ancestor.errors[:handler_type].should be_empty
+                module_ancestor.errors[:handler_type].should be_empty
               end
             end
           end
@@ -532,9 +649,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
             it { should_not be_valid }
 
             it 'should record error on handler_type' do
-              ancestor.valid?
+              module_ancestor.valid?
 
-              ancestor.errors[:handler_type].should include('must be nil')
+              module_ancestor.errors[:handler_type].should include('must be nil')
             end
           end
 
@@ -553,9 +670,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     it { should validate_presence_of(:parent_path) }
 
     context 'payload_type' do
-      subject(:ancestor) do
+      subject(:module_ancestor) do
         FactoryGirl.build(
-            ancestor_factory,
+            module_ancestor_factory,
             :module_type => module_type,
             :reference_name => reference_name
         )
@@ -563,7 +680,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
       before(:each) do
         # payload is ignored in metasploit_model_module_ancestor trait so need set it directly
-        ancestor.payload_type = payload_type
+        module_ancestor.payload_type = payload_type
       end
 
       context 'with payload?' do
@@ -603,9 +720,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
           it { should_not be_valid }
 
           it 'should record error on payload_type' do
-            ancestor.valid?
+            module_ancestor.valid?
 
-            ancestor.errors[:payload_type].should include('is not included in the list')
+            module_ancestor.errors[:payload_type].should include('is not included in the list')
           end
         end
       end
@@ -628,9 +745,9 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
           it { should_not be_valid }
 
           it 'should record error on payload_type' do
-            ancestor.valid?
+            module_ancestor.valid?
 
-            ancestor.errors[:payload_type].should include('must be nil')
+            module_ancestor.errors[:payload_type].should include('must be nil')
           end
         end
 
@@ -657,15 +774,15 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
         end
 
         it 'should allow a Digest::SHA1.hexdigest' do
-          ancestor.should allow_value(hexdigest).for(:real_path_sha1_hex_digest)
+          module_ancestor.should allow_value(hexdigest).for(:real_path_sha1_hex_digest)
         end
 
         it 'should not allow a truncated Digest::SHA1.hexdigest' do
-          ancestor.should_not allow_value(hexdigest[0, 39]).for(:real_path_sha1_hex_digest)
+          module_ancestor.should_not allow_value(hexdigest[0, 39]).for(:real_path_sha1_hex_digest)
         end
 
         it 'should not allow upper case hex to maintain normalization' do
-          ancestor.should_not allow_value(hexdigest.upcase).for(:real_path_sha1_hex_digest)
+          module_ancestor.should_not allow_value(hexdigest.upcase).for(:real_path_sha1_hex_digest)
         end
 
         it { should_not allow_value(nil).for(:real_path_sha1_hex_digest) }
@@ -677,27 +794,27 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
         context 'without slashes' do
           context 'first character' do
             it 'should not allow space' do
-              ancestor.should_not allow_value(' ').for(:reference_name)
+              module_ancestor.should_not allow_value(' ').for(:reference_name)
             end
 
             it 'should allow dash' do
-              ancestor.should allow_value('-').for(:reference_name)
+              module_ancestor.should allow_value('-').for(:reference_name)
             end
 
             it 'should allow digit' do
-              ancestor.should allow_value('0').for(:reference_name)
+              module_ancestor.should allow_value('0').for(:reference_name)
             end
 
             it 'should allow uppercase letter' do
-              ancestor.should allow_value('A').for(:reference_name)
+              module_ancestor.should allow_value('A').for(:reference_name)
             end
 
             it 'should allow underscore' do
-              ancestor.should allow_value('_').for(:reference_name)
+              module_ancestor.should allow_value('_').for(:reference_name)
             end
 
             it 'should allow lowercase letter' do
-              ancestor.should allow_value('a').for(:reference_name)
+              module_ancestor.should allow_value('a').for(:reference_name)
             end
           end
 
@@ -711,27 +828,27 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
             end
 
             it 'should not allow space' do
-              ancestor.should_not allow_value("#{first_letter} ").for(:reference_name)
+              module_ancestor.should_not allow_value("#{first_letter} ").for(:reference_name)
             end
 
             it 'should allow dash' do
-              ancestor.should allow_value("#{first_letter}-").for(:reference_name)
+              module_ancestor.should allow_value("#{first_letter}-").for(:reference_name)
             end
 
             it 'should allow digit' do
-              ancestor.should allow_value("#{first_letter}1").for(:reference_name)
+              module_ancestor.should allow_value("#{first_letter}1").for(:reference_name)
             end
 
             it 'should allow uppercase letter' do
-              ancestor.should allow_value("#{first_letter}A").for(:reference_name)
+              module_ancestor.should allow_value("#{first_letter}A").for(:reference_name)
             end
 
             it 'should allow underscore' do
-              ancestor.should allow_value("#{first_letter}_").for(:reference_name)
+              module_ancestor.should allow_value("#{first_letter}_").for(:reference_name)
             end
 
             it 'should allow lowercase letter' do
-              ancestor.should allow_value("#{first_letter}a").for(:reference_name)
+              module_ancestor.should allow_value("#{first_letter}a").for(:reference_name)
             end
           end
         end
@@ -743,31 +860,31 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
           context 'leading' do
             it "should not allow '/'" do
-              ancestor.should_not allow_value("/#{section}").for(:reference_name)
+              module_ancestor.should_not allow_value("/#{section}").for(:reference_name)
             end
 
             it "should not allow '\\'" do
-              ancestor.should_not allow_value("\\#{section}").for(:reference_name)
+              module_ancestor.should_not allow_value("\\#{section}").for(:reference_name)
             end
           end
 
           context 'infix' do
             it "should allow '/'" do
-              ancestor.should allow_value("#{section}/#{section}").for(:reference_name)
+              module_ancestor.should allow_value("#{section}/#{section}").for(:reference_name)
             end
 
             it "should not allow '\\'" do
-              ancestor.should_not allow_value("#{section}\\#{section}").for(:reference_name)
+              module_ancestor.should_not allow_value("#{section}\\#{section}").for(:reference_name)
             end
           end
 
           context 'trailing' do
             it "should not allow '/'" do
-              ancestor.should_not allow_value("#{section}/").for(:reference_name)
+              module_ancestor.should_not allow_value("#{section}/").for(:reference_name)
             end
 
             it "should not allow '\\'" do
-              ancestor.should_not allow_value("#{section}\\").for(:reference_name)
+              module_ancestor.should_not allow_value("#{section}\\").for(:reference_name)
             end
           end
         end
@@ -786,16 +903,16 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#contents' do
     subject(:contents) do
-      ancestor.contents
+      module_ancestor.contents
     end
 
     before(:each) do
-      ancestor.real_path = real_path
+      module_ancestor.real_path = real_path
     end
 
     context 'with #real_path' do
       let(:real_path) do
-        ancestor.derived_real_path
+        module_ancestor.derived_real_path
       end
 
       context 'with file' do
@@ -834,12 +951,12 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_full_name' do
     subject(:derived_full_name) do
-      ancestor.derived_full_name
+      module_ancestor.derived_full_name
     end
 
-    let(:ancestor) do
+    let(:module_ancestor) do
       FactoryGirl.build(
-          ancestor_factory,
+          module_ancestor_factory,
           :module_type => module_type,
           # don't create parent_path since it's unneeded for tests
           :parent_path => nil
@@ -852,7 +969,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       end
 
       it "should equal <module_type>/<reference_name>" do
-        derived_full_name.should == "#{ancestor.module_type}/#{ancestor.reference_name}"
+        derived_full_name.should == "#{module_ancestor.module_type}/#{module_ancestor.reference_name}"
       end
     end
 
@@ -867,25 +984,25 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_module_type' do
     subject(:derived_module_type) do
-      ancestor.derived_module_type
+      module_ancestor.derived_module_type
     end
 
     before(:each) do
-      ancestor.real_path = real_path
+      module_ancestor.real_path = real_path
     end
 
     context 'with #real_path' do
       let(:real_path) do
-        ancestor.derived_real_path
+        module_ancestor.derived_real_path
       end
 
       before(:each) do
-        ancestor.parent_path = module_path
+        module_ancestor.parent_path = module_path
       end
 
       context 'with Metasploit::Model::Module::Path' do
         let(:module_path) do
-          ancestor.parent_path
+          module_ancestor.parent_path
         end
 
         before(:each) do
@@ -929,12 +1046,12 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_payload_type' do
     subject(:derived_payload_type) do
-      ancestor.derived_payload_type
+      module_ancestor.derived_payload_type
     end
 
-    let(:ancestor) do
+    let(:module_ancestor) do
       FactoryGirl.build(
-          ancestor_factory,
+          module_ancestor_factory,
           :module_type => module_type
       )
     end
@@ -945,7 +1062,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       end
 
       it 'should singularize payload_type_directory' do
-        derived_payload_type.should == ancestor.payload_type_directory.singularize
+        derived_payload_type.should == module_ancestor.payload_type_directory.singularize
       end
     end
 
@@ -960,12 +1077,12 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_real_path' do
     subject(:derived_real_path) do
-      ancestor.derived_real_path
+      module_ancestor.derived_real_path
     end
 
-    let(:ancestor) do
+    let(:module_ancestor) do
       FactoryGirl.build(
-          ancestor_factory,
+          module_ancestor_factory,
           :module_type => module_type,
           :parent_path => parent_path,
           :reference_name => reference_name
@@ -987,7 +1104,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     context 'with parent_path' do
       let(:parent_path) do
         FactoryGirl.build(
-            path_factory,
+            module_path_factory,
             :real_path => parent_path_real_path
         )
       end
@@ -1010,8 +1127,8 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
             it 'should be full path including parent_path.real_path, type_directory, and reference_path' do
               derived_real_path.should == File.join(
                   parent_path_real_path,
-                  ancestor.module_type_directory,
-                  ancestor.reference_path
+                  module_ancestor.module_type_directory,
+                  module_ancestor.reference_path
               )
             end
           end
@@ -1054,22 +1171,22 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_real_path_modified_at' do
     subject(:derived_real_path_modified_at) do
-      ancestor.derived_real_path_modified_at
+      module_ancestor.derived_real_path_modified_at
     end
 
-    let(:ancestor) do
-      FactoryGirl.build(ancestor_factory)
+    let(:module_ancestor) do
+      FactoryGirl.build(module_ancestor_factory)
     end
 
     context 'with real_path' do
       before(:each) do
-        ancestor.real_path = real_path
+        module_ancestor.real_path = real_path
       end
 
       context 'that exists' do
         let(:real_path) do
           # derived real path will have been created by factory's after(:build)
-          ancestor.derived_real_path
+          module_ancestor.derived_real_path
         end
 
         it 'should be modification time of file' do
@@ -1092,7 +1209,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
     context 'without real_path' do
       it 'should have nil for real_path' do
-        ancestor.real_path.should be_nil
+        module_ancestor.real_path.should be_nil
       end
 
       it { should be_nil }
@@ -1101,21 +1218,21 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_real_path_sha1_hex_digest' do
     subject(:derived_real_path_sha1_hex_digest) do
-      ancestor.derived_real_path_sha1_hex_digest
+      module_ancestor.derived_real_path_sha1_hex_digest
     end
 
-    let(:ancestor) do
-      FactoryGirl.build(ancestor_factory)
+    let(:module_ancestor) do
+      FactoryGirl.build(module_ancestor_factory)
     end
 
     context 'with real_path' do
       before(:each) do
-        ancestor.real_path = ancestor.derived_real_path
+        module_ancestor.real_path = module_ancestor.derived_real_path
       end
 
       context 'that exists' do
         it 'should read the using Digest::SHA1.file' do
-          Digest::SHA1.should_receive(:file).with(ancestor.real_path).and_call_original
+          Digest::SHA1.should_receive(:file).with(module_ancestor.real_path).and_call_original
 
           derived_real_path_sha1_hex_digest
         end
@@ -1126,7 +1243,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
           end
 
           before(:each) do
-            File.open(ancestor.real_path, 'wb') do |f|
+            File.open(module_ancestor.real_path, 'wb') do |f|
               f.write(content)
             end
           end
@@ -1137,7 +1254,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
             end
 
             it 'should have empty file at real_path' do
-              File.size(ancestor.real_path).should be_zero
+              File.size(module_ancestor.real_path).should be_zero
             end
 
             it 'should have SHA1 hex digest for empty string' do
@@ -1159,7 +1276,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
       context 'that does not exist' do
         before(:each) do
-          File.delete(ancestor.real_path)
+          File.delete(module_ancestor.real_path)
         end
 
         it { should be_nil }
@@ -1168,7 +1285,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
     context 'without real_path' do
       it 'should have nil for real_path' do
-        ancestor.real_path.should be_nil
+        module_ancestor.real_path.should be_nil
       end
 
       it { should be_nil }
@@ -1177,11 +1294,11 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#derived_reference_name' do
     subject(:derived_reference_name) do
-      ancestor.derived_reference_name
+      module_ancestor.derived_reference_name
     end
 
     before(:each) do
-      ancestor.stub(relative_file_names: relative_file_names)
+      module_ancestor.stub(relative_file_names: relative_file_names)
     end
 
     context 'with empty #relative_file_names' do
@@ -1236,7 +1353,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
   # class method
   context 'handled?' do
     subject(:handled?) do
-      ancestor_class.handled?(
+      module_ancestor_class.handled?(
           :module_type => module_type,
           :payload_type => payload_type
       )
@@ -1368,12 +1485,12 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
   # instance method
   context '#handled?' do
     subject(:handled?) do
-      ancestor.handled?
+      module_ancestor.handled?
     end
 
-    let(:ancestor) do
+    let(:module_ancestor) do
       FactoryGirl.build(
-          ancestor_factory,
+          module_ancestor_factory,
           :module_type => module_type,
           :payload_type => payload_type
       )
@@ -1388,11 +1505,11 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
     end
 
     before(:each) do
-      ancestor.payload_type = ancestor.derived_payload_type
+      module_ancestor.payload_type = module_ancestor.derived_payload_type
     end
 
     it 'should delegate to class method' do
-      ancestor_class.should_receive(:handled?).with(
+      module_ancestor_class.should_receive(:handled?).with(
           :module_type => module_type,
           :payload_type => payload_type
       )
@@ -1403,33 +1520,33 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#loading_context?' do
     subject(:loading_context?) do
-      ancestor.send(:loading_context?)
+      module_ancestor.send(:loading_context?)
     end
 
     context 'with valid?' do
       it 'should be false' do
-        ancestor.should_receive(:run_validations!) do
+        module_ancestor.should_receive(:run_validations!) do
           loading_context?.should be_false
         end
 
-        ancestor.valid?
+        module_ancestor.valid?
       end
     end
 
     context 'with valid?(:loading)' do
       it 'should be true' do
-        ancestor.should_receive(:run_validations!) do
+        module_ancestor.should_receive(:run_validations!) do
           loading_context?.should be_true
         end
 
-        ancestor.valid?(:loading)
+        module_ancestor.valid?(:loading)
       end
     end
   end
 
   context '#payload?' do
-    subject(:ancestor) do
-      ancestor_class.new(:module_type => module_type)
+    subject(:module_ancestor) do
+      module_ancestor_class.new(:module_type => module_type)
     end
 
     context "with 'payload' module_type" do
@@ -1451,11 +1568,11 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#relative_file_names' do
     subject(:relative_file_names) do
-      ancestor.relative_file_names
+      module_ancestor.relative_file_names
     end
 
     before(:each) do
-      ancestor.stub(relative_pathname: relative_pathname)
+      module_ancestor.stub(relative_pathname: relative_pathname)
     end
 
     context 'with #relative_pathnames' do
@@ -1490,11 +1607,11 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#relative_pathname' do
     subject(:relative_pathname) do
-      ancestor.relative_pathname
+      module_ancestor.relative_pathname
     end
 
     before(:each) do
-      ancestor.stub(real_pathname: real_pathname)
+      module_ancestor.stub(real_pathname: real_pathname)
     end
 
     context 'with #real_pathname' do
@@ -1503,12 +1620,12 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
       end
 
       before(:each) do
-        ancestor.parent_path = parent_path
+        module_ancestor.parent_path = parent_path
       end
 
       context 'with #parent_path' do
         let(:parent_path) do
-          ancestor.parent_path
+          module_ancestor.parent_path
         end
 
         before(:each) do
@@ -1557,11 +1674,11 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#reference_path' do
     subject(:reference_path) do
-      ancestor.reference_path
+      module_ancestor.reference_path
     end
 
-    let(:ancestor) do
-      ancestor_class.new(
+    let(:module_ancestor) do
+      module_ancestor_class.new(
           :reference_name => reference_name
       )
     end
@@ -1587,11 +1704,11 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do
 
   context '#module_type_directory' do
     subject(:module_type_directory) do
-      ancestor.module_type_directory
+      module_ancestor.module_type_directory
     end
 
-    let(:ancestor) do
-      ancestor_class.new(
+    let(:module_ancestor) do
+      module_ancestor_class.new(
           :module_type => module_type
       )
     end
