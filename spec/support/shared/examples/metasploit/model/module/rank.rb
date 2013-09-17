@@ -1,5 +1,19 @@
 shared_examples_for 'Metasploit::Model::Module::Rank' do
   context 'CONSTANTS' do
+    context 'NAME_BY_NUMBER' do
+      subject(:name_by_numnber) do
+        described_class::NAME_BY_NUMBER
+      end
+
+      its([0]) { should == 'Manual' }
+      its([100]) { should == 'Low' }
+      its([200]) { should == 'Average' }
+      its([300]) { should == 'Normal' }
+      its([400]) { should == 'Good' }
+      its([500]) { should == 'Great' }
+      its([600]) { should == 'Excellent' }
+    end
+
     context 'NAME_REGEXP' do
       subject(:name_regexp) do
         described_class::NAME_REGEXP

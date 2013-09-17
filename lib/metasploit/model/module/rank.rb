@@ -24,6 +24,8 @@ module Metasploit
             'Great' => 500,
             'Excellent' => 600
         }
+        # Converts {#number} to {#name}.  Used to convert *Ranking constants used in `Msf::Modules` back to Strings.
+        NAME_BY_NUMBER = NUMBER_BY_NAME.invert
 
         included do
           include ActiveModel::MassAssignmentSecurity
