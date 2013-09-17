@@ -64,6 +64,73 @@ describe Metasploit::Model::Module::Class do
 
       it { should be_valid }
 
+      context '#ancestors' do
+        subject(:ancestors) do
+          dummy_module_class.ancestors
+        end
+
+        context 'Metasploit::Model::Module::Ancestor#contents list' do
+          subject(:contents_list) do
+            ancestors.map(&:contents)
+          end
+
+          before(:each) do
+            # need to validate so that real_path is derived so contents can be read
+            ancestors.each(&:valid?)
+          end
+
+          context 'metasploit_modules' do
+            include_context 'Metasploit::Model::Module::Ancestor#contents metasploit_module'
+
+            subject(:metasploit_modules) do
+              namespace_modules.collect { |namespace_module|
+                namespace_module_metasploit_module(namespace_module)
+              }
+            end
+
+            let(:namespace_modules) do
+              ancestors.collect {
+                Module.new
+              }
+            end
+
+            before(:each) do
+              namespace_modules.zip(contents_list) do |namespace_module, contents|
+                namespace_module.module_eval(contents)
+              end
+            end
+
+            context 'rank_names' do
+              subject(:rank_names) do
+                metasploit_modules.collect { |metasploit_module|
+                  metasploit_module.rank_name
+                }
+              end
+
+              it 'should match Metasploit::Model::Module::Class#rank Metasploit::Model:Module::Rank#name' do
+                rank_names.all? { |rank_name|
+                  rank_name == dummy_module_class.rank.name
+                }.should be_true
+              end
+            end
+
+            context 'rank_numbers' do
+              subject(:rank_numbers) do
+                metasploit_modules.collect { |metasploit_module|
+                  metasploit_module.rank_number
+                }
+              end
+
+              it 'should match Metasploit::Model::Module::Class#rank Metasploit::Module::Module::Rank#number' do
+                rank_numbers.all? { |rank_number|
+                  rank_number == dummy_module_class.rank.number
+                }.should be_true
+              end
+            end
+          end
+        end
+      end
+
       context 'module_type' do
         subject(:dummy_module_class) do
           FactoryGirl.build(

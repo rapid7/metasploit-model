@@ -1,12 +1,8 @@
 shared_context 'Metasploit::Model::Module::Ancestor factory contents metasploit_module' do
-  subject(:metasploit_module) do
-    namespace_module.const_get(metasploit_module_constant)
-  end
+  include_context 'Metasploit::Model::Module::Ancestor#contents metasploit_module'
 
-  let(:metasploit_module_constant) do
-    namespace_module.constants.find { |constant|
-      constant.to_s =~ /Metasploit\d+/
-    }
+  subject(:metasploit_module) do
+    namespace_module_metasploit_module(namespace_module)
   end
 
   let(:namespace_module) do

@@ -25,5 +25,52 @@ FactoryGirl.define do
         end
       }
     end
+
+    after(:build) do |module_class|
+      if module_class.rank
+        module_class.ancestors.each do |ancestor|
+          real_path = ancestor.derived_real_path
+
+          if real_path
+            backup_real_path = "#{real_path}.bak"
+            FileUtils.mv(real_path, backup_real_path)
+
+            File.open(backup_real_path, 'rb') do |backup_file|
+              lines = backup_file.readlines
+              # everything before the closing end
+              before = lines[0 ... -1]
+
+              # the closing end
+              after = lines[-1 .. -1]
+
+              File.open(real_path, 'wb') do |f|
+                before.each do |line|
+                  f.puts line
+                end
+
+                # if there is another method already leave a blank line
+                if before[-1] == 'end'
+                  f.puts ''
+                end
+
+                f.puts "  def self.rank_name"
+                f.puts "    #{module_class.rank.name.inspect}"
+                f.puts "  end"
+                f.puts ''
+                f.puts "  def self.rank_number"
+                f.puts "    #{module_class.rank.number}"
+                f.puts "  end"
+
+                after.each do |line|
+                  f.puts line
+                end
+              end
+            end
+
+            File.delete(backup_real_path)
+          end
+        end
+      end
+    end
   end
 end
