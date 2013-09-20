@@ -143,7 +143,10 @@ FactoryGirl.define do
             # handler_module is included in a Msf::Payload subclass along with this module to produce a single payload
             # class.
             f.puts "def self.handler_module"
-            f.puts "  @handler_module ||= Module.new {"
+            # need to use `::Module` as `Module` would resolve to `Msf::Module` in the lexical scope
+            # `[Msf::Modules::<namespace_module>, Msf::Modules, Msf]` used to load
+            # {Metasploit::Model::Module::Ancestor#contents} in metasploit-framework.
+            f.puts "  @handler_module ||= ::Module.new {"
             f.puts "    def self.handler_type"
             f.puts "      #{ancestor.handler_type.inspect}"
             f.puts "    end"
