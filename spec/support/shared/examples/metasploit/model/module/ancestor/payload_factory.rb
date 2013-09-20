@@ -25,9 +25,39 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor payload factory' do |op
         it { send(method, respond_to(:handler_type_alias)) }
 
         if should_have_handler_type
+          let(:handler_module) do
+            metasploit_module.handler_module
+          end
+
+          context 'handler_module' do
+            subject do
+              handler_module
+            end
+
+            it { should be_a Module }
+
+            it { should respond_to :handler_type }
+
+            context 'handler_type' do
+              subject(:handler_type) do
+                handler_module.handler_type
+              end
+
+              it 'should be Metasploit::Model::Module::Ancestor#handler_type' do
+                handler_type.should == module_ancestor.handler_type
+              end
+            end
+          end
+
           context 'handler_type_alias' do
             subject(:handler_type_alias) do
               metasploit_module.handler_type_alias
+            end
+
+            it 'should delegate to handler_module' do
+              handler_module.should_receive(:handler_type)
+
+              handler_type_alias
             end
 
             it 'should be #handler_type' do

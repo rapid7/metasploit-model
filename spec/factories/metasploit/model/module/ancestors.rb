@@ -140,12 +140,22 @@ FactoryGirl.define do
           f.puts "#{keyword} #{metasploit_module_relative_name}"
 
           if ancestor.handler_type
+            # handler_module is included in a Msf::Payload subclass along with this module to produce a single payload
+            # class.
+            f.puts "def self.handler_module"
+            f.puts "  @handler_module ||= Module.new {"
+            f.puts "    def self.handler_type"
+            f.puts "      #{ancestor.handler_type.inspect}"
+            f.puts "    end"
+            f.puts "  }"
+            f.puts "end"
+
             # `Metasploit::Framework::Module::Ancestor::Namespace#module_ancestor_eval` uses `Module.handler_type_alias`
             # to set Metasploit::Model::Module::Ancestor#handler_type.  The method is not called `handler_type` on
             # `Module` due to how the metasploit-framework API allows overriding the handler_type with a more unique
             # name to make staged payload reference names unique.
             f.puts "  def self.handler_type_alias"
-            f.puts "    #{ancestor.handler_type.inspect}"
+            f.puts "    @handler_type_alias ||= handler_module.handler_type"
             f.puts "  end"
           end
 
