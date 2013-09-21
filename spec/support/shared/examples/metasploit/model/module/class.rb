@@ -1070,7 +1070,7 @@ shared_examples_for 'Metasploit::Model::Module::Class' do
 
           context 'with handler_type' do
             let(:handler_type) do
-              FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+              FactoryGirl.generate :metasploit_model_module_handler_type
             end
 
             it 'should return <reference_name>/<handler_type>' do
@@ -1155,7 +1155,7 @@ shared_examples_for 'Metasploit::Model::Module::Class' do
 
             context 'with handler_type' do
               let(:stager_handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it 'should be <stage.reference_name>/<stager.handler_type>' do

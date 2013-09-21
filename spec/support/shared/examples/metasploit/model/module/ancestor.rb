@@ -437,7 +437,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
             context 'with handler_type' do
               let(:handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it { should be_valid }
@@ -477,7 +477,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
             context 'with handler_type' do
               let(:handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it { should_not be_valid }
@@ -505,7 +505,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
             context 'with handler_type' do
               let(:handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it { should be_valid }
@@ -546,7 +546,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
             context 'with handler_type' do
               let(:handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it { should be_invalid }
@@ -578,7 +578,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
             context 'with handler_type' do
               let(:handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it { should_not be_valid }
@@ -610,7 +610,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
             context 'with handler_type' do
               let(:handler_type) do
-                FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+                FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
               it { should_not be_valid }
@@ -643,7 +643,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
           context 'with handler_type' do
             let(:handler_type) do
-              FactoryGirl.generate :metasploit_model_module_ancestor_handler_type
+              FactoryGirl.generate :metasploit_model_module_handler_type
             end
 
             it { should_not be_valid }

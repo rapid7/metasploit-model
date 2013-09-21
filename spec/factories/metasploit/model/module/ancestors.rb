@@ -1,7 +1,4 @@
 FactoryGirl.define do
-  sequence :metasploit_model_module_ancestor_handler_type do |n|
-    "metasploit_model_module_ancestor_handler_type#{n}"
-  end
 
   minimum_version = 1
   maximum_version = 4
@@ -105,7 +102,7 @@ FactoryGirl.define do
       # can't use #handled? because it will check payload_type on model, not ignored field in factory, so use
       # .handled?
       if @instance.class.handled?(:module_type => module_type, :payload_type => derived_payload_type)
-        generate :metasploit_model_module_ancestor_handler_type
+        generate :metasploit_model_module_handler_type
       else
         nil
       end
@@ -143,13 +140,23 @@ FactoryGirl.define do
             # handler_module is included in a Msf::Payload subclass along with this module to produce a single payload
             # class.
             f.puts "def self.handler_module"
+
             # need to use `::Module` as `Module` would resolve to `Msf::Module` in the lexical scope
             # `[Msf::Modules::<namespace_module>, Msf::Modules, Msf]` used to load
             # {Metasploit::Model::Module::Ancestor#contents} in metasploit-framework.
             f.puts "  @handler_module ||= ::Module.new {"
+
+            # When an Msf::Payload is initialized, the connection_type is handler_module.general_handler_type
+            f.puts "    def self.general_handler_type"
+            general_handler_type = generate :metasploit_model_module_handler_general_type
+            f.puts "      #{general_handler_type.inspect}"
+            f.puts "    end"
+
+            # handler_type_alias in Module defers to handler_module.handler_type alais if not set explicitly.
             f.puts "    def self.handler_type"
             f.puts "      #{ancestor.handler_type.inspect}"
             f.puts "    end"
+
             f.puts "  }"
             f.puts "end"
 

@@ -34,9 +34,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor payload factory' do |op
               handler_module
             end
 
-            it { should be_a Module }
-
-            it { should respond_to :handler_type }
+            it_should_behave_like 'Metasploit::Model::Module::Handler'
 
             context 'handler_type' do
               subject(:handler_type) do
