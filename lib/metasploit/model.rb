@@ -1,6 +1,9 @@
 #
 # Gems
 #
+require 'active_model'
+require 'active_support'
+# not loaded by default with require 'active_support'
 require 'active_support/dependencies'
 
 #
