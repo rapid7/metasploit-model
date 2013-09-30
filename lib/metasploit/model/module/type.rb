@@ -31,6 +31,13 @@ module Metasploit
             PAYLOAD,
             POST
         ]
+
+        # Array<String> of all module types that aren't {PAYLOAD} because {PAYLOAD}
+        # {Metasploit::Model::Module::Ancestor#contents} define `Modules` instead of `Classes` and so need to be loaded
+        # differently.
+        NON_PAYLOAD = ALL.reject { |module_type|
+          module_type == PAYLOAD
+        }
       end
     end
   end

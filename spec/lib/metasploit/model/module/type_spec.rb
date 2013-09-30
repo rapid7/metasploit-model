@@ -68,6 +68,36 @@ describe Metasploit::Model::Module::Type do
       it { should == 'exploit' }
     end
 
+    context 'NON_PAYLOAD' do
+      subject(:non_payload) do
+        described_class::NON_PAYLOAD
+      end
+
+      it 'should include AUX' do
+        non_payload.should include(described_class::AUX)
+      end
+
+      it 'should include ENCODER' do
+        non_payload.should include(described_class::ENCODER)
+      end
+
+      it 'should include EXPLOIT' do
+        non_payload.should include(described_class::EXPLOIT)
+      end
+
+      it 'should include NOP' do
+        non_payload.should include(described_class::NOP)
+      end
+
+      it 'should not include PAYLOAD' do
+        non_payload.should_not include(described_class::PAYLOAD)
+      end
+
+      it 'should include POST' do
+        non_payload.should include(described_class::POST)
+      end
+    end
+
     context 'NOP' do
       subject(:nop) do
         described_class::NOP
