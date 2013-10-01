@@ -107,7 +107,7 @@ describe Metasploit::Model::Module::Type do
     end
 
     context 'PAYLOAD' do
-      subject(:payload) do
+      subject(:payload_types) do
         described_class::PAYLOAD
       end
 

@@ -112,65 +112,30 @@ FactoryGirl.define do
     # Callbacks
     #
 
-    after(:build) do |ancestor|
-      path = ancestor.derived_real_path
+    after(:build) do |module_ancestor|
+      # validate to derive attributes
+      module_ancestor.valid?
 
-      if path
-        pathname = Pathname.new(path)
-        Metasploit::Model::Spec::PathnameCollision.check!(pathname)
-        # make directory
-        pathname.parent.mkpath
+      destination_pathname = module_ancestor.real_pathname
 
-        # make file
-        pathname.open('w') do |f|
-          f.puts "# Module Type: #{ancestor.module_type}"
-          f.puts "# Reference Name: #{ancestor.reference_name}"
+      if destination_pathname
+        metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
 
-          # Needs a Module<n> constant so that `Metasploit::Framework::Module::Ancestor::Load`` can load it
-          keyword = 'class'
+        template = Metasploit::Model::Spec::Template.new(
+            destination_pathname: destination_pathname,
+            locals: {
+                metasploit_module_relative_name: metasploit_module_relative_name,
+                module_ancestor: module_ancestor
+            },
+            overwrite: false,
+            search_pathnames: [
+                Pathname.new('module/ancestors')
+            ],
+            source_relative_name: 'base'
+        )
+        template.valid!
 
-          if ancestor.module_type == Metasploit::Model::Module::Type::PAYLOAD
-            keyword = 'module'
-          end
-
-          metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
-          f.puts "#{keyword} #{metasploit_module_relative_name}"
-
-          if ancestor.handler_type
-            # handler_module is included in a Msf::Payload subclass along with this module to produce a single payload
-            # class.
-            f.puts "def self.handler_module"
-
-            # need to use `::Module` as `Module` would resolve to `Msf::Module` in the lexical scope
-            # `[Msf::Modules::<namespace_module>, Msf::Modules, Msf]` used to load
-            # {Metasploit::Model::Module::Ancestor#contents} in metasploit-framework.
-            f.puts "  @handler_module ||= ::Module.new {"
-
-            # When an Msf::Payload is initialized, the connection_type is handler_module.general_handler_type
-            f.puts "    def self.general_handler_type"
-            general_handler_type = generate :metasploit_model_module_handler_general_type
-            f.puts "      #{general_handler_type.inspect}"
-            f.puts "    end"
-
-            # handler_type_alias in Module defers to handler_module.handler_type alais if not set explicitly.
-            f.puts "    def self.handler_type"
-            f.puts "      #{ancestor.handler_type.inspect}"
-            f.puts "    end"
-
-            f.puts "  }"
-            f.puts "end"
-
-            # `Metasploit::Framework::Module::Ancestor::Namespace#module_ancestor_eval` uses `Module.handler_type_alias`
-            # to set Metasploit::Model::Module::Ancestor#handler_type.  The method is not called `handler_type` on
-            # `Module` due to how the metasploit-framework API allows overriding the handler_type with a more unique
-            # name to make staged payload reference names unique.
-            f.puts "  def self.handler_type_alias"
-            f.puts "    @handler_type_alias ||= handler_module.handler_type"
-            f.puts "  end"
-          end
-
-          f.puts "end"
-        end
+        template.write
       end
     end
   end

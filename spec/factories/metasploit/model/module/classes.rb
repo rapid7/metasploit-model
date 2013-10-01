@@ -28,46 +28,32 @@ FactoryGirl.define do
 
     after(:build) do |module_class|
       if module_class.rank
-        module_class.ancestors.each do |ancestor|
-          real_path = ancestor.derived_real_path
+        module_class.ancestors.each do |module_ancestor|
+          # validate to derive attributes
+          module_ancestor.valid?
 
-          if real_path
-            backup_real_path = "#{real_path}.bak"
-            FileUtils.mv(real_path, backup_real_path)
+          destination_pathname = module_ancestor.real_pathname
 
-            File.open(backup_real_path, 'rb') do |backup_file|
-              lines = backup_file.readlines
-              # everything before the closing end
-              before = lines[0 ... -1]
+          if destination_pathname
+            metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
 
-              # the closing end
-              after = lines[-1 .. -1]
+            template = Metasploit::Model::Spec::Template.new(
+                destination_pathname: destination_pathname,
+                locals: {
+                    metasploit_module_relative_name: metasploit_module_relative_name,
+                    module_ancestor: module_ancestor,
+                    module_class: module_class
+                },
+                overwrite: true,
+                search_pathnames: [
+                    Pathname.new('module/classes'),
+                    Pathname.new('module/ancestors')
+                ],
+                source_relative_name: 'base'
+            )
+            template.valid!
 
-              File.open(real_path, 'wb') do |f|
-                before.each do |line|
-                  f.puts line
-                end
-
-                # if there is another method already leave a blank line
-                if before[-1] == 'end'
-                  f.puts ''
-                end
-
-                f.puts "  def self.rank_name"
-                f.puts "    #{module_class.rank.name.inspect}"
-                f.puts "  end"
-                f.puts ''
-                f.puts "  def self.rank_number"
-                f.puts "    #{module_class.rank.number}"
-                f.puts "  end"
-
-                after.each do |line|
-                  f.puts line
-                end
-              end
-            end
-
-            File.delete(backup_real_path)
+            template.write
           end
         end
       end

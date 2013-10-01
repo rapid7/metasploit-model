@@ -1,0 +1,19 @@
+def self.handler_module
+  # need to use `::Module` as `Module` would resolve to `Msf::Module` in the lexical scope
+  # `[Msf::Modules::<namespace_module>, Msf::Modules, Msf]` used to load
+  # {Metasploit::Model::Module::Ancestor#contents} in metasploit-framework.
+  @handler_module ||= ::Module.new {
+    def self.general_handler_type
+      <% general_handler_type = FactoryGirl.generate :metasploit_model_module_handler_general_type %>
+      <%= general_handler_type.inspect %>
+    end
+
+    def self.handler_type
+      <%= module_ancestor.handler_type.inspect %>
+    end
+  }
+end
+
+def self.handler_type_alias
+  @handler_type_alias ||= handler_module.handler_type
+end

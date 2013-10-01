@@ -312,6 +312,65 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
 
           # Classes are Modules, so this checks that it is either a Class or a Module.
           it { should be_a Module }
+
+          context '#module_type' do
+            let(:module_ancestor) do
+              FactoryGirl.build(
+                  module_ancestor_factory,
+                  module_type: module_type
+              )
+            end
+
+            context 'with payload' do
+              let(:module_type) do
+                Metasploit::Model::Module::Type::PAYLOAD
+              end
+
+              it { should_not be_a Class }
+
+              it 'should define #initalize that takes an option hash' do
+                begin
+                  unbound_method = metasploit_module.instance_method(:initialize)
+                rescue NameError
+                  unbound_method = nil
+                end
+
+                unbound_method.should_not be_nil
+                unbound_method.should have(1).parameters
+                unbound_method.parameters[0][0].should == :opt
+              end
+            end
+
+            context 'without payload' do
+              let(:module_type) do
+                FactoryGirl.generate :metasploit_model_non_payload_module_type
+              end
+
+              it { should be_a Class }
+
+              context '#initialize' do
+                subject(:instance) do
+                  metasploit_module.new(attributes)
+                end
+
+                context 'with :framework' do
+                  let(:attributes) do
+                    {
+                        framework: framework
+                    }
+                  end
+
+                  let(:framework) do
+                    double('Msf::Framework')
+                  end
+
+                  it 'should set #framework' do
+                    instance.framework.should == framework
+                  end
+                end
+              end
+            end
+          end
         end
       end
     end
@@ -1208,6 +1267,10 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
     end
 
     context 'without real_path' do
+      before(:each) do
+        module_ancestor.real_path = nil
+      end
+
       it 'should have nil for real_path' do
         module_ancestor.real_path.should be_nil
       end
@@ -1284,6 +1347,10 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
     end
 
     context 'without real_path' do
+      before(:each) do
+        module_ancestor.real_path = nil
+      end
+
       it 'should have nil for real_path' do
         module_ancestor.real_path.should be_nil
       end
