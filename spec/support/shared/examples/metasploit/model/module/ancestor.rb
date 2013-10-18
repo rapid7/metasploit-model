@@ -856,16 +856,16 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
               module_ancestor.should_not allow_value(' ').for(:reference_name)
             end
 
-            it 'should allow dash' do
-              module_ancestor.should allow_value('-').for(:reference_name)
+            it 'should not allow dash' do
+              module_ancestor.should_not allow_value('-').for(:reference_name)
             end
 
             it 'should allow digit' do
               module_ancestor.should allow_value('0').for(:reference_name)
             end
 
-            it 'should allow uppercase letter' do
-              module_ancestor.should allow_value('A').for(:reference_name)
+            it 'should not allow uppercase letter' do
+              module_ancestor.should_not allow_value('A').for(:reference_name)
             end
 
             it 'should allow underscore' do
@@ -951,8 +951,8 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
         context 'real-world examples' do
           it { should allow_value('admin/2wire/xslt_password_reset').for(:reference_name) }
           it { should allow_value('dos/http/3com_superstack_switch').for(:reference_name) }
-          it { should allow_value('windows/brightstor/tape_engine_8A').for(:reference_name) }
-          it { should allow_value('windows/fileformat/a-pdf_wav_to_mp3').for(:reference_name) }
+          it { should_not allow_value('windows/brightstor/tape_engine_8A').for(:reference_name) }
+          it { should_inot allow_value('windows/fileformat/a-pdf_wav_to_mp3').for(:reference_name) }
           it { should allow_value('windows/ftp/32bitftp_list_reply').for(:reference_name) }
           it { should allow_value('windows/ftp/3cdaemon_ftp_user').for(:reference_name) }
         end
