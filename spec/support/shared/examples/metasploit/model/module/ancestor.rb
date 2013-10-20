@@ -890,16 +890,16 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
               module_ancestor.should_not allow_value("#{first_letter} ").for(:reference_name)
             end
 
-            it 'should allow dash' do
-              module_ancestor.should allow_value("#{first_letter}-").for(:reference_name)
+            it 'should not allow dash' do
+              module_ancestor.should_not allow_value("#{first_letter}-").for(:reference_name)
             end
 
             it 'should allow digit' do
               module_ancestor.should allow_value("#{first_letter}1").for(:reference_name)
             end
 
-            it 'should allow uppercase letter' do
-              module_ancestor.should allow_value("#{first_letter}A").for(:reference_name)
+            it 'should not allow uppercase letter' do
+              module_ancestor.should_not allow_value("#{first_letter}A").for(:reference_name)
             end
 
             it 'should allow underscore' do
@@ -928,8 +928,8 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
           end
 
           context 'infix' do
-            it "should allow '/'" do
-              module_ancestor.should allow_value("#{section}/#{section}").for(:reference_name)
+            it "should not allow '/'" do
+              module_ancestor.should_not allow_value("#{section}/#{section}").for(:reference_name)
             end
 
             it "should not allow '\\'" do
@@ -952,7 +952,7 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
           it { should allow_value('admin/2wire/xslt_password_reset').for(:reference_name) }
           it { should allow_value('dos/http/3com_superstack_switch').for(:reference_name) }
           it { should_not allow_value('windows/brightstor/tape_engine_8A').for(:reference_name) }
-          it { should_inot allow_value('windows/fileformat/a-pdf_wav_to_mp3').for(:reference_name) }
+          it { should_not allow_value('windows/fileformat/a-pdf_wav_to_mp3').for(:reference_name) }
           it { should allow_value('windows/ftp/32bitftp_list_reply').for(:reference_name) }
           it { should allow_value('windows/ftp/3cdaemon_ftp_user').for(:reference_name) }
         end
