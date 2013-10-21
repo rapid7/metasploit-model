@@ -17,12 +17,12 @@ FactoryGirl.define do
 
   sequence :metasploit_model_module_instance_privileged, Metasploit::Model::Module::Instance::PRIVILEGES.cycle
 
-  total_architectures = Dummy::Architecture.all.count
-  total_platforms = Dummy::Platform.all.count
+  total_architectures = Metasploit::Model::Architecture::ABBREVIATIONS.length
+  total_platforms = Metasploit::Model::Platform.fully_qualified_names.length
   # arbitrarily chosen maximum when there are a bounded total of the associated records.  Most chosen because 3 will
   # test that there is no 1 or 2 special casing make it work.
   arbitrary_maximum = 3
-  arbitrary_supported_length = -> {
+  arbitrary_supported_length = ->{
     Random.rand(SupportValidator::MINIMUM_LENGTH .. arbitrary_maximum)
   }
 
