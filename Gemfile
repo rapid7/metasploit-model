@@ -24,6 +24,8 @@ group :test do
   gem 'actionpack', *rails_version_constraint
   # Engine tasks are loaded using railtie
   gem 'railties', *rails_version_constraint
+  # need rspec-core >= 2.14.0 because 2.14.0 introduced RSpec::Core::SharedExampleGroup::TopLevel
+  gem 'rspec-core', '>= 2.14.0'
   # need rspec-rails >= 2.12.0 as 2.12.0 adds support for redefining named subject in nested context that uses the
   # named subject from the outer context without causing a stack overflow.
   gem 'rspec-rails', '>= 2.12.0'
