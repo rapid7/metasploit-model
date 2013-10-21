@@ -25,7 +25,7 @@ describe Metasploit::Model::Invalid do
 
   it 'should translate errors using metasploit.model.invalid' do
     I18n.should_receive(:translate).with(
-        'metasploit.model.invalid',
+        'metasploit.model.errors.messages.model_invalid',
         hash_including(
             :errors => anything
         )
@@ -36,7 +36,7 @@ describe Metasploit::Model::Invalid do
 
   it 'should set translated errors as message' do
     message = "translated message"
-    I18n.stub(:translate).with('metasploit.model.invalid', anything).and_return(message)
+    I18n.stub(:translate).with('metasploit.model.errors.messages.model_invalid', anything).and_return(message)
     instance = described_class.new(model)
 
     instance.message.should == message

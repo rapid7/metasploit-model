@@ -9,11 +9,6 @@ module Metasploit
       include Metasploit::Model::Search::Attribute
       include Metasploit::Model::Search::With
 
-      included do
-        # ensure search_i18n_scope is either derived from base or copied from Metasploit::Model::* ancestor.
-        extend Metasploit::Model::Search::Translation
-      end
-
       # Allows operators registered with {Metasploit::Model::Search::Association::ClassMethods#search_association} and
       # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute} to be looked up by name.
       module ClassMethods

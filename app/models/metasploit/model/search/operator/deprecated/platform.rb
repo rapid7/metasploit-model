@@ -5,10 +5,10 @@ class Metasploit::Model::Search::Operator::Deprecated::Platform < Metasploit::Mo
   # CONSTANTS
   #
 
-  # Names of associations with a name attribute operator that should be part of {#children} for this union.
-  ASSOCIATION_NAMES = [
-      'platforms',
-      'targets'
+  # Formatted operators that should be part of {#children} for this union.
+  FORMATTED_OPERATORS = [
+      'platforms.fully_qualified_name',
+      'targets.name'
   ]
 
   #
@@ -32,13 +32,12 @@ class Metasploit::Model::Search::Operator::Deprecated::Platform < Metasploit::Mo
   # Methods
   #
 
-  # Array of `platforms.name:<formatted_value>` and `targets.name:<formatted_value>` operations.
+  # Array of `platforms.fully_qualified_name:<formatted_value>` and `targets.name:<formatted_value>` operations.
   #
   # @param formatted_value [String] value parsed from formatted operation.
   # @return [Array<Metasploit::Model::Search::Operation::Base>]
   def children(formatted_value)
-    ASSOCIATION_NAMES.collect { |association_name|
-      formatted_operator = "#{association_name}.name"
+    FORMATTED_OPERATORS.collect { |formatted_operator|
       association_operator = operator(formatted_operator)
       association_operator.operate_on(formatted_value)
     }

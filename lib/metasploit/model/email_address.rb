@@ -2,19 +2,31 @@ module Metasploit
   module Model
     # Code shared between `Mdm::EmailAddress` and `Metasploit::Framework::EmailAddress`.
     module EmailAddress
+      extend ActiveModel::Naming
       extend ActiveSupport::Concern
-      extend Metasploit::Model::Search::Translation
+
+      include Metasploit::Model::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity
         include ActiveModel::Validations
+        include Metasploit::Model::Derivation
         include Metasploit::Model::Search
+
+        #
+        # Derivations
+        #
+
+        derives :domain, :validate => true
+        derives :full, :validate => true
+        derives :local, :validate => true
 
         #
         # Mass Assignment Security
         #
 
         attr_accessible :domain
+        attr_accessible :full
         attr_accessible :local
 
         #
@@ -22,6 +34,7 @@ module Metasploit
         #
 
         search_attribute :domain, :type => :string
+        search_attribute :full, :type => :string
         search_attribute :local, :type => :string
 
         #
@@ -60,10 +73,56 @@ module Metasploit
       #
       #   @return [String]
 
+      # @!attribute [rw] full
+      #   The full email address.
+      #
+      #   @return [String] <{#local}>@<{#domain}
+
       # @!attribute [rw] local
       #   The local part of the email address before the `'@'`.
       #
       #   @return [String]
+
+      #
+      # Methods
+      #
+
+      # Derives {#domain} from {#full}
+      #
+      # @return [String] if {#full} is present
+      # @return [nil] if {#full} is not present
+      def derived_domain
+        domain = nil
+
+        if full.present?
+          _local, domain = full.split('@', 2)
+        end
+
+        domain
+      end
+
+      # Derives {#full} from {#domain} and {#local}
+      #
+      # @return [String]
+      def derived_full
+        if domain.present? && local.present?
+          "#{local}@#{domain}"
+        end
+      end
+
+      # Derives {#local} from {#full}.
+      #
+      # @return [String] if {#full} is present
+      # @return [nil] if {#full} is not present
+      def derived_local
+        local = nil
+
+        if full.present?
+          local, _domain = full.split('@', 2)
+        end
+
+        local
+      end
     end
   end
 end

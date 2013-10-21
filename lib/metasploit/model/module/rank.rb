@@ -3,8 +3,10 @@ module Metasploit
     module Module
       # Code shared between `Mdm::Module::Rank` and `Metasploit::Framework::Module::Rank`.
       module Rank
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
-        extend Metasploit::Model::Search::Translation
+
+        include Metasploit::Model::Translation
 
         #
         # CONSTANTS

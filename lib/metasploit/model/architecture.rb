@@ -2,8 +2,10 @@ module Metasploit
   module Model
     # Code shared between `Mdm::Architecture` and `Metasploit::Framework::Architecture`.
     module Architecture
+      extend ActiveModel::Naming
       extend ActiveSupport::Concern
-      extend Metasploit::Model::Search::Translation
+
+      include Metasploit::Model::Translation
 
       #
       # CONSTANTS

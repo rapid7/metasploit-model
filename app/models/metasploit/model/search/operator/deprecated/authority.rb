@@ -22,21 +22,6 @@ class Metasploit::Model::Search::Operator::Deprecated::Authority < Metasploit::M
   # Methods
   #
 
-  # Help for this operator.
-  #
-  # @return [String] translation of {#help_translation_key} with {#abbreviation} substituted in.
-  def help
-    I18n.translate(help_translation_key, :abbreviation => abbreviation)
-  end
-
-  # `I18n.translate` key for all authority operators for {Metasploit::Model::Search::Operator::Base#klass}.  The
-  # translation should support substution of `%{abbreviation}` for individual instances of this class.
-  #
-  # @return [String]
-  def help_translation_key
-    @help_translation_key ||= "#{klass.search_i18n_scope}.search_with.authority.help"
-  end
-
   alias_method :name, :abbreviation
 
   # Returns list of operations that search for the authority with {#abbreviation} and `formatted_value` for reference

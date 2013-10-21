@@ -3,8 +3,10 @@ module Metasploit
     module Module
       # Code shared between `Mdm::Module::Action` and `Metasploit::Framework::Module::Action`.
       module Action
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
-        extend Metasploit::Model::Search::Translation
+
+        include Metasploit::Model::Translation
 
         included do
           include ActiveModel::MassAssignmentSecurity

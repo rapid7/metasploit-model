@@ -1,8 +1,6 @@
 # A search operator declared with
 # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute search_attribute}.
 class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search::Operator::Single
-  include Metasploit::Model::Search::Operator::Help
-
   #
   # CONSTANTS
   #

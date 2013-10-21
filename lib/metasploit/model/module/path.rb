@@ -4,9 +4,11 @@ module Metasploit
       # Concern for sharing common code between `Mdm::Module::Path` and `Metasploit::Framework::Module::Path`.  Define
       # {#gem}, {#name}, and {#real_path} by following the abstract instructions for each attribute.
       module Path
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
 
         include Metasploit::Model::NilifyBlanks
+        include Metasploit::Model::Translation
 
         included do
           include ActiveModel::Dirty

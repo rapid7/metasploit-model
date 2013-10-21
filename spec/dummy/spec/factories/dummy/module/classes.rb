@@ -36,12 +36,5 @@ FactoryGirl.define do
     }
 
     rank { generate :dummy_module_rank }
-
-    factory :stanced_dummy_module_class do
-      ignore do
-        # derives from associations in instance, so don't set on instance
-        module_type { generate :metasploit_model_module_instance_stanced_module_type }
-      end
-    end
   end
 end

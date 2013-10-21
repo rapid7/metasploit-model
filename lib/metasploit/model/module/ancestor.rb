@@ -3,7 +3,10 @@ module Metasploit
     module Module
       # Code shared between `Mdm::Module::Ancestor` and `Metasploit::Framework::Module::Ancestor`.
       module Ancestor
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
+
+        include Metasploit::Model::Translation
 
         #
         # CONSTANTS

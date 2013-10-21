@@ -1,4 +1,21 @@
-shared_examples_for 'Metasploit::Model::Module::Class' do
+Metasploit::Model::Spec.shared_examples_for 'Module::Class' do
+  #
+  # Module::Ancestor factories
+  #
+
+  module_ancestor_factory = "#{factory_namespace}_module_ancestor"
+  payload_module_ancestor_factory = "payload_#{module_ancestor_factory}"
+  non_payload_module_ancestor_factory = "non_#{payload_module_ancestor_factory}"
+  single_payload_module_ancestor_factory = "single_#{payload_module_ancestor_factory}"
+  stage_payload_module_ancestor_factory = "stage_#{payload_module_ancestor_factory}"
+  stager_payload_module_ancestor_factory = "stager_#{payload_module_ancestor_factory}"
+
+  #
+  # Module::Class factories
+  #
+
+  module_class_factory = "#{factory_namespace}_module_class"
+
   context 'CONSTANTS' do
     context 'PAYLOAD_TYPES' do
       subject(:payload_types) do
@@ -85,19 +102,183 @@ shared_examples_for 'Metasploit::Model::Module::Class' do
   end
 
   context 'search' do
-    context 'search_i18n_scope' do
-      subject(:search_i18n_scope) do
-        described_class.search_i18n_scope
-      end
-
-      it { should == 'metasploit.model.module.class' }
-    end
-
     context 'attributes' do
       it_should_behave_like 'search_attribute', :full_name, :type => :string
       it_should_behave_like 'search_attribute', :module_type, :type => :string
       it_should_behave_like 'search_attribute', :payload_type, :type => :string
       it_should_behave_like 'search_attribute', :reference_name, :type => :string
+    end
+  end
+
+  context 'factories' do
+    context module_class_factory do
+      subject(module_class_factory) do
+        FactoryGirl.build(module_class_factory)
+      end
+
+      it { should be_valid }
+
+      context '#ancestors' do
+        subject(:ancestors) do
+          send(module_class_factory).ancestors
+        end
+
+        context 'Metasploit::Model::Module::Ancestor#contents list' do
+          subject(:contents_list) do
+            ancestors.map(&:contents)
+          end
+
+          before(:each) do
+            # need to validate so that real_path is derived so contents can be read
+            ancestors.each(&:valid?)
+          end
+
+          context 'metasploit_modules' do
+            include_context 'Metasploit::Model::Module::Ancestor#contents metasploit_module'
+
+            subject(:metasploit_modules) do
+              namespace_modules.collect { |namespace_module|
+                namespace_module_metasploit_module(namespace_module)
+              }
+            end
+
+            let(:namespace_modules) do
+              ancestors.collect {
+                Module.new
+              }
+            end
+
+            before(:each) do
+              namespace_modules.zip(contents_list) do |namespace_module, contents|
+                namespace_module.module_eval(contents)
+              end
+            end
+
+            context 'rank_names' do
+              subject(:rank_names) do
+                metasploit_modules.collect { |metasploit_module|
+                  metasploit_module.rank_name
+                }
+              end
+
+              it 'should match Metasploit::Model::Module::Class#rank Metasploit::Model:Module::Rank#name' do
+                rank_names.all? { |rank_name|
+                  rank_name == send(module_class_factory).rank.name
+                }.should be_true
+              end
+            end
+
+            context 'rank_numbers' do
+              subject(:rank_numbers) do
+                metasploit_modules.collect { |metasploit_module|
+                  metasploit_module.rank_number
+                }
+              end
+
+              it 'should match Metasploit::Model::Module::Class#rank Metasploit::Module::Module::Rank#number' do
+                rank_numbers.all? { |rank_number|
+                  rank_number == send(module_class_factory).rank.number
+                }.should be_true
+              end
+            end
+          end
+        end
+      end
+
+      context 'module_type' do
+        subject(module_class_factory) do
+          FactoryGirl.build(
+              module_class_factory,
+              :module_type => module_type
+          )
+        end
+
+        context 'with payload' do
+          let(:module_type) do
+            'payload'
+          end
+
+          it { should be_valid }
+
+          context 'with payload_type' do
+            subject(module_class_factory) do
+              FactoryGirl.build(
+                  module_class_factory,
+                  :module_type => module_type,
+                  :payload_type => payload_type
+              )
+            end
+
+            context 'single' do
+              let(:payload_type) do
+                'single'
+              end
+
+              it { should be_valid }
+            end
+
+            context 'staged' do
+              let(:payload_type) do
+                'staged'
+              end
+
+              it { should be_valid }
+            end
+
+            context 'other' do
+              let(:payload_type) do
+                'not_a_payload_type'
+              end
+
+              it 'should raise ArgumentError' do
+                expect {
+                  send(module_class_factory)
+                }.to raise_error(ArgumentError)
+              end
+            end
+          end
+        end
+
+        context 'without payload' do
+          let(:module_type) do
+            FactoryGirl.generate :metasploit_model_non_payload_module_type
+          end
+
+          it { should be_valid }
+
+          its(:derived_module_type) { should == module_type }
+        end
+      end
+
+      context 'ancestors' do
+        subject(module_class_factory) do
+          FactoryGirl.build(
+              module_class_factory,
+              :ancestors => ancestors
+          )
+        end
+
+        context 'single payload' do
+          let!(:ancestors) do
+            [
+                FactoryGirl.create(single_payload_module_ancestor_factory)
+            ]
+          end
+
+          it { should be_valid }
+        end
+
+        context 'stage payload and stager payload' do
+          let!(:ancestors) do
+            [
+                FactoryGirl.create(stage_payload_module_ancestor_factory),
+                FactoryGirl.create(stager_payload_module_ancestor_factory)
+            ]
+          end
+
+          it { should be_valid }
+        end
+      end
     end
   end
 

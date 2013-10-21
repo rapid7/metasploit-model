@@ -25,7 +25,10 @@ class Dummy::Module::Instance < Metasploit::Model::Base
   #   Auxiliary actions to perform when this running this module.
   #
   #   @return [Array<Dummy::Module::Action>]
-  attr_accessor :actions
+  def actions
+    @actions ||= []
+  end
+  attr_writer :actions
 
   # @!attribute [rw] default_action
   #   The default action in {#actions}.
@@ -39,12 +42,24 @@ class Dummy::Module::Instance < Metasploit::Model::Base
   #   @return [Dummy::Module::Target]
   attr_accessor :default_target
 
+  # @!attribute [rw] module_architectures
+  #   Joins this module instance to the {#architectures} it supports.
+  #
+  #   @return [Array<Dummy::Module::Architecture>]
+  def module_architectures
+    @module_architectures ||= []
+  end
+  attr_writer :module_architectures
+
   # @!attribute [rw] module_authors
   #   Joins this with {#authors} and {#email_addresses} to model the name and email address used for an author
   #   entry in the module metadata.
   #
   #   @return [Array<Dummy::Module::Author>]
-  attr_accessor :module_authors
+  def module_authors
+    @module_authors ||= []
+  end
+  attr_writer :module_authors
 
   # @!attribute [rw] module_class
   #   Class-derived metadata to go along with the instance-derived metadata in this model.
@@ -52,17 +67,40 @@ class Dummy::Module::Instance < Metasploit::Model::Base
   #   @return [Dummy::Module::Class]
   attr_accessor :module_class
 
+  # @!attribute [rw] module_platforms
+  #   Joins this with the {#platforms} it supports.
+  #
+  #   @return [Array<Dummy::Module::Platform>]
+  def module_platforms
+    @module_platforms ||= []
+  end
+  attr_writer :module_platforms
+
+  # @!attribute [rw] module_references
+  #   Joins this with the {#references} to the exploit of this module.
+  #
+  #   @return [Array<Dummy::Module::Reference>]
+  def module_references
+    @module_references ||= []
+  end
+  attr_writer :module_references
+
   # @!attribute [rw] targets
   #   Names of targets with different configurations that can be exploited by this module.
   #
   #   @return [Array<Dummy::Module::Target>]
-  attr_accessor :targets
+  def targets
+    @targets ||= []
+  end
+  attr_writer :targets
 
   # @!attribute [r] architectures
-  #   The {Dummy::Module::Architecture architectures} supported by this module.
+  #   The {Dummy::Architecture architectures} supported by this module.
   #
   #   @return [Array<Dummy::Architecture>]
-  attr_accessor :architectures
+  def architectures
+    module_architectures.map(&:architecture)
+  end
 
   # @!attribute [r] authors
   #   The names of the authors of this module.
@@ -84,13 +122,17 @@ class Dummy::Module::Instance < Metasploit::Model::Base
   #   Platforms supported by this module.
   #
   #   @return [Array<Dummy::Module::Platform>]
-  attr_accessor :platforms
+  def platforms
+    module_platforms.map(&:platform)
+  end
 
   # @!attribute [r] references
   #   External references to the exploit or proof-of-concept (PoC) code in this module.
   #
   #   @return [Array<Dummy::Reference>]
-  attr_accessor :references
+  def references
+    module_references.map(&:reference)
+  end
 
   # @!attribute [r] vulns
   #   Vulnerabilities with same {Dummy::Reference reference} as this module.

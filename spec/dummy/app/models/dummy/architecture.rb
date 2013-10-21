@@ -57,11 +57,11 @@ class Dummy::Architecture < Metasploit::Model::Base
   # Methods
   #
 
-  # Keep single instance for each set of attributes in {SEED_ATTRIBUTES} to emulate unique database seeds in-memory.
-  #
-  # @param abbreviation [String] {#abbreviation}
-  # @return [Dummy::Architecture]
-  def self.with_abbreviation(abbreviation)
+  def self.all
+    instance_by_abbreviation.values
+  end
+
+  def self.instance_by_abbreviation
     unless instance_variable_defined? :@instance_by_abbreviation
       @instance_by_abbreviation = {}
 
@@ -79,6 +79,14 @@ class Dummy::Architecture < Metasploit::Model::Base
       end
     end
 
-    @instance_by_abbreviation.fetch(abbreviation)
+    @instance_by_abbreviation
+  end
+
+  # Keep single instance for each set of attributes in {SEED_ATTRIBUTES} to emulate unique database seeds in-memory.
+  #
+  # @param abbreviation [String] {#abbreviation}
+  # @return [Dummy::Architecture]
+  def self.with_abbreviation(abbreviation)
+    instance_by_abbreviation.fetch(abbreviation)
   end
 end

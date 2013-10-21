@@ -1,7 +1,16 @@
-shared_examples_for 'Metasploit::Model::Reference' do
-  let(:base_class) do
-    reference_class
-  end
+Metasploit::Model::Spec.shared_examples_for 'Reference' do
+  #
+  # Authority factories
+  #
+
+  authority_factory = "#{factory_namespace}_authority"
+
+  #
+  # Reference factoriess
+  #
+
+  obsolete_reference_factory = "obsolete_#{reference_factory}"
+  url_reference_factory = "url_#{reference_factory}"
 
   context 'derivation' do
     subject(:reference) do
@@ -117,20 +126,50 @@ shared_examples_for 'Metasploit::Model::Reference' do
     end
   end
 
+  context 'factories' do
+    context reference_factory do
+      subject(reference_factory) do
+        FactoryGirl.build(reference_factory)
+      end
+
+      it { should be_valid }
+
+      its(:authority) { should_not be_nil }
+      its(:designation) { should_not be_nil }
+      its(:url) { should_not be_nil }
+    end
+
+    context obsolete_reference_factory do
+      subject(obsolete_reference_factory) do
+        FactoryGirl.build(obsolete_reference_factory)
+      end
+
+      it { should be_valid }
+
+      its(:authority) { should_not be_nil }
+      its(:designation) { should_not be_nil }
+      its(:url) { should be_nil }
+    end
+
+    context url_reference_factory do
+      subject(url_reference_factory) do
+        FactoryGirl.build(url_reference_factory)
+      end
+
+      it { should be_valid }
+
+      its(:authority) { should be_nil }
+      its(:designation) { should be_nil }
+      its(:url) { should_not be_nil }
+    end
+  end
+
   context 'mass assignment security' do
     it { should allow_mass_assignment_of(:designation) }
     it { should allow_mass_assignment_of(:url) }
   end
 
   context 'search' do
-    context 'i18n_scope' do
-      subject(:search_i18n_scope) do
-        described_class.search_i18n_scope
-      end
-
-      it { should == 'metasploit.model.reference' }
-    end
-
     context 'attributes' do
       it_should_behave_like 'search_attribute', :designation, :type => :string
       it_should_behave_like 'search_attribute', :url, :type => :string

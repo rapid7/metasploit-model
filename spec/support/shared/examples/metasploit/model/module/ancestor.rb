@@ -1,17 +1,8 @@
-shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
-  options.assert_valid_keys(:namespace_name)
-  namespace_name = options.fetch(:namespace_name)
-
-  class_name = "#{namespace_name}::Module::Ancestor"
-  module_ancestor_class = class_name.constantize
-
-  factory_namespace = namespace_name.underscore.gsub('/', '_')
-
+Metasploit::Model::Spec.shared_examples_for 'Module::Ancestor' do
   #
   # Module::Ancestor factories
   #
 
-  module_ancestor_factory = "#{factory_namespace}_module_ancestor".to_sym
   payload_module_ancestor_factory = "payload_#{module_ancestor_factory}".to_sym
   single_payload_module_ancestor_factory = "single_#{payload_module_ancestor_factory}".to_sym
   stage_payload_module_ancestor_factory = "stage_#{payload_module_ancestor_factory}".to_sym
@@ -22,10 +13,6 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
   #
 
   module_path_factory = "#{factory_namespace}_module_path".to_sym
-
-  subject(:module_ancestor) do
-    FactoryGirl.build(module_ancestor_factory)
-  end
 
   it_should_behave_like 'Metasploit::Model::RealPathname' do
     let(:base_instance) do
@@ -141,10 +128,6 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor' do |options={}|
       }
 
       type_by_attribute.fetch(attribute)
-    end
-
-    let(:base_class) do
-      module_ancestor_class
     end
 
     it_should_behave_like 'derives', :full_name, :validates => true

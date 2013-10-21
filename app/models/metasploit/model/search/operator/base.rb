@@ -4,6 +4,7 @@
 # A search operator.
 class Metasploit::Model::Search::Operator::Base < Metasploit::Model::Base
   include ActiveModel::Validations
+  include Metasploit::Model::Search::Operator::Help
 
   #
   # Attributes

@@ -5,6 +5,9 @@ describe Metasploit::Model::Base do
     Class.new(described_class)
   end
 
+  it_should_behave_like 'Metasploit::Model::Translation',
+                        metasploit_model_ancestor: Metasploit::Model::Base
+
   context '#initialize' do
     it 'should use public_send to set attributes' do
       attribute = :attribute

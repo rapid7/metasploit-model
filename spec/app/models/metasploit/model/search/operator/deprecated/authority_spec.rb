@@ -40,33 +40,6 @@ describe Metasploit::Model::Search::Operator::Deprecated::Authority do
     end
   end
 
-  context '#help' do
-    subject(:help) do
-      operator.help
-    end
-
-    it 'should pass #abbreviation to translate' do
-      I18n.should_receive(:translate).with(
-          operator.help_translation_key,
-          hash_including(
-              :abbreviation => abbreviation
-          )
-      )
-
-      help
-    end
-  end
-
-  context '#help_translation_key' do
-    subject(:help_translation_key) do
-      operator.help_translation_key
-    end
-
-    it 'should always use authority as its name' do
-      help_translation_key.should end_with('search_with.authority.help')
-    end
-  end
-
   context '#operate_on' do
     subject(:operations) do
       operator.operate_on(formatted_value)

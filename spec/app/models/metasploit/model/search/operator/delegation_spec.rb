@@ -12,7 +12,6 @@ describe Metasploit::Model::Search::Operator::Delegation do
   end
 
   it { should be_a Metasploit::Model::Search::Operator::Base }
-  it { should be_a Metasploit::Model::Search::Operator::Help }
 
   context 'operator_name' do
     subject(:operator_name) do

@@ -3,8 +3,10 @@ module Metasploit
     module Module
       # Code shared between `Mdm::Module::Class` and `Metasploit::Framework::Module::Class`.
       module Class
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
-        extend Metasploit::Model::Search::Translation
+
+        include Metasploit::Model::Translation
 
         #
         # CONSTANTS
@@ -53,7 +55,7 @@ module Metasploit
           # Validations
           #
 
-          validate :ancestor_count
+          validate :ancestors_size
           validate :ancestor_payload_types
           validate :ancestor_module_types
 
@@ -224,29 +226,6 @@ module Metasploit
 
         private
 
-        # Validates that number of {#ancestors} is correct for the {#module_type}.
-        #
-        # @return [void]
-        def ancestor_count
-          if payload?
-            case payload_type
-              when 'single'
-                unless ancestors.length == 1
-                  errors[:ancestors] << 'must have exactly one ancestor for single payload module class'
-                end
-              when 'staged'
-                unless ancestors.length == 2
-                  errors[:ancestors] << 'must have exactly two ancestors (stager + stage) for staged payload module class'
-                end
-              # other (invalid) types are handled by validation on payload_type
-            end
-          else
-            unless ancestors.length == 1
-              errors[:ancestors] << 'must have exactly one ancestor as a non-payload module class'
-            end
-          end
-        end
-
         # Validates that {#ancestors} all have the same {Metasploit::Model::Module::Ancestor#module_type} as
         # {#module_type}.
         #
@@ -312,6 +291,29 @@ module Metasploit
                                 "with a payload_type (#{ancestor.payload_type}) " \
                                 "for class module_type (#{module_type})"
               end
+            end
+          end
+        end
+
+        # Validates that number of {#ancestors} is correct for the {#module_type}.
+        #
+        # @return [void]
+        def ancestors_size
+          if payload?
+            case payload_type
+              when 'single'
+                unless ancestors.size == 1
+                  errors[:ancestors] << 'must have exactly one ancestor for single payload module class'
+                end
+              when 'staged'
+                unless ancestors.size == 2
+                  errors[:ancestors] << 'must have exactly two ancestors (stager + stage) for staged payload module class'
+                end
+              # other (invalid) types are handled by validation on payload_type
+            end
+          else
+            unless ancestors.size == 1
+              errors[:ancestors] << 'must have exactly one ancestor as a non-payload module class'
             end
           end
         end

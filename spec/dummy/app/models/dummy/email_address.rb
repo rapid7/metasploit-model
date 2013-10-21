@@ -13,6 +13,12 @@ class Dummy::EmailAddress < Metasploit::Model::Base
   #   @return [String]
   attr_accessor :domain
 
+  # @!attribute [rw] full
+  #   The full email address.
+  #
+  #   @return [String] <{#local}>@<{#domain}
+  attr_accessor :full
+
   # @!attribute [rw] local
   #   The local part of the email address before the `'@'`.
   #

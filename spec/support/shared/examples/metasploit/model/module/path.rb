@@ -1,20 +1,21 @@
-# Tests that code mixed in by including {Metasploit::Module::Module::Path} works in `ActiveModel`
-# (`Metasploit::Model::Framework::Module::Path`) and `ActiveRecord` (`Mdm::Module::Path`).
-shared_examples_for 'Metasploit::Model::Module::Path' do
-  it_should_behave_like 'Metasploit::Model::RealPathname' do
-    let(:base_instance) do
-      FactoryGirl.build(path_factory)
-    end
-  end
+Metasploit::Model::Spec.shared_examples_for 'Module::Path' do
+  named_module_path_factory = "named_#{module_path_factory}"
+  unnamed_module_path_factory = "un#{named_module_path_factory}"
 
   it { should be_a ActiveModel::Dirty }
+
+  it_should_behave_like 'Metasploit::Model::RealPathname' do
+    let(:base_instance) do
+      FactoryGirl.build(module_path_factory)
+    end
+  end
 
   context 'callbacks' do
     context 'before_validation' do
       context 'nilify blanks' do
         let(:path) do
           FactoryGirl.build(
-              path_factory,
+              module_path_factory,
               :gem => '',
               :name => ''
           )
@@ -47,7 +48,7 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
         let(:path) do
           FactoryGirl.build(
-              path_factory,
+              module_path_factory,
               :real_path => symlink_pathname.to_path
           )
         end
@@ -89,6 +90,38 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
     end
   end
 
+  context 'factories' do
+    context module_path_factory do
+      subject(module_path_factory) do
+        FactoryGirl.build(module_path_factory)
+      end
+
+      it { should be_valid }
+    end
+
+    context named_module_path_factory do
+      subject(named_module_path_factory) do
+        FactoryGirl.build(named_module_path_factory)
+      end
+
+      it { should be_valid }
+
+      its(:gem) { should_not be_nil }
+      its(:name) { should_not be_nil }
+    end
+
+    context unnamed_module_path_factory do
+      subject(unnamed_module_path_factory) do
+        FactoryGirl.build(unnamed_module_path_factory)
+      end
+
+      it { should be_valid }
+
+      its(:gem) { should be_nil }
+      its(:name) { should be_nil }
+    end
+  end
+
   context 'mass assignment security' do
     it { should allow_mass_assignment_of(:gem) }
     it { should allow_mass_assignment_of(:name) }
@@ -103,7 +136,7 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
       let(:path) do
         FactoryGirl.build(
-            path_factory,
+            module_path_factory,
             :real_path => real_path
         )
       end
@@ -184,7 +217,7 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
       subject(:path) do
         FactoryGirl.build(
-            path_factory,
+            module_path_factory,
             :gem => gem,
             :name => name
         )
@@ -271,7 +304,7 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
     let(:path) do
       FactoryGirl.build(
-          path_factory,
+          module_path_factory,
           :real_path => real_path
       )
     end
@@ -333,7 +366,7 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
     let(:path) do
       FactoryGirl.build(
-          path_factory,
+          module_path_factory,
           :gem => gem,
           :name => name
       )
@@ -399,7 +432,7 @@ shared_examples_for 'Metasploit::Model::Module::Path' do
 
     let(:path) do
       FactoryGirl.build(
-          path_factory
+          module_path_factory
       )
     end
 

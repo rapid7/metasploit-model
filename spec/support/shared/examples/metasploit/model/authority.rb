@@ -1,4 +1,38 @@
-shared_examples_for 'Metasploit::Model::Authority' do
+Metasploit::Model::Spec.shared_examples_for 'Authority' do
+  full_authority_factory = "full_#{authority_factory}"
+  obsolete_authority_factory = "obsolete_#{authority_factory}"
+
+  context 'factories' do
+    context authority_factory do
+      subject(authority_factory) do
+        FactoryGirl.build(authority_factory)
+      end
+
+      it { should be_valid }
+    end
+
+    context full_authority_factory do
+      subject(full_authority_factory) do
+        FactoryGirl.build(full_authority_factory)
+      end
+
+      it { should be_valid }
+
+      its(:summary) { should_not be_nil }
+      its(:url) { should_not be_nil }
+    end
+
+    context obsolete_authority_factory do
+      subject(obsolete_authority_factory) do
+        FactoryGirl.build(obsolete_authority_factory)
+      end
+
+      it { should be_valid }
+
+      its(:obsolete) { should be_true }
+    end
+  end
+
   context 'mass assignment security' do
     it { should allow_mass_assignment_of(:abbreviation) }
     it { should allow_mass_assignment_of(:obsolete) }
@@ -7,19 +41,7 @@ shared_examples_for 'Metasploit::Model::Authority' do
   end
 
   context 'search' do
-    context 'i18n_scope' do
-      subject(:search_i18n_scope) do
-        described_class.search_i18n_scope
-      end
-
-      it { should == 'metasploit.model.authority' }
-    end
-
     context 'attributes' do
-      let(:base_class) do
-        authority_class
-      end
-
       it_should_behave_like 'search_attribute', :abbreviation, :type => :string
     end
   end

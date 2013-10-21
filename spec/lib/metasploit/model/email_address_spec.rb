@@ -1,23 +1,19 @@
 require 'spec_helper'
 
-describe Metasploit::Model::EmailAddress do
-  it_should_behave_like 'Metasploit::Model::EmailAddress' do
-    subject(:email_address) do
-      FactoryGirl.build(:dummy_email_address)
-    end
+describe Metasploit::Model::EmailAddress,
+         # setting the metadata type makes rspec-rails include RSpec::Rails::ModelExampleGroup, which includes a better
+         # be_valid matcher that will print full error messages
+         type: :module  do
+  it_should_behave_like 'Metasploit::Model::EmailAddress',
+                        namespace_name: 'Dummy' do
+     def attribute_type(attribute)
+      type_by_attribute = {
+        domain: :string,
+        full: :string,
+        local: :string
+      }
 
-    let(:email_address_class) do
-      Dummy::EmailAddress
-    end
-  end
-
-  context 'factories' do
-    context 'dummy_email_address' do
-      subject(:dummy_email_address) do
-        FactoryGirl.build(:dummy_email_address)
-      end
-
-      it { should be_valid }
+      type_by_attribute.fetch(attribute)
     end
   end
 end

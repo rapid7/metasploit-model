@@ -30,7 +30,7 @@ describe Metasploit::Model::Search::Query do
       context 'length' do
         let(:error) do
           I18n.translate(
-              'activemodel.errors.models.metasploit/model/search/query.attributes.operations.too_short',
+              'metasploit.model.errors.models.metasploit/model/search/query.attributes.operations.too_short',
               :count => 1
           )
         end

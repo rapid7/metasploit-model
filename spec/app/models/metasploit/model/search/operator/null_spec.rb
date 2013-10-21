@@ -10,7 +10,7 @@ describe Metasploit::Model::Search::Operator::Null do
   context 'validations' do
     context 'name' do
       let(:error) do
-        I18n.translate('activemodel.errors.models.metasploit/model/search/operator/null.attributes.name.unknown')
+        I18n.translate('metasploit.model.errors.models.metasploit/model/search/operator/null.attributes.name.unknown')
       end
 
       before(:each) do

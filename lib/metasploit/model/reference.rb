@@ -2,8 +2,10 @@ module Metasploit
   module Model
     # Code shared between `Mdm::Reference` and `Metasploit::Framework::Reference`.
     module Reference
+      extend ActiveModel::Naming
       extend ActiveSupport::Concern
-      extend Metasploit::Model::Search::Translation
+
+      extend Metasploit::Model::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity

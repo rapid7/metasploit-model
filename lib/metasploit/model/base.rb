@@ -3,6 +3,9 @@
 class Metasploit::Model::Base
   include ActiveModel::Validations
 
+  # After ActiveModel::Validations so Metasploit::Model::Translation is favored over ActiveModel::Translation
+  include Metasploit::Model::Translation
+
   # @param attributes [Hash{Symbol => String,nil}]
   def initialize(attributes={})
     attributes.each do |attribute, value|

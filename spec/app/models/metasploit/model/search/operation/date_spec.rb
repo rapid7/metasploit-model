@@ -8,7 +8,7 @@ describe Metasploit::Model::Search::Operation::Date do
       end
 
       let(:error) do
-        I18n.translate('activemodel.errors.models.metasploit/model/search/operation/date.attributes.value.unparseable_date')
+        I18n.translate('metasploit.model.errors.models.metasploit/model/search/operation/date.attributes.value.unparseable_date')
       end
 
       let(:errors) do

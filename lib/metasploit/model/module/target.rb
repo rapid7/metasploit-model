@@ -3,8 +3,10 @@ module Metasploit
     module Module
       # Code shared between `Mdm::Module::Target` and `Metasploit::Framework::Module::Target`.
       module Target
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
-        extend Metasploit::Model::Search::Translation
+
+        include Metasploit::Model::Translation
 
         included do
           include ActiveModel::MassAssignmentSecurity

@@ -1,7 +1,3 @@
 FactoryGirl.define do
-  factory :dummy_platform,
-          :class => Dummy::Platform,
-          :traits => [
-              :metasploit_model_platform
-          ]
+  sequence :dummy_platform, Dummy::Platform.all.cycle
 end

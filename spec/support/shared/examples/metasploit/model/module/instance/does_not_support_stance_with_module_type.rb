@@ -9,8 +9,8 @@ shared_examples_for 'Metasploit::Model::Module::Instance does not support stance
       module_instance.module_class.module_type.should == module_type
     end
 
-    it 'should return false for supports_stance?' do
-      module_instance.supports_stance?.should be_false
+    it 'should return false for supports?(:stance)' do
+      module_instance.supports?(:stance).should be_false
     end
 
     context 'with nil stance' do

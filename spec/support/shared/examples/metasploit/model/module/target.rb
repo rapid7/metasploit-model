@@ -1,18 +1,21 @@
-shared_examples_for 'Metasploit::Model::Module::Target' do
+
+Metasploit::Model::Spec.shared_examples_for 'Module::Target' do
+  context 'factories' do
+    context module_target_factory do
+      subject(module_target_factory) do
+        FactoryGirl.build(module_target_factory)
+      end
+
+      it { should be_valid }
+    end
+  end
+
   context 'mass assignment security' do
     it { should allow_mass_assignment_of(:index) }
     it { should allow_mass_assignment_of(:name) }
   end
 
   context 'search' do
-    context 'search_i18n_scope' do
-      subject(:search_i18n_scope) do
-        described_class.search_i18n_scope
-      end
-
-      it { should == 'metasploit.model.module.target' }
-    end
-
     context 'attributes' do
       it_should_behave_like 'search_attribute', :name, :type => :string
     end

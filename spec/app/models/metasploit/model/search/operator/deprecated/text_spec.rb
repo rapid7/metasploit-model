@@ -21,9 +21,9 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
       it { should include 'name' }
       it { should include 'actions.name' }
 
-      it 'should include platform instead of platforms.name and targets.name' do
+      it 'should include platform instead of platforms.fully_qualified_name and targets.name' do
         operator_names.should include('platform')
-        operator_names.should_not include('platforms.name')
+        operator_names.should_not include('platforms.fully_qualified_name')
         operator_names.should_not include('targets.name')
       end
 
@@ -130,18 +130,18 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
       )
     end
 
-    let(:platform_name_operator) do
+    let(:platform_fully_qualified_name_operator) do
       Metasploit::Model::Search::Operator::Attribute.new(
-          :attribute => :name,
+          :attribute => :fully_qualified_name,
           :klass => platform_class,
           :type => :string
       )
     end
 
-    let(:platforms_name_operator) do
+    let(:platforms_fully_qualified_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :platforms,
-          :attribute_operator => platform_name_operator,
+          :attribute_operator => platform_fully_qualified_name_operator,
           :klass => klass
       )
     end
@@ -216,7 +216,11 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
       operator.stub(:operator).with('platform').and_return(platform_operator)
       operator.stub(:operator).with('ref').and_return(ref_operator)
 
-      platform_operator.stub(:operator).with('platforms.name').and_return(platforms_name_operator)
+      platform_operator.stub(:operator).with(
+          'platforms.fully_qualified_name'
+      ).and_return(
+          platforms_fully_qualified_name_operator
+      )
       platform_operator.stub(:operator).with('targets.name').and_return(targets_name_operator)
 
       ref_operator.stub(:operator).with('authorities.abbreviation').and_return(authorities_abbreviation_operator)
@@ -280,9 +284,9 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
           }
         end
 
-        context 'platforms.name' do
+        context 'platforms.fully_qualified_name' do
           subject(:grandchild_operation) do
-            grandchild('platforms.name')
+            grandchild('platforms.fully_qualified_name')
           end
 
           it 'should use formatted value for value' do

@@ -6,8 +6,8 @@ describe Metasploit::Model::Search::Operation::Null do
       context 'null' do
         let(:error) do
           I18n.translate(
-              'activemodel.errors.models.metasploit/model/search/operation/null.attributes.operator.type',
-              :type => Metasploit::Model::Search::Operator::Null
+              'metasploit.model.errors.models.metasploit/model/search/operation/null.attributes.operator.type',
+              type: Metasploit::Model::Search::Operator::Null
           )
         end
 

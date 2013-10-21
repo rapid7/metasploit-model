@@ -2,8 +2,10 @@ module Metasploit
   module Model
     # Code shared between `Mdm::Authority` and `Metasploit::Framework::Authority`.
     module Authority
+      extend ActiveModel::Naming
       extend ActiveSupport::Concern
-      extend Metasploit::Model::Search::Translation
+
+      include Metasploit::Model::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity

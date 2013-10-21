@@ -1,80 +1,81 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Module::Instance do
+describe Metasploit::Model::Module::Instance,
+         # setting the metadata type makes rspec-rails include RSpec::Rails::ModelExampleGroup, which includes a better
+         # be_valid matcher that will print full error messages
+         type: :model do
   subject(:module_instance) do
     FactoryGirl.build(:dummy_module_instance)
   end
 
-  it_should_behave_like 'Metasploit::Model::Module::Instance' do
-    let(:base_class) do
-      Dummy::Module::Instance
+  it_should_behave_like 'Metasploit::Model::Module::Instance',
+                        namespace_name: 'Dummy'
+
+  # not in 'Metasploit::Model::Module::Instance' shared example since it's not in ClassMethods, but an actual module
+  # method on Metasploit::Model::Module::Instance for use in metasploit-model factories.
+  context 'module_type_supports?' do
+    subject(:module_type_supports?) do
+      described_class.module_type_supports?(module_type, attribute)
     end
 
-    let(:module_class_factory) do
-      :dummy_module_class
-    end
-
-    let(:module_instance_factory) do
-      :dummy_module_instance
-    end
-  end
-
-  context 'factories' do
-    context 'dummy_module_instance' do
-      subject(:dummy_module_instance) do
-        FactoryGirl.build(:dummy_module_instance)
+    context 'with known attribute' do
+      let(:attribute) do
+        [:actions, :module_architectures, :module_platforms, :module_references, :stance, :targets].sample
       end
 
-      it { should be_valid }
-
-      context 'stance' do
-        subject(:dummy_module_instance) do
-          FactoryGirl.build(
-              :dummy_module_instance,
-              :module_class => module_class
-          )
+      context 'with known module_type' do
+        let(:module_type) do
+          FactoryGirl.generate :metasploit_model_module_type
         end
 
-        let(:module_class) do
-          FactoryGirl.create(
-              :dummy_module_class,
-              :module_type => module_type
-          )
+        it 'should be Boolean' do
+          support = module_type_supports?
+
+          support.should be_in [false, true]
+        end
+      end
+
+      context 'without known module_type' do
+        let(:module_type) do
+          :unknown_module_type
         end
 
-        context 'with supports_stance?' do
-          let(:module_type) do
-            'exploit'
-          end
-
-          it { should be_valid }
-
-          its(:stance) { should_not be_nil }
-          its(:supports_stance?) { should be_true }
-        end
-
-        context 'without supports_stance?' do
-          let(:module_type) do
-            'post'
-          end
-
-          it { should be_valid }
-
-          its(:stance) { should be_nil }
-          its(:supports_stance?) { should be_false }
-        end
+        specify {
+          expect {
+            module_type_supports?
+          }.to raise_error(KeyError)
+        }
       end
     end
 
-    context 'stanced_dummy_module_instance' do
-      subject(:stanced_dummy_module_instance) do
-        FactoryGirl.build(:stanced_dummy_module_instance)
+    context 'without known attribute' do
+      let(:attribute) do
+        :unknown_attribute
       end
 
-      it { should be_valid }
+      context 'with known module_type' do
+        let(:module_type) do
+          FactoryGirl.generate :metasploit_model_module_type
+        end
 
-      its(:stance) { should_not be_nil }
-      its(:supports_stance?) { should be_true }
+        specify {
+          expect {
+            module_type_supports?
+          }.to raise_error(KeyError)
+        }
+      end
+
+      context 'without known module_type' do
+        let(:module_type) do
+          :unknown_module_type
+        end
+
+        specify {
+          expect {
+            module_type_supports?
+          }.to raise_error(KeyError)
+        }
+      end
     end
   end
 end

@@ -1,4 +1,10 @@
-shared_examples_for 'Metasploit::Model::Architecture' do
+Metasploit::Model::Spec.shared_examples_for 'Architecture' do
+  subject(:architecture) do
+    # Architecture, don't have a factory, they have a sequence and can't use sequence generated architectures because
+    # validators so tightly constraint values.
+    architecture_class.new
+  end
+
   context 'CONSTANTS' do
     context 'ABBREVIATIONS' do
       subject(:abbreviations) do
@@ -73,19 +79,7 @@ shared_examples_for 'Metasploit::Model::Architecture' do
   end
 
   context 'search' do
-    context 'i18n_scope' do
-      subject(:search_i18n_scope) do
-        described_class.search_i18n_scope
-      end
-
-      it { should == 'metasploit.model.architecture' }
-    end
-
     context 'attributes' do
-      let(:base_class) do
-        architecture_class
-      end
-
       it_should_behave_like 'search_attribute', :abbreviation, :type => :string
       it_should_behave_like 'search_attribute', :bits, :type => :integer
       it_should_behave_like 'search_attribute', :endianness, :type => :string

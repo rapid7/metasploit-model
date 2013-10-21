@@ -1,4 +1,10 @@
-shared_examples_for 'Metasploit::Model::Module::Rank' do
+Metasploit::Model::Spec.shared_examples_for 'Module::Rank' do
+  subject(:module_rank) do
+    # need non-factory subject since ranks are only seeded and so a sequence.
+    # The sequence elements can't be used as they are frozen.
+    module_rank_class.new
+  end
+
   context 'CONSTANTS' do
     context 'NAME_BY_NUMBER' do
       subject(:name_by_numnber) do
@@ -53,19 +59,7 @@ shared_examples_for 'Metasploit::Model::Module::Rank' do
   end
 
   context 'search' do
-    context 'search_i18n_scope' do
-      subject(:search_i18n_scope) do
-        described_class.search_i18n_scope
-      end
-
-      it { should == 'metasploit.model.module.rank' }
-    end
-
     context 'attributes' do
-      let(:base_class) do
-        rank_class
-      end
-
       it_should_behave_like 'search_attribute', :name, :type => :string
       it_should_behave_like 'search_attribute', :number, :type => :integer
     end
@@ -77,15 +71,15 @@ shared_examples_for 'Metasploit::Model::Module::Rank' do
 
       context 'format' do
         it 'should not allow #name starting with a lowercase letter' do
-          rank.should_not allow_value('good').for(:name)
+          module_rank.should_not allow_value('good').for(:name)
         end
 
         it 'should allow #name starting with a capital letter' do
-          rank.should allow_value('Good').for(:name)
+          module_rank.should allow_value('Good').for(:name)
         end
 
         it 'should not allow #name with a space' do
-          rank.should_not allow_value('Super Effective').for(:name)
+          module_rank.should_not allow_value('Super Effective').for(:name)
         end
       end
     end

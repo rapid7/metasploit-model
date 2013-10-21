@@ -2,8 +2,10 @@ module Metasploit
   module Model
     # Code shared between `Mdm::Author` and `Metasploit::Framework::Author`.
     module Author
+      extend ActiveModel::Naming
       extend ActiveSupport::Concern
-      extend Metasploit::Model::Search::Translation
+
+      include Metasploit::Model::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity

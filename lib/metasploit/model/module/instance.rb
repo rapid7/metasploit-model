@@ -3,12 +3,17 @@ module Metasploit
     module Module
       # Code shared between `Mdm::Module::Instance` and `Metasploit::Framework::Module::Instance`.
       module Instance
+        extend ActiveModel::Naming
         extend ActiveSupport::Concern
-        extend Metasploit::Model::Search::Translation
+
+        include Metasploit::Model::Translation
 
         #
         # CONSTANTS
         #
+
+        # Minimum length of {#module_authors}.
+        MINIMUM_MODULE_AUTHORS_LENGTH = 1
 
         # {#privileged} is Boolean so, valid values are just `true` and `false`, but since both the validation and
         # factory need an array of valid values, this constant exists.
@@ -17,21 +22,64 @@ module Metasploit
             true
         ]
 
-        # {Metasploit::Model::Module::Class#module_type Module types} that {#supports_stance? support stance}.
-        STANCED_MODULE_TYPES = [
-            Metasploit::Model::Module::Type::AUX,
-            Metasploit::Model::Module::Type::EXPLOIT
-        ]
-
-        # Valid values for {#stance}.
-        STANCES = [
-            'aggressive',
-            'passive'
-        ]
+        # Maps attribute to map of {Metasploit::Model::Module::Class#module_type} maps to whether that attribute is
+        # supported.  Supported attributes should be present, while unsupported attributes should be blank in
+        # validations.
+        SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE = {
+            actions: {
+                Metasploit::Model::Module::Type::AUX => true,
+                Metasploit::Model::Module::Type::ENCODER => false,
+                Metasploit::Model::Module::Type::EXPLOIT => false,
+                Metasploit::Model::Module::Type::NOP => false,
+                Metasploit::Model::Module::Type::PAYLOAD => false,
+                Metasploit::Model::Module::Type::POST => false
+            },
+            module_architectures: {
+                Metasploit::Model::Module::Type::AUX => false,
+                Metasploit::Model::Module::Type::ENCODER => true,
+                Metasploit::Model::Module::Type::EXPLOIT => true,
+                Metasploit::Model::Module::Type::NOP => true,
+                Metasploit::Model::Module::Type::PAYLOAD => true,
+                Metasploit::Model::Module::Type::POST => true
+            },
+            module_platforms: {
+                Metasploit::Model::Module::Type::AUX => false,
+                Metasploit::Model::Module::Type::ENCODER => false,
+                Metasploit::Model::Module::Type::EXPLOIT => true,
+                Metasploit::Model::Module::Type::NOP => false,
+                Metasploit::Model::Module::Type::PAYLOAD => true,
+                Metasploit::Model::Module::Type::POST => true
+            },
+            module_references: {
+                Metasploit::Model::Module::Type::AUX => true,
+                Metasploit::Model::Module::Type::ENCODER => false,
+                Metasploit::Model::Module::Type::EXPLOIT => true,
+                Metasploit::Model::Module::Type::NOP => false,
+                Metasploit::Model::Module::Type::PAYLOAD => false,
+                Metasploit::Model::Module::Type::POST => true
+            },
+            stance: {
+                Metasploit::Model::Module::Type::AUX => true,
+                Metasploit::Model::Module::Type::ENCODER => false,
+                Metasploit::Model::Module::Type::EXPLOIT => true,
+                Metasploit::Model::Module::Type::NOP => false,
+                Metasploit::Model::Module::Type::PAYLOAD => false,
+                Metasploit::Model::Module::Type::POST => false
+            },
+            targets: {
+                Metasploit::Model::Module::Type::AUX => false,
+                Metasploit::Model::Module::Type::ENCODER => false,
+                Metasploit::Model::Module::Type::EXPLOIT => true,
+                Metasploit::Model::Module::Type::NOP => false,
+                Metasploit::Model::Module::Type::PAYLOAD => false,
+                Metasploit::Model::Module::Type::POST => false
+            }
+        }
 
         included do
           include ActiveModel::Validations
           include Metasploit::Model::Search
+          extend Metasploit::Model::Translation
 
           #
           #
@@ -90,17 +138,37 @@ module Metasploit
           # Validations
           #
 
+          validates :actions,
+                    support: true
+          validates :description,
+                    :presence => true
+          validates :license,
+                    :presence => true
+          validates :module_architectures,
+                    support: true
+          validates :module_authors,
+                    :length => {
+                        :minimum => MINIMUM_MODULE_AUTHORS_LENGTH
+                    }
           validates :module_class,
+                    :presence => true
+          validates :module_platforms,
+                    support: true
+          validates :module_references,
+                    support: true
+          validates :name,
                     :presence => true
           validates :privileged,
                     :inclusion => {
                         :in => PRIVILEGES
                     }
           validates :stance,
-                    :inclusion => {
-                        :if => :supports_stance?,
-                        :in => STANCES
+                    inclusion: {
+                        if: 'supports?(:stance)',
+                        in: Metasploit::Model::Module::Stance::ALL
                     }
+          validates :targets,
+                    support: true
         end
 
         #
@@ -213,30 +281,59 @@ module Metasploit
 
         # @!attribute [rw] stance
         #   Whether the module is active or passive.  `nil` if the
-        #   {Metasploit::Model::Module::Class#module_type module type} does not {#supports_stance? support stances}.
+        #   {Metasploit::Model::Module::Class#module_type module type} does not {#supports? support stances}.
         #
         #   @return ['active', 'passive', nil]
+
+        #
+        # Module Methods
+        #
+
+        # @note This is not declared in `ClassMethods` because it is to support factories that only know about
+        #   {Metasploit::Model::Module::Instance}.
+        #
+        # Whether the {Metasploit::Model::Module::Class#module_type} supports the given `attribute` on
+        # its module instances.
+        #
+        # @return [false] The given `attribute` is not supported and the `attribute` value should be blank, `nil` for
+        #   single values and empty for collections.
+        # @return [true] The given 'attribute' is supported and the `attribute` value should be present, non-nil for
+        #   single values and at least one element for collections.
+        # @raise [KeyError] if `attribute` is not an attributes whose support varies based on
+        #   {Metasploit::Model::Module::Class#module_type}.
+        # @raise [KeyError] if {#module_class} {Metasploit::Model::Module::Class#module_type} is invalid.
+        def self.module_type_supports?(module_type, attribute)
+          support_by_module_type = SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
+          support_by_module_type.fetch(module_type)
+        end
 
         #
         # Instance Methods
         #
 
-        # Returns whether this module supports a {#stance}.  Only modules with
-        # {Metasploit::Model::Module::Class#module_type} `'auxiliary'` and `'exploit'` support a non-nil {#stance}.
+        # Whether the {#module_class} {Metasploit::Model::Module::Class#module_type} supports the given `attribute` on
+        # its module instances.
         #
-        # @return [true] if {Metasploit::Model::Module::Class#module_type module_class.module_type} is `'auxiliary'` or
-        #   `'exploit'`
-        # @return [false] otherwise
-        # @see https://github.com/rapid7/metasploit-framework/blob/a6070f8584ad9e48918b18c7e765d85f549cb7fd/lib/msf/core/db_manager.rb#L423
-        # @see https://github.com/rapid7/metasploit-framework/blob/a6070f8584ad9e48918b18c7e765d85f549cb7fd/lib/msf/core/db_manager.rb#L436
-        def supports_stance?
-          supports_stance = false
+        # @return [false] The given `attribute` is not supported and the `attribute` value should be blank, `nil` for
+        #   single values and empty for collections.  May also be false if {#module_class} is `nil` or {#module_class}'s
+        #   {Metasploit::Model::Module::Class#module_type} is invalid.
+        # @return [true] The given 'attribute' is supported and the `attribute` value should be present, non-nil for
+        #   single values and at least one element for collections.
+        # @raise [KeyError] if `attribute` is not an attributes whose support varies based on
+        #   {Metasploit::Model::Module::Class#module_type}.
+        def supports?(attribute)
+          supported = false
+          support_by_module_type = SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
 
-          if module_class and STANCED_MODULE_TYPES.include?(module_class.module_type)
-            supports_stance = true
+          # unlike attribute, which is controlled by the developer, the module_class and module_type is controlled by
+          # the user and so can be invalid and not have a value in `support_by_module_type` and so can't be fetched and
+          # must be handled cleanly without exceptions.
+          if module_class
+            # default to false when module_type is a unknown type, to match behavior when module_class is nil.
+            supported = support_by_module_type.fetch(module_class.module_type, supported)
           end
 
-          supports_stance
+          supported
         end
       end
     end
