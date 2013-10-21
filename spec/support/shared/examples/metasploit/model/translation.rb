@@ -7,6 +7,18 @@ shared_examples_for 'Metasploit::Model::Translation' do |options={}|
     base_class.should include Metasploit::Model::Translation
   end
 
+  unless metasploit_model_ancestor.is_a? Class
+    context metasploit_model_ancestor do
+      context "dependencies" do
+        subject(:dependencies) do
+          metasploit_model_ancestor.instance_variable_get :@_dependencies
+        end
+
+        it { should include Metasploit::Model::Translation }
+      end
+    end
+  end
+
   context 'i18n_scope' do
     subject(:i18n_scope) do
       base_class.i18n_scope

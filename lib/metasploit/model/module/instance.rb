@@ -79,7 +79,6 @@ module Metasploit
         included do
           include ActiveModel::Validations
           include Metasploit::Model::Search
-          extend Metasploit::Model::Translation
 
           #
           #

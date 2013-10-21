@@ -5,7 +5,7 @@ module Metasploit
       extend ActiveModel::Naming
       extend ActiveSupport::Concern
 
-      extend Metasploit::Model::Translation
+      include Metasploit::Model::Translation
 
       included do
         include ActiveModel::MassAssignmentSecurity
