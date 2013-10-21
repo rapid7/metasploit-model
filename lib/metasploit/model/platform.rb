@@ -85,6 +85,7 @@ module Metasploit
       }
 
       included do
+        include ActiveModel::MassAssignmentSecurity
         include ActiveModel::Validations
         include Metasploit::Model::Derivation
         include Metasploit::Model::Search
@@ -94,6 +95,12 @@ module Metasploit
         #
 
         derives :fully_qualified_name, :validate => true
+
+        #
+        # Mass Assignment Security
+        #
+
+        attr_accessible :relative_name
 
         #
         # Search

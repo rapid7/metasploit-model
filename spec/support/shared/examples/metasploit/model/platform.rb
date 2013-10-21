@@ -1,4 +1,6 @@
 Metasploit::Model::Spec.shared_examples_for 'Platform' do
+  platform_sequence = "#{factory_namespace}_#{relative_variable_name}"
+
   subject(:platform) do
     FactoryGirl.generate platform_sequence
   end
@@ -126,11 +128,12 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
   context 'derivations' do
     subject(:platform) do
       # can't use seeded platforms because they are frozen
-      platform_class.new(
-          parent: windows,
-          # need to use a real name or derivation won't be valid because it won't be in fully_qualified_names.
-          relative_name: 'XP'
-      )
+      # have to tap to bypass mass-assignment security
+      platform_class.new.tap { |platform|
+        platform.parent = windows
+        # need to use a real name or derivation won't be valid because it won't be in fully_qualified_names.
+        platform.relative_name = 'XP'
+      }
     end
 
     let(:windows) do
@@ -141,6 +144,10 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
     end
 
     it_should_behave_like 'derives', :fully_qualified_name, :validates => true
+  end
+
+  context 'mass assignment security' do
+    it { should allow_mass_assignment_of(:relative_name) }
   end
 
   context 'search' do
@@ -166,7 +173,7 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
     context 'with #relative_name' do
       context 'with #parent' do
         let(:platform) do
-          Dummy::Platform.all.select { |platform|
+          base_class.all.select { |platform|
             platform.parent.present?
           }.sample
         end
@@ -178,7 +185,7 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
 
       context 'without #parent' do
         let(:platform) do
-          Dummy::Platform.all.reject { |platform|
+          base_class.all.reject { |platform|
             platform.parent.present?
           }.sample
         end
