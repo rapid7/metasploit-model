@@ -29,6 +29,7 @@ class Metasploit::Model::Search::Operator::Association < Metasploit::Model::Sear
   #
 
   delegate :attribute,
+           :attribute_set,
            :help,
            :type,
            :to => :attribute_operator

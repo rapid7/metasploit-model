@@ -36,6 +36,18 @@ describe Metasploit::Model::Search::Operator::Association do
       end
     end
 
+    context '#attribute_set' do
+      subject(:attribute_set) do
+        association_operator.attribute_set
+      end
+
+      it 'should delegate to #attribute_operator' do
+        attribute_operator.should_receive(:attribute_set)
+
+        attribute_set
+      end
+    end
+
     context '#help' do
       subject(:help) do
         association_operator.help
