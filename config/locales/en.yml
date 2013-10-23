@@ -147,18 +147,27 @@ en:
             attributes:
               value:
                 unparseable_date: "is not a parseable Date"
+
           metasploit/model/search/operation/null:
             attributes:
               operator:
                 type: "is not a %{type}"
+
+          metasploit/model/search/operation/set:
+            attributes:
+              value:
+                inclusion: "is not part of the set (%{set})"
+
           metasploit/model/search/operation/union:
             attributes:
               children:
                 too_short: "is too short (minimum is %{count} child)"
+
           metasploit/model/search/operator/null:
             attributes:
               name:
                 unknown: "is unknown"
+
           metasploit/model/search/query:
             attributes:
               operations:

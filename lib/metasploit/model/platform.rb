@@ -106,7 +106,10 @@ module Metasploit
         # Search
         #
 
-        search_attribute :fully_qualified_name, :type => :string
+        search_attribute :fully_qualified_name,
+                         type: {
+                             set: :string
+                         }
 
         #
         # Validation
@@ -114,12 +117,20 @@ module Metasploit
 
         validates :fully_qualified_name,
                   inclusion: {
-                      in: ->(_){
-                        Metasploit::Model::Platform.fully_qualified_names
-                      }
+                      in: Metasploit::Model::Platform.fully_qualified_name_set
                   }
         validates :relative_name,
                   presence: true
+      end
+
+      # Adds {#fully_qualified_name_set} to class.
+      module ClassMethods
+        # Set of valid {Metasploit::Model::Platform#fully_qualified_name}.
+        #
+        # @return [Set<String>]
+        def fully_qualified_name_set
+          Metasploit::Model::Platform.fully_qualified_name_set
+        end
       end
 
       #
@@ -207,9 +218,9 @@ module Metasploit
       # List of valid {#fully_qualified_name} derived from {SEED_RELATIVE_NAME_TREE}.
       #
       # @return [Array<String>]
-      def self.fully_qualified_names
-        unless instance_variable_defined? :@fully_qualified_names
-          @fully_qualified_names = []
+      def self.fully_qualified_name_set
+        unless instance_variable_defined? :@fully_qualified_name_set
+          @fully_qualified_name_set = Set.new
 
           each_seed_attributes do |attributes|
             parent = attributes.fetch(:parent)
@@ -221,17 +232,16 @@ module Metasploit
               fully_qualified_name = relative_name
             end
 
-            @fully_qualified_names << fully_qualified_name
+            @fully_qualified_name_set.add fully_qualified_name
 
             # yieldreturn
             fully_qualified_name
           end
 
-          @fully_qualified_names.sort!
-          @fully_qualified_names.freeze
+          @fully_qualified_name_set.freeze
         end
 
-        @fully_qualified_names
+        @fully_qualified_name_set
       end
     end
   end

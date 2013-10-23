@@ -152,7 +152,11 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
 
   context 'search' do
     context 'attributes' do
-      it_should_behave_like 'search_attribute', :fully_qualified_name, :type => :string
+      it_should_behave_like 'search_attribute',
+                            :fully_qualified_name,
+                            type: {
+                                set: :string
+                            }
     end
   end
 

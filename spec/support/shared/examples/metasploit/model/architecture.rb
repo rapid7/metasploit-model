@@ -80,10 +80,26 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
 
   context 'search' do
     context 'attributes' do
-      it_should_behave_like 'search_attribute', :abbreviation, :type => :string
-      it_should_behave_like 'search_attribute', :bits, :type => :integer
-      it_should_behave_like 'search_attribute', :endianness, :type => :string
-      it_should_behave_like 'search_attribute', :family, :type => :string
+      it_should_behave_like 'search_attribute',
+                            :abbreviation,
+                            type: {
+                                set: :string
+                            }
+      it_should_behave_like 'search_attribute',
+                            :bits,
+                            type: {
+                                set: :integer
+                            }
+      it_should_behave_like 'search_attribute',
+                            :endianness,
+                            type: {
+                                set: :string
+                            }
+      it_should_behave_like 'search_attribute',
+                            :family,
+                            type: {
+                                set: :string
+                            }
     end
   end
 

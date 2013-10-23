@@ -190,10 +190,22 @@ module Metasploit
         # Search Attributes
         #
 
-        search_attribute :abbreviation, :type => :string
-        search_attribute :bits, :type => :integer
-        search_attribute :endianness, :type => :string
-        search_attribute :family, :type => :string
+        search_attribute :abbreviation,
+                         type: {
+                             set: :string
+                         }
+        search_attribute :bits,
+                         type: {
+                             set: :integer
+                         }
+        search_attribute :endianness,
+                         type: {
+                             set: :string
+                         }
+        search_attribute :family,
+                         type: {
+                             set: :string
+                         }
 
         #
         # Validations
@@ -220,6 +232,47 @@ module Metasploit
                   }
         validates :summary,
                   :presence => true
+      end
+
+      # Adds <attribute>_set methods to class.
+      module ClassMethods
+        # Set of valid values for `attribute`.
+        #
+        # @param attribute [Symbol] attribute name.
+        # @return [Set]
+        def self.set(attribute)
+          SEED_ATTRIBUTES.each_with_object(Set.new) { |attributes, set|
+            set.add attributes.fetch(attribute)
+          }
+        end
+
+        # @!method abbreviation_set
+        #   Set of valid {Metasploit::Model::Architecture#abbreviation}.
+        #
+        #   @return [Set<String>]
+        #
+        # @!method bits_set
+        #   Set of valid {Metasploit::Model::Architecture#bits}.
+        #
+        #   @return [Set<Integer>]
+        #
+        # @!method endianness_set
+        #   Set of valid {Metasploit::Model::Architecture#endianness}.
+        #
+        #   @return [Set<String>]
+        #
+        # @!method family_set
+        #   Set of valid {Metasploit::Model::Architecture#family}.
+        #
+        #   @return [Set<String>]
+        [:abbreviation, :bits, :endianness, :family].each do |attribute|
+          # calculate external to method so it is only calculated once
+          set = self.set(attribute)
+
+          define_method("#{attribute}_set") do
+            set
+          end
+        end
       end
 
       #

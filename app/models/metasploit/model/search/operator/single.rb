@@ -1,8 +1,45 @@
 # @abstract Operator that only returns a single operation from {#operate_on}.
 class Metasploit::Model::Search::Operator::Single < Metasploit::Model::Search::Operator::Base
   #
+  # CONSTANTS
+  #
+
+  # Separator between parent and child module/class names.
+  MODULE_SEPARATOR = '::'
+  # Name of namespace module for operations returned from {#operation_class} and used by {#operate_on}.
+  OPERATION_NAMESPACE_NAME = "Metasploit::Model::Search::Operation"
+
+  #
   # Methods
   #
+
+  # The constant name for the given type.
+  #
+  # @param type [Symbol, Hash]
+  # @return [String]
+  def self.constant_name(type)
+    case type
+      when Hash
+        if type.length < 1
+          raise ArgumentError, "Cannot destructure a Hash without entries"
+        end
+
+        if type.length > 1
+          raise ArgumentError, "Cannot destructure a Hash with multiple entries"
+        end
+
+        partial_types = type.first
+        partial_constant_names = partial_types.collect { |partial_type|
+          constant_name(partial_type)
+        }
+
+        partial_constant_names.join(MODULE_SEPARATOR)
+      when Symbol
+        type.to_s.camelize
+      else
+        raise ArgumentError, "Can only convert Hashes and Symbols to constant names, not #{type.inspect}"
+    end
+  end
 
   # Creates an {Metasploit::Model::Search::Operation::Base operation} of the correct type for this operator's {#type}.
   #
@@ -31,15 +68,31 @@ class Metasploit::Model::Search::Operator::Single < Metasploit::Model::Search::O
   # The {#type}-specific {Metasploit::Model::Search::Operation::Base} subclass.
   #
   # @return [Class<Metasploit::Model::Search::Operation::Base>]
+  # @raise (see #operation_class_name)
   def operation_class
     unless instance_variable_defined? :@operation_class
-      unless type
-        raise ArgumentError, "operation_class cannot be derived for #{name} operator because its type is nil"
-      end
-
-      @operation_class = "Metasploit::Model::Search::Operation::#{type.to_s.camelize}".constantize
+      @operation_class = operation_class_name.constantize
     end
 
     @operation_class
+  end
+
+  # The name of the {#type}-specific {Metasploit::Model::Search::Operation::Base} subclass.
+  #
+  # @return [String]
+  # @raise [ArgumentError]
+  def operation_class_name
+    unless instance_variable_defined? :@operation_class_name
+      unless type
+        raise ArgumentError, "#{self.class}##{__method__} cannot be derived for #{name} operator because its type is nil"
+      end
+
+      partial_constant_names = [OPERATION_NAMESPACE_NAME]
+      partial_constant_names << self.class.constant_name(type)
+
+      @operation_class_name = partial_constant_names.join(MODULE_SEPARATOR)
+    end
+
+    @operation_class_name
   end
 end

@@ -18,7 +18,7 @@ FactoryGirl.define do
   sequence :metasploit_model_module_instance_privileged, Metasploit::Model::Module::Instance::PRIVILEGES.cycle
 
   total_architectures = Metasploit::Model::Architecture::ABBREVIATIONS.length
-  total_platforms = Metasploit::Model::Platform.fully_qualified_names.length
+  total_platforms = Metasploit::Model::Platform.fully_qualified_name_set.length
   # arbitrarily chosen maximum when there are a bounded total of the associated records.  Most chosen because 3 will
   # test that there is no 1 or 2 special casing make it work.
   arbitrary_maximum = 3

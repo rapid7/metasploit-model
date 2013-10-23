@@ -7,6 +7,109 @@ describe Metasploit::Model::Search::Operator::Single do
 
   it { should be_a Metasploit::Model::Search::Operator::Base }
 
+  context 'CONSTANTS' do
+    context 'MODULE_SEPARATOR' do
+      subject(:module_separator) do
+        described_class::MODULE_SEPARATOR
+      end
+
+      it { should == '::' }
+    end
+
+    context 'OPERATION_NAMESPACE_NAME' do
+      subject(:operation_namespace_name) do
+        described_class::OPERATION_NAMESPACE_NAME
+      end
+
+      it { should == 'Metasploit::Model::Search::Operation' }
+    end
+  end
+
+  context 'constant_name' do
+    subject(:constant_name) do
+      described_class.constant_name(type)
+    end
+
+    context 'with Hash' do
+      context 'with zero entries' do
+        let(:type) do
+          {}
+        end
+
+        specify {
+          expect {
+            constant_name
+          }.to raise_error(ArgumentError, "Cannot destructure a Hash without entries")
+        }
+      end
+
+      context 'with one entry' do
+        let(:key) do
+          :enum
+        end
+
+        let(:key_constant_name) do
+          'Enum'
+        end
+
+        let(:type) do
+          {
+              key => value
+          }
+        end
+
+        let(:value) do
+          :integer
+        end
+
+        let(:value_constant_name) do
+          'Integer'
+        end
+
+        it 'should be the constant_name of the key and value separated by MODULE_SEPARATOR' do
+          constant_name.should == "#{key_constant_name}#{described_class::MODULE_SEPARATOR}#{value_constant_name}"
+        end
+      end
+
+      context 'with multiple entries' do
+        let(:type) do
+          {
+              key1: :value1,
+              key2: :value2
+          }
+        end
+
+        specify {
+          expect {
+            constant_name
+          }.to raise_error(ArgumentError, 'Cannot destructure a Hash with multiple entries')
+        }
+      end
+    end
+
+    context 'with Symbol' do
+      let(:type) do
+        :integer
+      end
+
+      it 'should constantize string version of Symbol' do
+        constant_name.should == 'Integer'
+      end
+    end
+
+    context 'without Hash or Symbol' do
+      let(:type) do
+        nil
+      end
+
+      specify {
+        expect {
+          constant_name
+        }.to raise_error(ArgumentError, "Can only convert Hashes and Symbols to constant names, not #{type.inspect}")
+      }
+    end
+  end
+
   context '#operate_on' do
     subject(:operate_on) do
       operator.operate_on(formatted_value)
@@ -64,6 +167,26 @@ describe Metasploit::Model::Search::Operator::Single do
         it { should == Metasploit::Model::Search::Operation::Date }
       end
 
+      context 'with set: :integer' do
+        let(:type) do
+          {
+              set: :integer
+          }
+        end
+
+        it { should == Metasploit::Model::Search::Operation::Set::Integer }
+      end
+
+      context 'with set: :string' do
+        let(:type) do
+          {
+              set: :string
+          }
+        end
+
+        it { should == Metasploit::Model::Search::Operation::Set::String }
+      end
+
       context 'with :integer' do
         let(:type) do
           :integer
@@ -98,7 +221,93 @@ describe Metasploit::Model::Search::Operator::Single do
             operation_class
           }.to raise_error(
                    ArgumentError,
-                   "operation_class cannot be derived for #{name} operator because its type is nil")
+                   "#{described_class}#operation_class_name cannot be derived for #{name} operator because its type is nil")
+        end
+      end
+    end
+  end
+
+  context '#operation_class_name' do
+    subject(:operation_class_name) do
+      operator.send(:operation_class_name)
+    end
+
+    before(:each) do
+      operator.stub(:type => type)
+    end
+
+    context 'type' do
+      context 'with :boolean' do
+        let(:type) do
+          :boolean
+        end
+
+        it { should == 'Metasploit::Model::Search::Operation::Boolean' }
+      end
+
+      context 'with :date' do
+        let(:type) do
+          :date
+        end
+
+        it { should == 'Metasploit::Model::Search::Operation::Date' }
+      end
+
+      context 'with set: :integer' do
+        let(:type) do
+          {
+              set: :integer
+          }
+        end
+
+        it { should == 'Metasploit::Model::Search::Operation::Set::Integer' }
+      end
+
+      context 'with set: :string' do
+        let(:type) do
+          {
+              set: :string
+          }
+        end
+
+        it { should == 'Metasploit::Model::Search::Operation::Set::String' }
+      end
+
+      context 'with :integer' do
+        let(:type) do
+          :integer
+        end
+
+        it { should == 'Metasploit::Model::Search::Operation::Integer' }
+      end
+
+      context 'with :string' do
+        let(:type) do
+          :string
+        end
+
+        it { should == 'Metasploit::Model::Search::Operation::String' }
+      end
+
+      context 'with nil' do
+        let(:name) do
+          :single
+        end
+
+        let(:type) do
+          nil
+        end
+
+        before(:each) do
+          operator.stub(:name => name)
+        end
+
+        it 'should raise ArgumentError' do
+          expect {
+            operation_class_name
+          }.to raise_error(
+                   ArgumentError,
+                   "#{described_class}#operation_class_name cannot be derived for #{name} operator because its type is nil")
         end
       end
     end

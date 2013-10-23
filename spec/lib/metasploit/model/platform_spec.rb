@@ -19,8 +19,8 @@ describe Metasploit::Model::Platform,
   #   method because seeding should always refer back to {Metasploit::Model::Platform} and not the classes in which
   #   it is included.
   context 'fully_qualified_names' do
-    subject(:fully_qualified_names) do
-      described_class.fully_qualified_names
+    subject(:fully_qualified_name_set) do
+      described_class.fully_qualified_name_set
     end
 
     it { should include 'AIX' }

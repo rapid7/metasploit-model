@@ -10,6 +10,12 @@ class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search
       :boolean,
       :date,
       :integer,
+      {
+          set: :integer
+      },
+      {
+          set: :string
+      },
       :string
   ]
 
@@ -42,6 +48,13 @@ class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search
   #
   # Methods
   #
+
+  # Set for {#attribute} as provided by {Metasploit::Model::Search::Operator::Base#klass #klass}.
+  #
+  # @return [Enumerable, #include?]
+  def attribute_set
+    klass.send("#{attribute}_set")
+  end
 
   alias_method :name, :attribute
 end
