@@ -1,10 +1,7 @@
 FactoryGirl.define do
   factory_by_attribute = {
       actions: :dummy_module_action,
-      module_architectures: :dummy_module_architecture,
-      module_platforms: :dummy_module_platform,
       module_references: :dummy_module_reference,
-      targets: :dummy_module_target
   }
 
   factory :dummy_module_instance,
@@ -51,6 +48,36 @@ FactoryGirl.define do
             }
 
             dummy_module_instance.send("#{attribute}=", collection)
+          end
+        end
+
+        # make sure targets are generated first so that module_architectures and module_platforms can be include
+        # the targets' architectures and platforms.
+        if dummy_module_instance.supports?(:targets)
+          # factory adds built module_targets to module_instance.
+          FactoryGirl.build_list(
+              :dummy_module_target,
+              evaluator.targets_length,
+              module_instance: dummy_module_instance
+          )
+          # module_architectures and module_platforms will be derived from targets
+        else
+          # if there are no targets, then architectures and platforms need to be explicitly defined on module instance
+          # since they can't be derived from anything
+          [:architecture, :platform].each do |suffix|
+            attribute = "module_#{suffix.to_s.pluralize}".to_sym
+
+            if dummy_module_instance.supports?(attribute)
+              factory = "dummy_module_#{suffix}"
+              length = evaluator.send("#{attribute}_length")
+
+              collection = FactoryGirl.build_list(
+                  factory,
+                  length,
+                  module_instance: dummy_module_instance
+              )
+              dummy_module_instance.send("#{attribute}=", collection)
+            end
           end
         end
       end

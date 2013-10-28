@@ -140,9 +140,20 @@ en:
         messages:
           boolean: "is not a boolean (false or true)."
           model_invalid: "Validation failed: %{errors}"
-          unsupported: "can't have any %{attribute}."
           supported: "must have at least one %{attribute}."
+          unsupported: "can't have any %{attribute}."
+
         models:
+          metasploit/model/module/instance:
+            attributes:
+              architectures:
+                extra: "has extra architectures (%{extra}) not found on targets"
+                missing: "is missing architectures (%{missing}) from targets"
+
+              platforms:
+                extra: "has extra platforms (%{extra}) not found on targets"
+                missing: "is missing platforms (%{missing}) from targets"
+
           metasploit/model/search/operation/date:
             attributes:
               value:

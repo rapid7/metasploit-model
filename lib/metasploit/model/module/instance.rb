@@ -134,7 +134,22 @@ module Metasploit
           search_with Metasploit::Model::Search::Operator::Deprecated::Text
 
           #
+          #
           # Validations
+          #
+          #
+
+          #
+          # Method Validations
+          #
+
+          validate :architectures_from_targets,
+                   if: 'supports?(:targets)'
+          validate :platforms_from_targets,
+                   if: 'supports?(:targets)'
+
+          #
+          # Attribute Validations
           #
 
           validates :actions,
@@ -191,6 +206,11 @@ module Metasploit
         #
         #   @return [Metasploit::Model::Module::Target]
 
+        # @!attribute [rw] module_architectures
+        #   Joins this with {#architectures}.
+        #
+        #   @return [Array<Metasploit::Model::Module::Architecture>]
+
         # @!attribute [rw] module_authors
         #   Joins this with {#authors} and {#email_addresses} to model the name and email address used for an author
         #   entry in the module metadata.
@@ -201,6 +221,11 @@ module Metasploit
         #   Class-derived metadata to go along with the instance-derived metadata in this model.
         #
         #   @return [Metasploit::Model::Module::Class]
+
+        # @!attribute [rw] module_platforms
+        #   Joins this with {#platforms}.
+        #
+        #   @return [Array<Metasploit::Model::Module::Platform>]
 
         # @!attribute [rw] targets
         #   Names of targets with different configurations that can be exploited by this module.
@@ -333,6 +358,103 @@ module Metasploit
           end
 
           supported
+        end
+
+        private
+
+        # Validates that the {#module_architectures}
+        # {Metasploit::Model::Module::Architecture#architecture architectures} match the {#targets}
+        # {Metasploit::Model::Module::Target#target_architectures target_architectures}
+        # {Metasploit::Model::Module::Target::Architecture#architecture architectures}.
+        #
+        # @return [void]
+        def architectures_from_targets
+          actual_architecture_set = Set.new module_architectures.map(&:architecture)
+          expected_architecture_set = Set.new
+
+          targets.each do |module_target|
+            module_target.target_architectures.each do |target_architecture|
+              expected_architecture_set.add target_architecture.architecture
+            end
+          end
+
+          extra_architecture_set = actual_architecture_set - expected_architecture_set
+
+          unless extra_architecture_set.empty?
+            human_extra_architectures = human_architecture_set(extra_architecture_set)
+
+            errors.add(:architectures, :extra, extra: human_extra_architectures)
+          end
+
+          missing_architecture_set = expected_architecture_set - actual_architecture_set
+
+          unless missing_architecture_set.empty?
+            human_missing_architectures = human_architecture_set(missing_architecture_set)
+
+            errors.add(:architectures, :missing, missing: human_missing_architectures)
+          end
+        end
+
+        # Converts a Set<Metasploit::Model::Architecture> to a human readable representation including the
+        # {Metasploit::Model::Architecture#abbreviation}.
+        #
+        # @return [String]
+        def human_architecture_set(architecture_set)
+          abbreviations = architecture_set.map(&:abbreviation)
+
+          human_set(abbreviations)
+        end
+
+        # Converts a Set<Metasploit::Model::Platform> to a human-readable representation including the
+        # {Metasploit::Model::Platform#fully_qualified_name}.
+        #
+        # @return [String]
+        def human_platform_set(platform_set)
+          fully_qualified_names = platform_set.map(&:fully_qualified_name)
+
+          human_set(fully_qualified_names)
+        end
+
+        # Converts strings to a human-readable set notation.
+        #
+        # @return [String]
+        def human_set(strings)
+          sorted = strings.sort
+          comma_separated = sorted.join(', ')
+
+          "{#{comma_separated}}"
+        end
+
+        # Validates that {#module_platforms} {Metasploit::Model::Module::Platform#platform platforms} match the
+        # {#targets} {Metasploit::Model::Module::Target#target_platforms target_platforms}
+        # {Metasploit::Model::Module::Target::Platform#platform platforms}.
+        #
+        # @return [void]
+        def platforms_from_targets
+          actual_platform_set = Set.new module_platforms.map(&:platform)
+          expected_platform_set = Set.new
+
+          targets.each do |module_target|
+            module_target.target_platforms.each do |target_platform|
+              expected_platform_set.add target_platform.platform
+            end
+          end
+
+          extra_platform_set = actual_platform_set - expected_platform_set
+
+          unless extra_platform_set.empty?
+            human_extra_platforms = human_platform_set(extra_platform_set)
+
+            errors.add(:platforms, :extra, extra: human_extra_platforms)
+          end
+
+          missing_platform_set = expected_platform_set - actual_platform_set
+
+          unless missing_platform_set.empty?
+            human_missing_platforms = human_platform_set(missing_platform_set)
+
+            errors.add(:platforms, :missing, missing: human_missing_platforms)
+          end
         end
       end
     end

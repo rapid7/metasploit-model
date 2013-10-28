@@ -20,14 +20,22 @@ shared_examples_for 'Metasploit::Model::Module::Instance validates supports' do 
       module_instance.class.human_attribute_name(attribute)
     end
 
+    let(:module_types) do
+      support_by_module_type = Metasploit::Model::Module::Instance::SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
+
+      support_by_module_type.each_with_object([]) { |(module_type, support), module_types|
+        if support == supports_attribute
+          module_types << module_type
+        end
+      }
+    end
+
     before(:each) do
       module_instance.send("#{attribute}=", send(attribute))
     end
 
     context "supports?(:#{attribute})" do
       before(:each) do
-        module_instance.stub(supports?: false)
-        module_instance.should_receive(:supports?).with(attribute).and_return(supports_attribute)
         module_instance.valid?
       end
 

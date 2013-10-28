@@ -83,6 +83,10 @@ module Metasploit
             namespace_name.underscore.gsub('/', '_')
           end
 
+          define_singleton_method(:namespace_name) do
+            namespace_name
+          end
+
           define_singleton_method(:relative_variable_name) do
             relative_variable_name
           end

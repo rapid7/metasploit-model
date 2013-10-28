@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Metasploit::Model::EmailAddress,
          # setting the metadata type makes rspec-rails include RSpec::Rails::ModelExampleGroup, which includes a better
          # be_valid matcher that will print full error messages
-         type: :module  do
+         type: :model  do
   it_should_behave_like 'Metasploit::Model::EmailAddress',
                         namespace_name: 'Dummy' do
      def attribute_type(attribute)

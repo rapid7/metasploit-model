@@ -25,5 +25,7 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Target' do
     it { should validate_presence_of(:index) }
     it { should validate_presence_of(:module_instance) }
     it { should validate_presence_of(:name) }
+    it { should validate_presence_of :target_architectures }
+    it { should validate_presence_of :target_platforms }
   end
 end

@@ -1,4 +1,15 @@
 Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
+  #
+  # Classes
+  #
+
+  architecture_class = "#{namespace_name}::Architecture".constantize
+  platform_class = "#{namespace_name}::Platform".constantize
+
+  #
+  # Factories
+  #
+
   module_action_factory = "#{factory_namespace}_module_action"
   module_architecture_factory = "#{factory_namespace}_module_architecture"
   module_class_factory = "#{factory_namespace}_module_class"
@@ -350,6 +361,28 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
   end
 
   context 'validations' do
+    subject(:module_instance) do
+      FactoryGirl.build(
+          module_instance_factory,
+          module_class: module_class
+      )
+    end
+
+    let(:module_class) do
+      FactoryGirl.create(
+          module_class_factory,
+          module_type: module_type
+      )
+    end
+
+    let(:module_type) do
+      module_types.sample
+    end
+
+    let(:module_types) do
+      Metasploit::Model::Module::Type::ALL
+    end
+
     it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
                           :actions,
                           factory: module_action_factory
@@ -364,10 +397,6 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
     it { should ensure_length_of(:module_authors) }
 
     context 'validate presence of module_class' do
-      subject(:module_instance) do
-        FactoryGirl.build(module_instance_factory, :module_class => module_class)
-      end
-
       before(:each) do
         module_instance.valid?
       end
@@ -455,14 +484,6 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
           )
         end
 
-        let(:module_class) do
-          FactoryGirl.create(
-              module_class_factory,
-              # set by shared examples
-              :module_type => module_type
-          )
-        end
-
         let(:stance) do
           nil
         end
@@ -480,6 +501,256 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
     it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
                           :targets,
                           factory: module_target_factory
+
+    context 'with supports?(:targets)' do
+      let(:module_instance) do
+        FactoryGirl.build(
+            module_instance_factory,
+            module_class: module_class,
+            # create targets manually to control the number of target architectures and target platforms
+            targets_length: 0
+        ).tap { |module_instance|
+          FactoryGirl.build(
+              module_target_factory,
+              module_instance: module_instance,
+              # need to restrict to 1 architecture and platform to ensure there is an extra architecture or platform
+              # available.
+              target_architectures_length: 1,
+              target_platforms_length: 1
+          )
+        }
+      end
+
+      let(:module_types) do
+        support_by_module_type = Metasploit::Model::Module::Instance::SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(:targets)
+
+        support_by_module_type.each_with_object([]) { |(module_type, support), module_types|
+          if support
+            module_types << module_type
+          end
+        }
+      end
+
+      context '#architectures errors' do
+        subject(:architectures_errors) do
+          module_instance.errors[:architectures]
+        end
+
+        context '#architectures_from_targets' do
+          context 'with same architectures' do
+            before(:each) do
+              module_instance.valid?
+            end
+
+            it { should be_empty }
+          end
+
+          context 'without same architectures' do
+            context 'with extra architectures' do
+              #
+              # Lets
+              #
+
+              let(:error) do
+                I18n.translate(
+                    'metasploit.model.errors.models.metasploit/model/module/instance.attributes.architectures.extra',
+                    extra: human_architecture_set
+                )
+              end
+
+              let(:expected_architecture_set) do
+                module_instance.targets.each_with_object(Set.new) do |module_target, set|
+                  module_target.target_architectures.each do |target_architecture|
+                    set.add target_architecture.architecture
+                  end
+                end
+              end
+
+              let(:extra_architecture) do
+                extra_architectures.sample
+              end
+
+              let(:extra_architectures) do
+                architecture_class.all - expected_architecture_set.to_a
+              end
+
+              let(:human_architecture_set) do
+                "{#{extra_architecture.abbreviation}}"
+              end
+
+              #
+              # Callbacks
+              #
+
+              before(:each) do
+                module_instance.module_architectures <<  FactoryGirl.build(
+                    module_architecture_factory,
+                    architecture: extra_architecture,
+                    module_instance: module_instance
+                )
+
+                module_instance.valid?
+              end
+
+              it 'includes extra error' do
+                expect(architectures_errors).to include(error)
+              end
+            end
+
+            context 'with missing architectures' do
+              #
+              # Lets
+              #
+
+              let(:error) do
+                I18n.translate(
+                    'metasploit.model.errors.models.metasploit/model/module/instance.attributes.architectures.missing',
+                    missing: human_architecture_set
+                )
+              end
+
+              let(:human_architecture_set) do
+                "{#{missing_architecture.abbreviation}}"
+              end
+
+              let(:missing_architecture) do
+                missing_module_architecture.architecture
+              end
+
+              let(:missing_module_architecture) do
+                module_instance.module_architectures.sample
+              end
+
+              #
+              # Callbacks
+              #
+
+              before(:each) do
+                module_instance.module_architectures.reject! { |module_architecture|
+                  module_architecture == missing_module_architecture
+                }
+
+                module_instance.valid?
+              end
+
+              it 'includes missing error' do
+                expect(architectures_errors).to include(error)
+              end
+            end
+          end
+        end
+      end
+
+      context '#platforms errors' do
+        subject(:platforms_errors) do
+          module_instance.errors[:platforms]
+        end
+
+        context '#platforms_from_targets' do
+          context 'with same platforms' do
+            before(:each) do
+              module_instance.valid?
+            end
+
+            it { should be_empty }
+          end
+
+          context 'without same platforms' do
+            context 'with extra platforms' do
+              #
+              # Lets
+              #
+
+              let(:error) do
+                I18n.translate(
+                    'metasploit.model.errors.models.metasploit/model/module/instance.attributes.platforms.extra',
+                    extra: human_platform_set
+                )
+              end
+
+              let(:expected_platform_set) do
+                module_instance.targets.each_with_object(Set.new) do |module_target, set|
+                  module_target.target_platforms.each do |target_platform|
+                    set.add target_platform.platform
+                  end
+                end
+              end
+
+              let(:extra_platform) do
+                extra_platforms.sample
+              end
+
+              let(:extra_platforms) do
+                platform_class.all - expected_platform_set.to_a
+              end
+
+              let(:human_platform_set) do
+                "{#{extra_platform.fully_qualified_name}}"
+              end
+
+              #
+              # Callbacks
+              #
+
+              before(:each) do
+                module_instance.module_platforms <<  FactoryGirl.build(
+                    module_platform_factory,
+                    platform: extra_platform,
+                    module_instance: module_instance
+                )
+
+                module_instance.valid?
+              end
+
+              it 'includes extra error' do
+                expect(platforms_errors).to include(error)
+              end
+            end
+
+            context 'with missing platforms' do
+              #
+              # Lets
+              #
+
+              let(:error) do
+                I18n.translate(
+                    'metasploit.model.errors.models.metasploit/model/module/instance.attributes.platforms.missing',
+                    missing: human_platform_set
+                )
+              end
+
+              let(:human_platform_set) do
+                "{#{missing_platform.fully_qualified_name}}"
+              end
+
+              let(:missing_platform) do
+                missing_module_platform.platform
+              end
+
+              let(:missing_module_platform) do
+                module_instance.module_platforms.sample
+              end
+
+              #
+              # Callbacks
+              #
+
+              before(:each) do
+                module_instance.module_platforms.reject! { |module_platform|
+                  module_platform == missing_module_platform
+                }
+
+                module_instance.valid?
+              end
+
+              it 'includes missing error' do
+                expect(platforms_errors).to include(error)
+              end
+            end
+          end
+        end
+      end
+    end
   end
 
   context '#supports?' do
