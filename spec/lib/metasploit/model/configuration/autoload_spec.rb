@@ -1,92 +1,91 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Autoload do
-  let(:base_module) do
-    described_class = self.described_class
+describe Metasploit::Model::Configuration::Autoload do
+  include_context 'Metasploit::Model::Configuration'
 
-    Module.new do
-      extend described_class
-
-      def self.root
-        Metasploit::Model.root.join('spec', 'dummy')
-      end
-    end
+  subject(:autoload) do
+    described_class.new.tap { |autoload|
+      autoload.configuration = configuration
+    }
   end
 
-  context 'all_autoload_paths' do
-    subject(:all_autoload_paths) do
-      base_module.all_autoload_paths
+  context 'all_paths' do
+    subject(:all_paths) do
+      autoload.all_paths
     end
 
     it 'should include autoload_once_paths' do
-      all_autoload_paths.to_set.should be_superset(base_module.autoload_once_paths.to_set)
+      all_paths.to_set.should be_superset(autoload.once_paths.to_set)
     end
 
-    it 'should include autoload_paths' do
-      all_autoload_paths.to_set.should be_superset(base_module.autoload_paths.to_set)
+    it 'should include paths' do
+      all_paths.to_set.should be_superset(autoload.paths.to_set)
     end
   end
 
-  context 'autoload_once_paths' do
-    subject(:autoload_once_paths) do
-      base_module.autoload_once_paths
+  context 'once_paths' do
+    subject(:once_paths) do
+      autoload.once_paths
     end
 
-    it 'should call relative_autoload_once_paths' do
-      base_module.should_receive(:relative_autoload_once_paths).and_return([])
+    it 'should call relative_once_paths' do
+      autoload.should_receive(:relative_once_paths).and_return([])
 
-      autoload_once_paths
+      once_paths
     end
 
     it 'should have absolute paths' do
-      autoload_once_paths.each do |autoload_once_path|
-        autoload_once_path.should == File.absolute_path(autoload_once_path)
+      once_paths.each do |once_path|
+        once_path.should == File.absolute_path(once_path)
       end
     end
   end
 
-  context 'autoload_paths' do
-    subject(:autoload_paths) do
-      base_module.autoload_paths
+  context 'paths' do
+    subject(:paths) do
+      autoload.paths
     end
 
-    it 'should call relative_autoload_paths' do
-      base_module.should_receive(:relative_autoload_paths).and_return([])
+    it 'should call relative_paths' do
+      autoload.should_receive(:relative_paths).and_return([])
 
-      autoload_paths
+      paths
     end
 
     it 'should have absolute paths' do
-      autoload_paths.each do |autoload_path|
-        autoload_path.should == File.absolute_path(autoload_path)
+      paths.each do |path|
+        path.should == File.absolute_path(path)
       end
     end
   end
 
-  context 'relative_autoload_once_paths' do
-    subject(:relative_autoload_once_paths) do
-      base_module.relative_autoload_once_paths
+  context 'relative_once_paths' do
+    subject(:relative_once_paths) do
+      autoload.relative_once_paths
     end
 
     it { should include('lib') }
   end
 
-  context 'relative_autoload_paths' do
-    subject(:relative_autoload_paths) do
-      base_module.relative_autoload_paths
+  context 'relative_paths' do
+    subject(:relative_paths) do
+      autoload.relative_paths
     end
 
     it { should include('app/models') }
-    it { should include('app/validators') }
   end
 
-  context 'set_autoload_paths' do
-    subject(:set_autoload_paths) do
-      base_module.set_autoload_paths
+  context 'setup' do
+    subject(:setup) do
+      autoload.setup
     end
 
     let(:autoload_once_path) do
       Metasploit::Model.root.join('spec', 'dummy', 'lib').to_path
+    end
+
+    let(:autoload_path) do
+      Metasploit::Model.root.join('spec', 'dummy', 'app', 'models').to_path
     end
 
     before(:each) do
@@ -96,8 +95,8 @@ describe Metasploit::Model::Autoload do
       @before_autoload_once_paths = ActiveSupport::Dependencies.autoload_once_paths.dup
       ActiveSupport::Dependencies.autoload_once_paths.clear
 
-      base_module.stub(:autoload_once_paths).and_return([autoload_once_path])
-      base_module.stub(:autoload_paths).and_return([])
+      autoload.stub(:autoload_once_paths).and_return([autoload_once_path])
+      autoload.stub(:autoload_paths).and_return([])
     end
 
     after(:each) do
@@ -105,39 +104,41 @@ describe Metasploit::Model::Autoload do
       ActiveSupport::Dependencies.autoload_once_paths = @before_autoload_once_paths
     end
 
-    context 'autoload_paths' do
-      it 'should call all_autoload_paths' do
-        base_module.should_receive(:all_autoload_paths).and_return([])
+    context 'paths' do
+      it 'should call all_paths' do
+        autoload.should_receive(:all_paths).and_return([])
 
-        set_autoload_paths
+        setup
       end
 
       context 'with autoload_path in ActiveSupport::Dependencies.autoload_paths' do
         before(:each) do
+          ActiveSupport::Dependencies.autoload_paths << autoload_path
           ActiveSupport::Dependencies.autoload_paths << autoload_once_path
         end
 
         it 'should not add path to ActiveSupport::Dependencies.autoload_paths' do
           expect {
-            set_autoload_paths
+            setup
           }.to_not change(ActiveSupport::Dependencies, :autoload_paths)
         end
       end
 
       context 'without autoload_path in ActiveSupport::Dependencies.autoload_paths' do
         it 'should add path to ActiveSupport::Dependencies.autoload_paths' do
-          set_autoload_paths
+          setup
 
           ActiveSupport::Dependencies.autoload_paths.should include(autoload_once_path)
         end
       end
     end
 
-    context 'autoload_once_paths' do
-      it 'should call autoload_once_paths' do
-        base_module.should_receive(:autoload_once_paths).and_return([])
+    context 'once_paths' do
+      it 'should call once_paths' do
+        # once in #all_paths and once when called directly
+        autoload.should_receive(:once_paths).twice.and_return([])
 
-        set_autoload_paths
+        setup
       end
 
       context 'with autoload_path in ActiveSupport::Dependencies.autoload_once_paths' do
@@ -147,14 +148,14 @@ describe Metasploit::Model::Autoload do
 
         it 'should not add path to ActiveSupport::Dependencies.autoload_once_paths' do
           expect {
-            set_autoload_paths
+            setup
           }.to_not change(ActiveSupport::Dependencies, :autoload_once_paths)
         end
       end
 
       context 'without autoload_path in ActiveSupport::Dependencies.autoload_once_paths' do
         it 'should add path to ActiveSupport::Dependencies.autoload_once_paths' do
-          set_autoload_paths
+          setup
 
           ActiveSupport::Dependencies.autoload_once_paths.should include(autoload_once_path)
         end

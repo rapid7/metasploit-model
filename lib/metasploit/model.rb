@@ -9,8 +9,6 @@ require 'active_support/dependencies'
 #
 # Project
 #
-require 'metasploit/model/autoload'
-require 'metasploit/model/i18n'
 require 'metasploit/model/version'
 
 # Only include the Rails engine when using Rails.  This allows the non-Rails projects, like metasploit-framework to use
@@ -26,31 +24,15 @@ module Metasploit
   # separate gem for this shard code outside of metasploit_data_models is necessary as metasploit_data_models is an
   # optional dependency for metasploit-framework as metasploit-framework can work without a database.
   module Model
-    extend Metasploit::Model::Autoload
-    extend Metasploit::Model::I18n
+    require 'metasploit/model/configured'
+    extend Metasploit::Model::Configured
 
-    # Pathname to the app directory that contains the models and validators.
-    #
-    # @return [Pathname]
-    def self.app_pathname
-      root.join('app')
-    end
+    lib_metasploit_pathname = Pathname.new(__FILE__).dirname
+    lib_pathname = lib_metasploit_pathname.parent
+    configuration.root = lib_pathname.parent
 
-    # Pathname to the top of the metasploit_data_models gem's files.
-    #
-    # @return [Pathname]
-    def self.root
-      unless instance_variable_defined? :@root
-        lib_metasploit_pathname = Pathname.new(__FILE__).dirname
-        lib_pathname = lib_metasploit_pathname.parent
-
-        @root = lib_pathname.parent
-      end
-
-      @root
-    end
+    configuration.autoload.relative_paths << File.join('app', 'validators')
   end
 end
 
-Metasploit::Model.set_autoload_paths
-Metasploit::Model.set_i18n_load_paths
+Metasploit::Model.setup
