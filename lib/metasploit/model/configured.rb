@@ -1,3 +1,5 @@
+require 'active_support/core_ext/module/delegation'
+
 # Allows modules to be configured (using {Metasploit::Model::Configuration}) similar to Rails engines.
 #
 # @example Making gem module configurable
