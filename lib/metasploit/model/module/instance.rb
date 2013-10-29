@@ -331,6 +331,19 @@ module Metasploit
           support_by_module_type.fetch(module_type)
         end
 
+        # Module types that support the given attribute.
+        #
+        # @return [Array<String>] Subarray of {Metasploit::Model::Module::Type::ALL}
+        def self.module_types_that_support(attribute)
+          support_by_module_type = SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
+
+          support_by_module_type.each_with_object([]) { |(module_type, support), module_types|
+            if support
+              module_types << module_type
+            end
+          }
+        end
+
         #
         # Instance Methods
         #

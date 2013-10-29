@@ -12,6 +12,24 @@ FactoryGirl.define do
     end
 
     architecture { generate :dummy_architecture }
-    module_instance { FactoryGirl.create(:dummy_module_instance, module_class: module_class) }
+    module_instance {
+      FactoryGirl.build(
+          :dummy_module_instance,
+          # disable module_instance factory from building module_architectures since this factory is already building
+          # one
+          module_architectures_length: 0,
+          module_class: module_class
+      )
+    }
+
+    after(:build) do |module_architecture|
+      module_instance = module_architecture.module_instance
+
+      if module_instance
+        unless module_instance.module_architectures.include? module_architecture
+          module_instance.module_architectures << module_architecture
+        end
+      end
+    end
   end
 end

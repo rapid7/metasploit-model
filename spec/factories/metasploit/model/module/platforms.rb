@@ -1,12 +1,9 @@
 FactoryGirl.define do
-  module_platforms_support_by_module_type = Metasploit::Model::Module::Instance::SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(:module_platforms)
-  metasploit_model_module_platform_module_types = module_platforms_support_by_module_type.each_with_object([]) { |pair, metasploit_model_module_platform_module_types|
-    module_type, support = pair
+  module_platforms_module_types = Metasploit::Model::Module::Instance.module_types_that_support(:module_platforms)
+  targets_module_types = Metasploit::Model::Module::Instance.module_types_that_support(:targets)
 
-    if support
-      metasploit_model_module_platform_module_types << module_type
-    end
-  }
+  # have to remove target supporting types so that target platforms won't interfere with module platforms
+  metasploit_model_module_platform_module_types = module_platforms_module_types - targets_module_types
 
   sequence :metasploit_model_module_platform_module_type, metasploit_model_module_platform_module_types.cycle
 

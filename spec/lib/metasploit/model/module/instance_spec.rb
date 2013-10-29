@@ -78,4 +78,88 @@ describe Metasploit::Model::Module::Instance,
       end
     end
   end
+
+  context 'module_types_that_support' do
+    subject(:module_types_that_support) do
+      described_class.module_types_that_support(attribute)
+    end
+
+    context 'with actions' do
+      let(:attribute) do
+        :actions
+      end
+
+      it { should include 'auxiliary' }
+      it { should_not include 'encoder' }
+      it { should_not include 'exploit' }
+      it { should_not include 'nop' }
+      it { should_not include 'payload' }
+      it { should_not include 'post' }
+    end
+
+    context 'with module_architectures' do
+      let(:attribute) do
+        :module_architectures
+      end
+
+      it { should_not include 'auxiliary' }
+      it { should include 'encoder' }
+      it { should include 'exploit' }
+      it { should include 'nop' }
+      it { should include 'payload' }
+      it { should include 'post' }
+    end
+
+    context 'with module_platforms' do
+      let(:attribute) do
+        :module_platforms
+      end
+
+      it { should_not include 'auxiliary' }
+      it { should_not include 'encoder' }
+      it { should include 'exploit' }
+      it { should_not include 'nop' }
+      it { should include 'payload' }
+      it { should include 'post' }
+    end
+
+    context 'with module_references' do
+      let(:attribute) do
+        :module_references
+      end
+
+      it { should include 'auxiliary' }
+      it { should_not include 'encoder' }
+      it { should include 'exploit' }
+      it { should_not include 'nop' }
+      it { should_not include 'payload' }
+      it { should include 'post' }
+    end
+
+    context 'with stance' do
+      let(:attribute) do
+        :stance
+      end
+
+      it { should include 'auxiliary' }
+      it { should_not include 'encoder' }
+      it { should include 'exploit' }
+      it { should_not include 'nop' }
+      it { should_not include 'payload' }
+      it { should_not include 'post' }
+    end
+
+    context 'with targets' do
+      let(:attribute) do
+        :targets
+      end
+
+      it { should_not include 'auxiliary' }
+      it { should_not include 'encoder' }
+      it { should include 'exploit' }
+      it { should_not include 'nop' }
+      it { should_not include 'payload' }
+      it { should_not include 'post' }
+    end
+  end
 end

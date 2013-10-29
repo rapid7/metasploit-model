@@ -6,6 +6,26 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Platform' do
       end
 
       it { should be_valid }
+
+      context '#module_instance' do
+        subject(:module_instance) do
+          send(module_platform_factory).module_instance
+        end
+
+        it { should be_valid }
+
+        context '#module_platforms' do
+          subject(:module_platforms) do
+            module_instance.module_platforms
+          end
+
+          its(:length) { should == 1 }
+
+          it "should include #{module_platform_factory}" do
+            expect(module_platforms).to include send(module_platform_factory)
+          end
+        end
+      end
     end
   end
 

@@ -11,8 +11,25 @@ FactoryGirl.define do
       module_class { FactoryGirl.create(:dummy_module_class, module_type: module_type) }
     end
 
-    module_instance { FactoryGirl.create(:dummy_module_instance, module_class: module_class) }
+    module_instance {
+      FactoryGirl.build(
+          :dummy_module_instance,
+          module_class: module_class,
+          # disable module_instance factory from building module_platforms since this factory is already building one
+          module_platforms_length: 0
+      )
+    }
     platform { generate :dummy_platform }
+
+    after(:build) do |module_platform|
+      module_instance = module_platform.module_instance
+
+      if module_instance
+        unless module_instance.module_platforms.include? module_platform
+          module_instance.module_platforms << module_platform
+        end
+      end
+    end
   end
 end
 
