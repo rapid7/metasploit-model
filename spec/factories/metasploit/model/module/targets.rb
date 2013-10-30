@@ -11,10 +11,6 @@ FactoryGirl.define do
     end
   }
 
-  sequence :metasploit_model_module_target_index do |n|
-    n
-  end
-
   sequence :metasploit_model_module_target_module_type, metasploit_model_module_target_module_types.cycle
 
   sequence :metasploit_model_module_target_name do |n|
@@ -29,7 +25,6 @@ FactoryGirl.define do
       target_platforms_length { Random.rand(1 .. total_platforms) }
     end
 
-    index { generate :metasploit_model_module_target_index }
     name { generate :metasploit_model_module_target_name }
   end
 end
