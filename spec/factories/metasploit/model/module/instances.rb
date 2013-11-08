@@ -19,11 +19,14 @@ FactoryGirl.define do
 
   total_architectures = Metasploit::Model::Architecture::ABBREVIATIONS.length
   total_platforms = Metasploit::Model::Platform.fully_qualified_name_set.length
+  # chosen so that there is at least 1 element even if 0 is allowed so that factories always test that the associated
+  # records are handled.
+  minimum_with_elements = 1
   # arbitrarily chosen maximum when there are a bounded total of the associated records.  Most chosen because 3 will
   # test that there is no 1 or 2 special casing make it work.
   arbitrary_maximum = 3
   arbitrary_supported_length = ->{
-    Random.rand(SupportValidator::MINIMUM_LENGTH .. arbitrary_maximum)
+    Random.rand(minimum_with_elements .. arbitrary_maximum)
   }
 
   trait :metasploit_model_module_instance do
@@ -33,7 +36,7 @@ FactoryGirl.define do
       # this length is only used if supports?(:module_architectures) is true.  It can be set to 0 when
       # supports?(:module_architectures) is true to make the after(:build) skip building the module architectures automatically.
       module_architectures_length {
-        Random.rand(SupportValidator::MINIMUM_LENGTH .. total_architectures)
+        Random.rand(minimum_with_elements .. total_architectures)
       }
 
       module_authors_length(&arbitrary_supported_length)
@@ -41,7 +44,7 @@ FactoryGirl.define do
       # this length is only used if supports?(:module_platforms) is true.  It can be set to 0 when
       # supports?(:module_platforms) is true to make the after(:build) skip building the module platforms automatically.
       module_platforms_length {
-        Random.rand(SupportValidator::MINIMUM_LENGTH .. total_platforms)
+        Random.rand(minimum_with_elements .. total_platforms)
       }
 
       module_references_length(&arbitrary_supported_length)

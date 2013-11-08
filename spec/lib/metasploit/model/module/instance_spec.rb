@@ -11,77 +11,15 @@ describe Metasploit::Model::Module::Instance,
   it_should_behave_like 'Metasploit::Model::Module::Instance',
                         namespace_name: 'Dummy'
 
-  # not in 'Metasploit::Model::Module::Instance' shared example since it's not in ClassMethods, but an actual module
-  # method on Metasploit::Model::Module::Instance for use in metasploit-model factories.
-  context 'module_type_supports?' do
-    subject(:module_type_supports?) do
-      described_class.module_type_supports?(module_type, attribute)
-    end
-
-    context 'with known attribute' do
-      let(:attribute) do
-        [:actions, :module_architectures, :module_platforms, :module_references, :stance, :targets].sample
-      end
-
-      context 'with known module_type' do
-        let(:module_type) do
-          FactoryGirl.generate :metasploit_model_module_type
-        end
-
-        it 'should be Boolean' do
-          support = module_type_supports?
-
-          support.should be_in [false, true]
-        end
-      end
-
-      context 'without known module_type' do
-        let(:module_type) do
-          :unknown_module_type
-        end
-
-        specify {
-          expect {
-            module_type_supports?
-          }.to raise_error(KeyError)
-        }
-      end
-    end
-
-    context 'without known attribute' do
-      let(:attribute) do
-        :unknown_attribute
-      end
-
-      context 'with known module_type' do
-        let(:module_type) do
-          FactoryGirl.generate :metasploit_model_module_type
-        end
-
-        specify {
-          expect {
-            module_type_supports?
-          }.to raise_error(KeyError)
-        }
-      end
-
-      context 'without known module_type' do
-        let(:module_type) do
-          :unknown_module_type
-        end
-
-        specify {
-          expect {
-            module_type_supports?
-          }.to raise_error(KeyError)
-        }
-      end
+  it_should_behave_like 'Metasploit::Model::Module::Instance::ClassMethods' do
+    let(:singleton_class) do
+      described_class
     end
   end
 
-  context 'module_types_that_support' do
-    subject(:module_types_that_support) do
-      described_class.module_types_that_support(attribute)
+  context 'module_types_that_allow' do
+    subject(:module_types_that_allow) do
+      described_class.module_types_that_allow(attribute)
     end
 
     context 'with actions' do
@@ -94,7 +32,7 @@ describe Metasploit::Model::Module::Instance,
       it { should_not include 'exploit' }
       it { should_not include 'nop' }
       it { should_not include 'payload' }
-      it { should_not include 'post' }
+      it { should include 'post' }
     end
 
     context 'with module_architectures' do
@@ -136,19 +74,6 @@ describe Metasploit::Model::Module::Instance,
       it { should include 'post' }
     end
 
-    context 'with stance' do
-      let(:attribute) do
-        :stance
-      end
-
-      it { should include 'auxiliary' }
-      it { should_not include 'encoder' }
-      it { should include 'exploit' }
-      it { should_not include 'nop' }
-      it { should_not include 'payload' }
-      it { should_not include 'post' }
-    end
-
     context 'with targets' do
       let(:attribute) do
         :targets
@@ -160,6 +85,99 @@ describe Metasploit::Model::Module::Instance,
       it { should_not include 'nop' }
       it { should_not include 'payload' }
       it { should_not include 'post' }
+    end
+
+    context 'DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE' do
+      let(:attribute) do
+        :attribute
+      end
+
+      let(:module_type) do
+        FactoryGirl.generate :metasploit_model_module_type
+      end
+
+      before(:each) do
+        described_class::DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE.should_receive(:fetch).with(
+            attribute
+        ).and_return(
+            dynamic_length_validation_options_by_module_type
+        )
+      end
+
+      context 'with :is' do
+        let(:dynamic_length_validation_options_by_module_type) do
+          {
+              module_type => {
+                  is: is
+              }
+          }
+        end
+
+        context '> 0' do
+          let(:is) do
+            1
+          end
+
+          it 'includes module type' do
+            expect(module_types_that_allow).to include(module_type)
+          end
+        end
+
+        context '<= 0' do
+          let(:is) do
+            0
+          end
+
+          it 'does not include module type' do
+            expect(module_types_that_allow).not_to include(module_type)
+          end
+        end
+      end
+
+      context 'without :is' do
+        context 'with :maximum' do
+          let(:dynamic_length_validation_options_by_module_type) do
+            {
+                module_type => {
+                    maximum: maximum
+                }
+            }
+          end
+
+          context '> 0' do
+            let(:maximum) do
+              1
+            end
+
+            it 'includes module type' do
+              expect(module_types_that_allow).to include(module_type)
+            end
+          end
+
+          context '<= 0' do
+            let(:maximum) do
+              0
+            end
+
+            it 'does not include module type' do
+              expect(module_types_that_allow).not_to include(module_type)
+            end
+          end
+
+        end
+
+        context 'without :maximum' do
+          let(:dynamic_length_validation_options_by_module_type) do
+            {
+                module_type => {}
+            }
+          end
+
+          it 'includes module type' do
+            expect(module_types_that_allow).to include(module_type)
+          end
+        end
+      end
     end
   end
 end

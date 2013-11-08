@@ -20,7 +20,7 @@ FactoryGirl.define do
     # needs to be declared explicitly after association as calling trait here (instead as an argument to factory
     # :traits) did not work.
     stance {
-      if supports?(:stance)
+      if stanced?
         generate :metasploit_model_module_stance
       else
         nil
@@ -40,7 +40,7 @@ FactoryGirl.define do
       # module_type and validating the module_class will derive module_type.
       if module_class && module_class.valid?
         factory_by_attribute.each do |attribute, factory|
-          if dummy_module_instance.supports?(attribute)
+          if dummy_module_instance.allows?(attribute)
             length = evaluator.send("#{attribute}_length")
 
             collection = length.times.collect {
@@ -53,7 +53,7 @@ FactoryGirl.define do
 
         # make sure targets are generated first so that module_architectures and module_platforms can be include
         # the targets' architectures and platforms.
-        if dummy_module_instance.supports?(:targets)
+        if dummy_module_instance.allows?(:targets)
           # factory adds built module_targets to module_instance.
           FactoryGirl.build_list(
               :dummy_module_target,
@@ -67,7 +67,7 @@ FactoryGirl.define do
           [:architecture, :platform].each do |suffix|
             attribute = "module_#{suffix.to_s.pluralize}".to_sym
 
-            if dummy_module_instance.supports?(attribute)
+            if dummy_module_instance.allows?(attribute)
               factory = "dummy_module_#{suffix}"
               length = evaluator.send("#{attribute}_length")
 

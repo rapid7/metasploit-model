@@ -12,6 +12,110 @@ module Metasploit
         # CONSTANTS
         #
 
+        # {#dynamic_length_validation_options} by {#module_type} by attribute.
+        DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE = {
+            actions: {
+                Metasploit::Model::Module::Type::AUX => {
+                    minimum: 0
+                },
+                Metasploit::Model::Module::Type::ENCODER => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::EXPLOIT => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::NOP => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::PAYLOAD => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::POST => {
+                    minimum: 0
+                }
+            },
+            module_architectures: {
+                Metasploit::Model::Module::Type::AUX => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::ENCODER => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::EXPLOIT => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::NOP => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::PAYLOAD => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::POST => {
+                    minimum: 1
+                }
+            },
+            module_platforms: {
+                Metasploit::Model::Module::Type::AUX => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::ENCODER => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::EXPLOIT => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::NOP => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::PAYLOAD => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::POST => {
+                    minimum: 1
+                }
+            },
+            module_references: {
+                Metasploit::Model::Module::Type::AUX => {
+                    minimum: 0
+                },
+                Metasploit::Model::Module::Type::ENCODER => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::EXPLOIT => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::NOP => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::PAYLOAD => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::POST => {
+                    minimum: 0
+                }
+            },
+            targets: {
+                Metasploit::Model::Module::Type::AUX => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::ENCODER => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::EXPLOIT => {
+                    minimum: 1
+                },
+                Metasploit::Model::Module::Type::NOP => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::PAYLOAD => {
+                    is: 0
+                },
+                Metasploit::Model::Module::Type::POST => {
+                    is: 0
+                }
+            }
+        }
+
         # Minimum length of {#module_authors}.
         MINIMUM_MODULE_AUTHORS_LENGTH = 1
 
@@ -22,59 +126,11 @@ module Metasploit
             true
         ]
 
-        # Maps attribute to map of {Metasploit::Model::Module::Class#module_type} maps to whether that attribute is
-        # supported.  Supported attributes should be present, while unsupported attributes should be blank in
-        # validations.
-        SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE = {
-            actions: {
-                Metasploit::Model::Module::Type::AUX => true,
-                Metasploit::Model::Module::Type::ENCODER => false,
-                Metasploit::Model::Module::Type::EXPLOIT => false,
-                Metasploit::Model::Module::Type::NOP => false,
-                Metasploit::Model::Module::Type::PAYLOAD => false,
-                Metasploit::Model::Module::Type::POST => false
-            },
-            module_architectures: {
-                Metasploit::Model::Module::Type::AUX => false,
-                Metasploit::Model::Module::Type::ENCODER => true,
-                Metasploit::Model::Module::Type::EXPLOIT => true,
-                Metasploit::Model::Module::Type::NOP => true,
-                Metasploit::Model::Module::Type::PAYLOAD => true,
-                Metasploit::Model::Module::Type::POST => true
-            },
-            module_platforms: {
-                Metasploit::Model::Module::Type::AUX => false,
-                Metasploit::Model::Module::Type::ENCODER => false,
-                Metasploit::Model::Module::Type::EXPLOIT => true,
-                Metasploit::Model::Module::Type::NOP => false,
-                Metasploit::Model::Module::Type::PAYLOAD => true,
-                Metasploit::Model::Module::Type::POST => true
-            },
-            module_references: {
-                Metasploit::Model::Module::Type::AUX => true,
-                Metasploit::Model::Module::Type::ENCODER => false,
-                Metasploit::Model::Module::Type::EXPLOIT => true,
-                Metasploit::Model::Module::Type::NOP => false,
-                Metasploit::Model::Module::Type::PAYLOAD => false,
-                Metasploit::Model::Module::Type::POST => true
-            },
-            stance: {
-                Metasploit::Model::Module::Type::AUX => true,
-                Metasploit::Model::Module::Type::ENCODER => false,
-                Metasploit::Model::Module::Type::EXPLOIT => true,
-                Metasploit::Model::Module::Type::NOP => false,
-                Metasploit::Model::Module::Type::PAYLOAD => false,
-                Metasploit::Model::Module::Type::POST => false
-            },
-            targets: {
-                Metasploit::Model::Module::Type::AUX => false,
-                Metasploit::Model::Module::Type::ENCODER => false,
-                Metasploit::Model::Module::Type::EXPLOIT => true,
-                Metasploit::Model::Module::Type::NOP => false,
-                Metasploit::Model::Module::Type::PAYLOAD => false,
-                Metasploit::Model::Module::Type::POST => false
-            }
-        }
+        # Member of {Metasploit::Model::Module::Type::ALL} that require {#stance} to be non-`nil`.
+        STANCED_MODULE_TYPES = [
+            Metasploit::Model::Module::Type::AUX,
+            Metasploit::Model::Module::Type::EXPLOIT
+        ]
 
         included do
           include ActiveModel::Validations
@@ -144,22 +200,22 @@ module Metasploit
           #
 
           validate :architectures_from_targets,
-                   if: 'supports?(:targets)'
+                   if: 'allows?(:targets)'
           validate :platforms_from_targets,
-                   if: 'supports?(:targets)'
+                   if: 'allows?(:targets)'
 
           #
           # Attribute Validations
           #
 
           validates :actions,
-                    support: true
+                    dynamic_length: true
           validates :description,
                     :presence => true
           validates :license,
                     :presence => true
           validates :module_architectures,
-                    support: true
+                    dynamic_length: true
           validates :module_authors,
                     :length => {
                         :minimum => MINIMUM_MODULE_AUTHORS_LENGTH
@@ -167,9 +223,9 @@ module Metasploit
           validates :module_class,
                     :presence => true
           validates :module_platforms,
-                    support: true
+                    dynamic_length: true
           validates :module_references,
-                    support: true
+                    dynamic_length: true
           validates :name,
                     :presence => true
           validates :privileged,
@@ -178,11 +234,14 @@ module Metasploit
                     }
           validates :stance,
                     inclusion: {
-                        if: 'supports?(:stance)',
+                        if: :stanced?,
                         in: Metasploit::Model::Module::Stance::ALL
+                    },
+                    nil: {
+                        unless: :stanced?
                     }
           validates :targets,
-                    support: true
+                    dynamic_length: true
         end
 
         #
@@ -304,8 +363,7 @@ module Metasploit
         #   @return [Boolean]
 
         # @!attribute [rw] stance
-        #   Whether the module is active or passive.  `nil` if the
-        #   {Metasploit::Model::Module::Class#module_type module type} does not {#supports? support stances}.
+        #   Whether the module is active or passive.  `nil` if the {#module_type} is not {#stanced?}.
         #
         #   @return ['active', 'passive', nil]
 
@@ -313,34 +371,101 @@ module Metasploit
         # Module Methods
         #
 
-        # @note This is not declared in `ClassMethods` because it is to support factories that only know about
-        #   {Metasploit::Model::Module::Instance}.
-        #
-        # Whether the {Metasploit::Model::Module::Class#module_type} supports the given `attribute` on
-        # its module instances.
-        #
-        # @return [false] The given `attribute` is not supported and the `attribute` value should be blank, `nil` for
-        #   single values and empty for collections.
-        # @return [true] The given 'attribute' is supported and the `attribute` value should be present, non-nil for
-        #   single values and at least one element for collections.
-        # @raise [KeyError] if `attribute` is not an attributes whose support varies based on
-        #   {Metasploit::Model::Module::Class#module_type}.
-        # @raise [KeyError] if {#module_class} {Metasploit::Model::Module::Class#module_type} is invalid.
-        def self.module_type_supports?(module_type, attribute)
-          support_by_module_type = SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
-          support_by_module_type.fetch(module_type)
+        module ClassMethods
+          # Whether the given `:attribute` is allowed to be present for the given `:module_type`.  An attribute is
+          # considered allowed if it allows greatrr than 0 elements for a collection.
+          #
+          # @raise [KeyError] if `:attribute` is not given in `options`.
+          # @raise [KeyError] if `:module_type` is not given in `options`.
+          # @return [true] if maximum elements is greater than 0 or value can be non-nil
+          def allows?(options={})
+            allowed = false
+            length_validation_options = dynamic_length_validation_options(options)
+
+            is = length_validation_options[:is]
+
+            if is
+              if is > 0
+                allowed = true
+              end
+            else
+              maximum = length_validation_options[:maximum]
+
+              if maximum
+                if maximum > 0
+                  allowed = true
+                end
+              else
+                # if there is no maximum, then it's treated as infinite
+                allowed = true
+              end
+            end
+
+            allowed
+          end
+
+          # The length validation options for the given `:attribute` and `:module_type`.
+          # @return [Hash{Symbol => Integer}] Hash containing either `:is` (meaning :maximum and :minimum are the same) or
+          #   `:minimum` (no attribute has an explicit :maximum currently).
+          # @raise [KeyError] if `:attribute` is not given in `options`.
+          # @raise [KeyError] if `:module_type` is not given in `options`.
+          # @raise [KeyError] if `:attribute` value is not a key in
+          #   {DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE}.
+          # @raise [KeyError] if `:module_type` value is a not a {Metasploit::Model::Module::Type::ALL} member.
+          def dynamic_length_validation_options(options={})
+            options.assert_valid_keys(:attribute, :module_type)
+            attribute = options.fetch(:attribute)
+            module_type = options.fetch(:module_type)
+
+            dynamic_length_validation_options_by_module_type = DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
+            dynamic_length_validation_options_by_module_type.fetch(module_type)
+          end
+
+          # Whether the `:module_type` requires stance to be in {Metasploit::Model::Module::Stance::ALL} or if it must
+          # be `nil`.
+          #
+          # @param module_type [String] A member of `Metasploit::Model::Module::Type::ALL`.
+          # @return [true] if `module_type` is in {STANCED_MODULE_TYPES}.
+          # @return [false] otherwise.
+          def stanced?(module_type)
+            STANCED_MODULE_TYPES.include? module_type
+          end
         end
 
-        # Module types that support the given attribute.
-        #
-        # @return [Array<String>] Subarray of {Metasploit::Model::Module::Type::ALL}
-        def self.module_types_that_support(attribute)
-          support_by_module_type = SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
+        # make ClassMethods directly callable on Metasploit::Model::Module::Instance for factories
+        extend ClassMethods
 
-          support_by_module_type.each_with_object([]) { |(module_type, support), module_types|
-            if support
-              module_types << module_type
+        #
+        # Module Methods
+        #
+
+        # Values of {#module_type} (members of {Metasploit::Model::Module::Type::ALL}), which have an exact length
+        # (`:is`) or maximum length (`:maximum`) greater than 0 for the given `attribute`.
+        #
+        # @return [Array<String>] Array with members of {Metasploit::Model::Module::Type::ALL}.
+        # @see DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE
+        def self.module_types_that_allow(attribute)
+          dynamic_length_validation_options_by_module_type = DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
+
+          dynamic_length_validation_options_by_module_type.each_with_object([]) { |(module_type, dynamic_length_validation_options), module_types|
+            is = dynamic_length_validation_options[:is]
+
+            if is
+              if is > 0
+                module_types << module_type
+              end
+            else
+              maximum = dynamic_length_validation_options[:maximum]
+
+              if maximum
+                if maximum > 0
+                  module_types << module_type
+                end
+              else
+                module_types << module_type
+              end
             end
+
           }
         end
 
@@ -348,29 +473,54 @@ module Metasploit
         # Instance Methods
         #
 
-        # Whether the {#module_class} {Metasploit::Model::Module::Class#module_type} supports the given `attribute` on
-        # its module instances.
+        # Whether the given `attribute` is allowed to have elements.
         #
-        # @return [false] The given `attribute` is not supported and the `attribute` value should be blank, `nil` for
-        #   single values and empty for collections.  May also be false if {#module_class} is `nil` or {#module_class}'s
-        #   {Metasploit::Model::Module::Class#module_type} is invalid.
-        # @return [true] The given 'attribute' is supported and the `attribute` value should be present, non-nil for
-        #   single values and at least one element for collections.
-        # @raise [KeyError] if `attribute` is not an attributes whose support varies based on
-        #   {Metasploit::Model::Module::Class#module_type}.
-        def supports?(attribute)
-          supported = false
-          support_by_module_type = SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(attribute)
-
-          # unlike attribute, which is controlled by the developer, the module_class and module_type is controlled by
-          # the user and so can be invalid and not have a value in `support_by_module_type` and so can't be fetched and
-          # must be handled cleanly without exceptions.
-          if module_class
-            # default to false when module_type is a unknown type, to match behavior when module_class is nil.
-            supported = support_by_module_type.fetch(module_class.module_type, supported)
+        # @param attribute [Symbol] name of attribute to check if {#module_type} allows it to have one or more
+        #   elements.
+        # @return (see Metasploit::Model::Module::Instance::ClassMethods#allows?)
+        # @return [false] if {#module_type} is not valid
+        def allows?(attribute)
+          if Metasploit::Model::Module::Type::ALL.include? module_type
+            self.class.allows?(
+                attribute: attribute,
+                module_type: module_type
+            )
+          else
+            false
           end
+        end
 
-          supported
+        # The dynamic length valdiations, such as `:is` and `:minimum` for the given attribute for the current
+        # {#module_type}.
+        #
+        # @param attribute [Symbol] name of attribute whose dynamic length validation options to be
+        # @return (see Metasploit::Model::Module::Instance::ClassMethods#dynamic_length_validation_options)
+        # @return [{}] an empty Hash if {#module_type} is not a member of {Metasploit::Model::Module::Type::ALL}
+        def dynamic_length_validation_options(attribute)
+          if Metasploit::Model::Module::Type::ALL.include? module_type
+            self.class.dynamic_length_validation_options(
+                module_type: module_type,
+                attribute: attribute
+            )
+          else
+            {}
+          end
+        end
+
+        # @!method module_type
+        #   The {Metasploit::Model::Module::Class#module_type} of the {#module_class}.
+        #
+        #   @return (see Metasploit;:Model::Module::Class#module_type)
+        delegate :module_type,
+                 allow_nil: true,
+                 to: :module_class
+
+        # Whether {#module_type} requires {#stance} to be set or to be `nil`.
+        #
+        # @return (see Metasploit::Model::Module::Instance::ClassMethods#stanced?)
+        # @return [false] if {#module_type} is not valid
+        def stanced?
+          self.class.stanced?(module_type)
         end
 
         private

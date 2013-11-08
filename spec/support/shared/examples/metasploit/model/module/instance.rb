@@ -18,7 +18,297 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
   module_reference_factory = "#{factory_namespace}_module_reference"
   module_target_factory = "#{factory_namespace}_module_target"
 
+  it_should_behave_like 'Metasploit::Model::Module::Instance::ClassMethods' do
+    let(:singleton_class) do
+      base_class
+    end
+  end
+
   context 'CONSTANTS' do
+    context 'DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE' do
+      subject(:dynamic_length_validation_options) do
+        dynamic_length_validation_options_by_module_type[module_type]
+      end
+
+      let(:dynamic_length_validation_options_by_module_type) do
+        dynamic_length_validation_options_by_module_type_by_attribute[attribute]
+      end
+
+      let(:dynamic_length_validation_options_by_module_type_by_attribute) do
+        described_class::DYNAMIC_LENGTH_VALIDATION_OPTIONS_BY_MODULE_TYPE_BY_ATTRIBUTE
+      end
+
+      context "[:actions]" do
+        let(:attribute) do
+          :actions
+        end
+
+        context "['auxiliary']" do
+          let(:module_type) do
+            'auxiliary'
+          end
+
+          its([:minimum]) { should == 0 }
+        end
+
+        context "['encoder']" do
+          let(:module_type) do
+            'encoder'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['exploit']" do
+          let(:module_type) do
+            'exploit'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['nop']" do
+          let(:module_type) do
+            'nop'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['payload']" do
+          let(:module_type) do
+            'payload'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['post']" do
+          let(:module_type) do
+            'post'
+          end
+
+          its([:minimum]) { should == 0 }
+        end
+      end
+
+      context '[:module_architectures:]' do
+        let(:attribute) do
+          :module_architectures
+        end
+
+        context "['auxiliary']" do
+          let(:module_type) do
+            'auxiliary'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['encoder']" do
+          let(:module_type) do
+            'encoder'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['exploit']" do
+          let(:module_type) do
+            'exploit'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['nop']" do
+          let(:module_type) do
+            'nop'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['payload']" do
+          let(:module_type) do
+            'payload'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['post']" do
+          let(:module_type) do
+            'post'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+      end
+
+      context '[:module_platforms]' do
+        let(:attribute) do
+          :module_platforms
+        end
+
+        context "['auxiliary']" do
+          let(:module_type) do
+            'auxiliary'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['encoder']" do
+          let(:module_type) do
+            'encoder'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['exploit']" do
+          let(:module_type) do
+            'exploit'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['nop']" do
+          let(:module_type) do
+            'nop'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['payload']" do
+          let(:module_type) do
+            'payload'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['post']" do
+          let(:module_type) do
+            'post'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+      end
+
+      context '[:module_references]' do
+        let(:attribute) do
+          :module_references
+        end
+
+        context "['auxiliary']" do
+          let(:module_type) do
+            'auxiliary'
+          end
+
+          its([:minimum]) { should == 0 }
+        end
+
+        context "['encoder']" do
+          let(:module_type) do
+            'encoder'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['exploit']" do
+          let(:module_type) do
+            'exploit'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['nop']" do
+          let(:module_type) do
+            'nop'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['payload']" do
+          let(:module_type) do
+            'payload'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['post']" do
+          let(:module_type) do
+            'post'
+          end
+
+          its([:minimum]) { should == 0 }
+        end
+      end
+
+      context '[:targets]' do
+        let(:attribute) do
+          :targets
+        end
+
+        context "['auxiliary']" do
+          let(:module_type) do
+            'auxiliary'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['encoder']" do
+          let(:module_type) do
+            'encoder'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['exploit']" do
+          let(:module_type) do
+            'exploit'
+          end
+
+          its([:minimum]) { should == 1 }
+        end
+
+        context "['nop']" do
+          let(:module_type) do
+            'nop'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['payload']" do
+          let(:module_type) do
+            'payload'
+          end
+
+          its([:is]) { should == 0 }
+        end
+
+        context "['post']" do
+          let(:module_type) do
+            'post'
+          end
+
+          its([:is]) { should == 0 }
+        end
+      end
+    end
+
     context 'MINIMUM_MODULE_AUTHORS_LENGTH' do
       subject(:minimum_module_authors_length) do
         described_class::MINIMUM_MODULE_AUTHORS_LENGTH
@@ -35,90 +325,6 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
       it 'should contain both Boolean values' do
         privileges.should include(false)
         privileges.should include(true)
-      end
-    end
-
-    context 'SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE' do
-      subject(:support_by_module_type_by_attribute) do
-        described_class::SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE
-      end
-
-      context '[:actions]' do
-        subject(:support_by_module_type) do
-          support_by_module_type_by_attribute.fetch(:actions)
-        end
-
-        its([Metasploit::Model::Module::Type::AUX]) { should be_true }
-        its([Metasploit::Model::Module::Type::ENCODER]) { should be_false }
-        its([Metasploit::Model::Module::Type::EXPLOIT]) { should be_false }
-        its([Metasploit::Model::Module::Type::NOP]) { should be_false }
-        its([Metasploit::Model::Module::Type::PAYLOAD]) { should be_false }
-        its([Metasploit::Model::Module::Type::POST]) { should be_false }
-      end
-
-      context '[:module_architectures]' do
-        subject(:support_by_module_type) do
-          support_by_module_type_by_attribute.fetch(:module_architectures)
-        end
-
-        its([Metasploit::Model::Module::Type::AUX]) { should be_false }
-        its([Metasploit::Model::Module::Type::ENCODER]) { should be_true }
-        its([Metasploit::Model::Module::Type::EXPLOIT]) { should be_true }
-        its([Metasploit::Model::Module::Type::NOP]) { should be_true }
-        its([Metasploit::Model::Module::Type::PAYLOAD]) { should be_true }
-        its([Metasploit::Model::Module::Type::POST]) { should be_true }
-      end
-
-      context '[:module_platforms]' do
-        subject(:support_by_module_type) do
-          support_by_module_type_by_attribute.fetch(:module_platforms)
-        end
-
-        its([Metasploit::Model::Module::Type::AUX]) { should be_false }
-        its([Metasploit::Model::Module::Type::ENCODER]) { should be_false }
-        its([Metasploit::Model::Module::Type::EXPLOIT]) { should be_true }
-        its([Metasploit::Model::Module::Type::NOP]) { should be_false }
-        its([Metasploit::Model::Module::Type::PAYLOAD]) { should be_true }
-        its([Metasploit::Model::Module::Type::POST]) { should be_true }
-      end
-
-      context '[:module_references]' do
-        subject(:support_by_module_type) do
-          support_by_module_type_by_attribute.fetch(:module_references)
-        end
-
-        its([Metasploit::Model::Module::Type::AUX]) { should be_true }
-        its([Metasploit::Model::Module::Type::ENCODER]) { should be_false }
-        its([Metasploit::Model::Module::Type::EXPLOIT]) { should be_true }
-        its([Metasploit::Model::Module::Type::NOP]) { should be_false }
-        its([Metasploit::Model::Module::Type::PAYLOAD]) { should be_false }
-        its([Metasploit::Model::Module::Type::POST]) { should be_true }
-      end
-
-      context '[:stance]' do
-        subject(:support_by_module_type) do
-          support_by_module_type_by_attribute.fetch(:stance)
-        end
-
-        its([Metasploit::Model::Module::Type::AUX]) { should be_true }
-        its([Metasploit::Model::Module::Type::ENCODER]) { should be_false }
-        its([Metasploit::Model::Module::Type::EXPLOIT]) { should be_true }
-        its([Metasploit::Model::Module::Type::NOP]) { should be_false }
-        its([Metasploit::Model::Module::Type::PAYLOAD]) { should be_false }
-        its([Metasploit::Model::Module::Type::POST]) { should be_false }
-      end
-
-      context '[:targets]' do
-        subject(:support_by_module_type) do
-          support_by_module_type_by_attribute.fetch(:targets)
-        end
-
-        its([Metasploit::Model::Module::Type::AUX]) { should be_false }
-        its([Metasploit::Model::Module::Type::ENCODER]) { should be_false }
-        its([Metasploit::Model::Module::Type::EXPLOIT]) { should be_true }
-        its([Metasploit::Model::Module::Type::NOP]) { should be_false }
-        its([Metasploit::Model::Module::Type::PAYLOAD]) { should be_false }
-        its([Metasploit::Model::Module::Type::POST]) { should be_false }
       end
     end
   end
@@ -153,12 +359,13 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
 
           it { should be_valid }
 
-          it { should support :actions }
-          it { should_not support :module_architectures }
-          it { should_not support :module_platforms }
-          it { should support :module_references }
-          it { should support :stance }
-          it { should_not support :targets }
+          it { should allow_attribute :actions }
+          it { should_not allow_attribute :module_architectures }
+          it { should_not allow_attribute :module_platforms }
+          it { should allow_attribute :module_references }
+          it { should_not allow_attribute :targets }
+
+          it { should be_stanced }
         end
 
         context 'with encoder' do
@@ -168,12 +375,13 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
 
           it { should be_valid }
 
-          it { should_not support :actions }
-          it { should support :module_architectures }
-          it { should_not support :module_platforms }
-          it { should_not support :module_references }
-          it { should_not support :stance }
-          it { should_not support :targets }
+          it { should_not allow_attribute :actions }
+          it { should allow_attribute :module_architectures }
+          it { should_not allow_attribute :module_platforms }
+          it { should_not allow_attribute :module_references }
+          it { should_not allow_attribute :targets }
+
+          it { should_not be_stanced }
         end
 
         context 'with exploit' do
@@ -183,12 +391,13 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
 
           it { should be_valid }
 
-          it { should_not support :actions }
-          it { should support :module_architectures }
-          it { should support :module_platforms }
-          it { should support :module_references }
-          it { should support :stance }
-          it { should support :targets }
+          it { should_not allow_attribute :actions }
+          it { should allow_attribute :module_architectures }
+          it { should allow_attribute :module_platforms }
+          it { should allow_attribute :module_references }
+          it { should allow_attribute :targets }
+
+          it { should be_stanced }
         end
 
         context 'with nop' do
@@ -198,12 +407,13 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
 
           it { should be_valid }
 
-          it { should_not support :actions }
-          it { should support :module_architectures }
-          it { should_not support :module_platforms }
-          it { should_not support :module_references }
-          it { should_not support :stance }
-          it { should_not support :targets }
+          it { should_not allow_attribute :actions }
+          it { should allow_attribute :module_architectures }
+          it { should_not allow_attribute :module_platforms }
+          it { should_not allow_attribute :module_references }
+          it { should_not allow_attribute :targets }
+
+          it { should_not be_stanced }
         end
 
         context 'with payload' do
@@ -213,12 +423,13 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
 
           it { should be_valid }
 
-          it { should_not support :actions }
-          it { should support :module_architectures }
-          it { should support :module_platforms }
-          it { should_not support :module_references }
-          it { should_not support :stance }
-          it { should_not support :targets }
+          it { should_not allow_attribute :actions }
+          it { should allow_attribute :module_architectures }
+          it { should allow_attribute :module_platforms }
+          it { should_not allow_attribute :module_references }
+          it { should_not allow_attribute :targets }
+
+          it { should_not be_stanced }
         end
 
         context 'with post' do
@@ -228,12 +439,13 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
 
           it { should be_valid }
 
-          it { should_not support :actions }
-          it { should support :module_architectures }
-          it { should support :module_platforms }
-          it { should support :module_references }
-          it { should_not support :stance }
-          it { should_not support :targets }
+          it { should allow_attribute :actions }
+          it { should allow_attribute :module_architectures }
+          it { should allow_attribute :module_platforms }
+          it { should allow_attribute :module_references }
+          it { should_not allow_attribute :targets }
+
+          it { should_not be_stanced }
         end
       end
     end
@@ -383,18 +595,305 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
       Metasploit::Model::Module::Type::ALL
     end
 
-    it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
-                          :actions,
-                          factory: module_action_factory
-
     it { should validate_presence_of :description }
     it { should validate_presence_of :license }
-
-    it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
-                          :module_architectures,
-                          factory: module_architecture_factory
-
     it { should ensure_length_of(:module_authors) }
+
+    it_should_behave_like 'Metasploit::Model::Module::Instance validates dynamic length of',
+                          :actions,
+                          factory: module_action_factory,
+                          options_by_extreme_by_module_type: {
+                              'auxiliary' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'encoder' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'exploit' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'nop' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'payload' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'post' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              }
+                          }
+
+    it_should_behave_like 'Metasploit::Model::Module::Instance validates dynamic length of',
+                          :module_architectures,
+                          factory: module_architecture_factory,
+                          options_by_extreme_by_module_type: {
+                              'auxiliary' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'encoder' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'exploit' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'nop' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'payload' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'post' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              }
+                          }
+
+    it_should_behave_like 'Metasploit::Model::Module::Instance validates dynamic length of',
+                          :module_platforms,
+                          factory: module_platform_factory,
+                          options_by_extreme_by_module_type: {
+                              'auxiliary' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'encoder' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'exploit' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'nop' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'payload' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'post' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              }
+                          }
+
+    it_should_behave_like 'Metasploit::Model::Module::Instance validates dynamic length of',
+                          :module_references,
+                          factory: module_reference_factory,
+                          options_by_extreme_by_module_type: {
+                              'auxiliary' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY,
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'encoder' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'exploit' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'nop' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'payload' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'post' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY,
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              }
+                          }
+
+    it_should_behave_like 'Metasploit::Model::Module::Instance validates dynamic length of',
+                          :targets,
+                          factory: module_target_factory,
+                          options_by_extreme_by_module_type: {
+                              'auxiliary' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'encoder' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'exploit' => {
+                                  maximum: {
+                                      extreme: Float::INFINITY
+                                  },
+                                  minimum: {
+                                      error_type: :too_short,
+                                      extreme: 1
+                                  }
+                              },
+                              'nop' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'payload' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              },
+                              'post' => {
+                                  maximum: {
+                                      error_type: :wrong_length,
+                                      extreme: 0
+                                  },
+                                  minimum: {
+                                      extreme: 0
+                                  }
+                              }
+                          }
 
     context 'validate presence of module_class' do
       before(:each) do
@@ -421,13 +920,6 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
         end
       end
     end
-
-    it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
-                          :module_platforms,
-                          factory: module_platform_factory
-    it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
-                          :module_references,
-                          factory: module_reference_factory
 
     it { should validate_presence_of :name }
 
@@ -488,21 +980,17 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
           nil
         end
 
-        it_should_behave_like 'Metasploit::Model::Module::Instance supports stance with module_type', 'auxiliary'
-        it_should_behave_like 'Metasploit::Model::Module::Instance supports stance with module_type', 'exploit'
+        it_should_behave_like 'Metasploit::Model::Module::Instance is stanced with module_type', 'auxiliary'
+        it_should_behave_like 'Metasploit::Model::Module::Instance is stanced with module_type', 'exploit'
 
-        it_should_behave_like 'Metasploit::Model::Module::Instance does not support stance with module_type', 'encoder'
-        it_should_behave_like 'Metasploit::Model::Module::Instance does not support stance with module_type', 'nop'
-        it_should_behave_like 'Metasploit::Model::Module::Instance does not support stance with module_type', 'payload'
-        it_should_behave_like 'Metasploit::Model::Module::Instance does not support stance with module_type', 'post'
+        it_should_behave_like 'Metasploit::Model::Module::Instance is not stanced with module_type', 'encoder'
+        it_should_behave_like 'Metasploit::Model::Module::Instance is not stanced with module_type', 'nop'
+        it_should_behave_like 'Metasploit::Model::Module::Instance is not stanced with module_type', 'payload'
+        it_should_behave_like 'Metasploit::Model::Module::Instance is not stanced with module_type', 'post'
       end
     end
 
-    it_should_behave_like 'Metasploit::Model::Module::Instance validates supports',
-                          :targets,
-                          factory: module_target_factory
-
-    context 'with supports?(:targets)' do
+    context 'with allows?(:targets)' do
       let(:module_instance) do
         FactoryGirl.build(
             module_instance_factory,
@@ -522,13 +1010,7 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
       end
 
       let(:module_types) do
-        support_by_module_type = Metasploit::Model::Module::Instance::SUPPORT_BY_MODULE_TYPE_BY_ATTRIBUTE.fetch(:targets)
-
-        support_by_module_type.each_with_object([]) { |(module_type, support), module_types|
-          if support
-            module_types << module_type
-          end
-        }
+        Metasploit::Model::Module::Instance.module_types_that_allow(:targets)
       end
 
       context '#architectures errors' do
@@ -753,84 +1235,150 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Instance' do
     end
   end
 
-  context '#supports?' do
-    subject(:supports?) do
-      module_instance.supports?(attribute)
+  context '#allows?' do
+    subject(:allows?) do
+      module_instance.allows?(attribute)
     end
 
-    context 'with known attribute' do
-      let(:attribute) do
-        [:actions, :module_architectures, :module_platforms, :module_references, :stance, :targets].sample
+    let(:attribute) do
+      double('Attribute')
+    end
+
+    before(:each) do
+      # can't set module_type in module_class factory because module_class would be invalid and not create then
+      module_instance.module_class.module_type = module_type
+    end
+
+    context 'with valid #module_type' do
+      let(:module_type) do
+        FactoryGirl.generate :metasploit_model_module_type
       end
 
-      let(:module_instance) do
-        FactoryGirl.build(
-            module_instance_factory,
-            module_class: module_class
+      it 'should call allows? on class' do
+        # memoize module_instance first so it's calls to allows? do not trigger the should_receive
+        module_instance
+
+        base_class.should_receive(:allows?).with(
+            hash_including(
+                attribute: attribute,
+                module_type: module_type
+            )
         )
-      end
 
-      context 'with #module_class' do
-        let(:module_class) do
-          FactoryGirl.build(
-              module_class_factory,
-              # have to make ancestors empty so that invalid module_type can be used.
-              ancestors: [],
-              module_type: module_type
-          )
-        end
-
-        before(:each) do
-          module_instance.module_class.module_type = module_type
-        end
-
-        context 'with known module_type' do
-          #
-          # Use an attribute and module_type that will be supported so the true return can be differentiated from the
-          # false return for nil module_class or unknown module_type
-          #
-
-          let(:attribute) do
-            :actions
-          end
-
-          let(:module_type) do
-            'auxiliary'
-          end
-
-          it 'should be Boolean' do
-            supports?.should be_true
-          end
-        end
-
-        context 'without known module_type' do
-          let(:module_type) do
-            :unknown_module_type
-          end
-
-          it { should be_false }
-        end
-      end
-
-      context 'without #module_class' do
-        let(:module_class) do
-          nil
-        end
-
-        it { should be_false }
+        allows?
       end
     end
 
-    context 'without known attribute' do
-      let(:attribute) do
-        :unknown_attribute
+    context 'without valid #module_type' do
+      let(:module_type) do
+        'invalid_module_type'
       end
 
-      specify {
-        expect {
-          supports?
-        }.to raise_error(KeyError)
-      }
+      it { should be_false }
+    end
+  end
+
+  context '#dynamic_length_validation_options' do
+    subject(:dynamic_length_validation_options) do
+      module_instance.dynamic_length_validation_options(attribute)
+    end
+
+    let(:attribute) do
+      attributes.sample
+    end
+
+    let(:attributes) do
+      [
+          :actions,
+          :module_architectures,
+          :module_platforms,
+          :module_references,
+          :targets
+      ]
+    end
+
+    before(:each) do
+      # can't be set on module_class_factory because module_class would fail to create then.
+      module_instance.module_class.module_type = module_type
+    end
+
+    context 'with valid #module_type' do
+      let(:module_type) do
+        FactoryGirl.generate :metasploit_model_module_type
+      end
+
+      it 'should call dynamic_length_validation_options on class' do
+        base_class.should_receive(:dynamic_length_validation_options).with(
+            hash_including(
+                attribute: attribute,
+                module_type: module_type
+            )
+        )
+
+        dynamic_length_validation_options
+      end
+    end
+
+    context 'without valid #module_type' do
+      let(:module_type) do
+        'invalid_module_type'
+      end
+
+      it { should == {} }
+    end
+  end
+
+  context '#module_type' do
+    subject(:module_type) do
+      module_instance.module_type
+    end
+
+    context 'with #module_class' do
+      it 'should delegate to #module_type on #module_class' do
+        expected_module_type = double('Expected #module_type')
+        module_instance.module_class.should_receive(:module_type).and_return(expected_module_type)
+
+        module_type.should == expected_module_type
+      end
+    end
+
+    context 'without #module_class' do
+      before(:each) do
+        module_instance.module_class = nil
+      end
+
+      it { should be_nil }
+    end
+  end
+
+  context '#stanced?' do
+    subject(:stanced?) do
+      module_instance.stanced?
+    end
+
+    before(:each) do
+      # can't set module_type on module_class factory because it won't pass validations then
+      module_instance.module_class.module_type = module_type
+    end
+
+    context 'with valid #module_type' do
+      let(:module_type) do
+        FactoryGirl.generate :metasploit_model_module_type
+      end
+
+      it 'should call stanced? on class' do
+        base_class.should_receive(:stanced?).with(module_type)
+
+        stanced?
+      end
+    end
+
+    context 'without valid #module_type' do
+      let(:module_type) do
+        'invalid_module_type'
+      end
+
+      it { should be_false }
     end
   end
 end

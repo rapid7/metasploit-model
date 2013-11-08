@@ -48,8 +48,8 @@ class Metasploit::Model::Configuration::Autoload < Metasploit::Model::Configurat
     }
   end
 
-  # Paths relative {Metasploit::Model.root} that are to be added to `ActiveSupport::Dependencies.autoload_paths` and
-  # `ActiveSupport::Dependencies.autoload_once_paths`.
+  # Paths relative to {Metasploit::Model::Configuration#root} that are to be added to
+  # `ActiveSupport::Dependencies.autoload_paths` and `ActiveSupport::Dependencies.autoload_once_paths`.
   #
   # @return [Array<String>] Defaults to ['lib']
   def relative_once_paths
@@ -60,8 +60,8 @@ class Metasploit::Model::Configuration::Autoload < Metasploit::Model::Configurat
 
   attr_writer :relative_once_paths
 
-  # Paths relative to {Metasploit::Model.root} that are to be added to `ActiveSupport::Dependencies.autoload_paths`,
-  # but not `ActiveSupport::Dependencies.autoload_once_paths`
+  # Paths relative to {Metasploit::Model::Configuration#root} that are to be added to
+  # `ActiveSupport::Dependencies.autoload_paths`, but not `ActiveSupport::Dependencies.autoload_once_paths`
   #
   # @return [Array<String>] Defaults to ['app/models']
   def relative_paths

@@ -17,6 +17,9 @@ require 'active_support/core_ext/module/delegation'
 #   # registers 'app/models' as an autoload_path with ActiveSupport::Dependencies
 #   MyGem.setup
 module Metasploit::Model::Configured
+  # The {Metasploit::Model::Configuration} for this configured `Module`.
+  #
+  # @return [Metasploit::Model::Configuration]
   def configuration
     unless instance_variable_defined? :@configuration
       require 'metasploit/model/configuration'
