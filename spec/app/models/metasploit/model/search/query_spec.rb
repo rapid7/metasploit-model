@@ -155,197 +155,275 @@ describe Metasploit::Model::Search::Query do
     end
   end
 
-  context '#operations' do
-    subject(:operations) do
-      query.operations
+  context '#formatted_operations' do
+    subject(:formatted_operations) do
+      query.formatted_operations
     end
 
-    let(:attribute) do
-      :searchable
+    context 'with :formatted_operations attribute' do
+      let(:expected_formatted_operations) do
+        double('#formatted_operations')
+      end
+
+      let(:query) do
+        described_class.new(
+            formatted_operations: expected_formatted_operations
+        )
+      end
+
+      it 'should equal attribute passed to #initialize' do
+        formatted_operations.should == expected_formatted_operations
+      end
     end
 
-    let(:formatted) do
-      "#{formatted_operator}:#{formatted_value}"
-    end
-
-    let(:formatted_operator) do
-      ''
-    end
-
-    let(:formatted_value) do
-      ''
-    end
-
-    let(:klass) do
-      Class.new
-    end
-
-    let(:query) do
-      described_class.new(
-          :formatted => formatted,
-          :klass => klass
-      )
-    end
-
-    before(:each) do
-      stub_const('QueriedClass', klass)
-
-      # include after stubbing const so that search_i18n_scope can use Class#name
-      klass.send(:include, Metasploit::Model::Search)
-    end
-
-    it 'should parse #formatted with formatted_operations' do
-      described_class.should_receive(:formatted_operations).with(formatted).and_return([])
-
-      operations
-    end
-
-    context 'with known operator' do
-      subject(:operator) do
-        operations.first
+    context 'without :formatted_operations attribute' do
+      let(:formatted) do
+        "#{formatted_operator}:#{formatted_value}"
       end
 
       let(:formatted_operator) do
-        @operator.name
+        ''
       end
 
       let(:formatted_value) do
         ''
       end
 
+      let(:klass) do
+        Class.new
+      end
+
+      let(:query) do
+        described_class.new(
+            formatted: formatted,
+            klass: klass
+        )
+      end
+
       before(:each) do
-        @operator = klass.search_attribute attribute, :type => type
+        stub_const('QueriedClass', klass)
+
+        # include after stubbing const so that search_i18n_scope can use Class#name
+        klass.send(:include, Metasploit::Model::Search)
       end
 
-      context 'with boolean operator' do
-        let(:type) do
-          :boolean
-        end
+      it 'should parse #formatted with formatted_operations' do
+        described_class.should_receive(:formatted_operations).with(formatted).and_return([])
 
-        it { should be_a Metasploit::Model::Search::Operation::Boolean }
+        formatted_operations
+      end
+    end
+  end
 
-        context "with 'true'" do
-          let(:formatted_value) do
-            'true'
-          end
+  context '#operations' do
+    subject(:operations) do
+      query.operations
+    end
 
-          it { should be_valid }
-        end
-
-        context "with 'false'" do
-          let(:formatted_value) do
-            'false'
-          end
-
-          it { should be_valid }
-        end
-
-        context "without 'false' or 'true'" do
-          let(:formatted_value) do
-            'no'
-          end
-
-          it { should_not be_valid }
-        end
+    context 'with :operations attribute' do
+      let(:expected_operations) do
+        double('#operations')
       end
 
-      context 'with date operator' do
-        let(:type) do
-          :date
-        end
-
-        it { should be_a Metasploit::Model::Search::Operation::Date }
-
-        context 'with date' do
-          let(:formatted_value) do
-            Date.today.to_s
-          end
-
-          it { should be_valid }
-        end
-
-        context 'without date' do
-          let(:formatted_value) do
-            'yesterday'
-          end
-
-          it { should_not be_valid }
-        end
+      let(:query) do
+        described_class.new(
+            operations: expected_operations
+        )
       end
 
-      context 'with integer operator' do
-        let(:type) do
-          :integer
-        end
-
-        it { should be_a Metasploit::Model::Search::Operation::Integer }
-
-        context 'with integer' do
-          let(:formatted_value) do
-            '100'
-          end
-
-          it { should be_valid }
-        end
-
-        context 'with float' do
-          let(:formatted_value) do
-            '100.5'
-          end
-
-          it { should be_invalid }
-        end
-
-        context 'with integer embedded in text' do
-          let(:formatted_value) do
-            'a2c'
-          end
-
-          it { should be_invalid }
-        end
-      end
-
-      context 'with string operator' do
-        let(:type) do
-          :string
-        end
-
-        it { should be_a Metasploit::Model::Search::Operation::String }
-
-        context 'with value' do
-          let(:formatted_value) do
-            'formatted_value'
-          end
-
-          it { should be_valid }
-        end
-
-        context 'without value' do
-          let(:formatted_value) do
-            ''
-          end
-
-          it { should_not be_valid }
-        end
+      it 'should use attribute passed to #initialize' do
+        operations.should == expected_operations
       end
     end
 
-    context 'without known operator' do
-      subject(:operation) do
-        operations.first
+    context 'without :operations attribute' do
+      let(:attribute) do
+        :searchable
+      end
+
+      let(:formatted) do
+        "#{formatted_operator}:#{formatted_value}"
       end
 
       let(:formatted_operator) do
-        'unknown_operator'
+        ''
       end
 
       let(:formatted_value) do
-        'unknown_value'
+        ''
       end
 
-      it { should be_a Metasploit::Model::Search::Operation::Base }
+      let(:klass) do
+        Class.new
+      end
 
-      it { should be_invalid }
+      let(:query) do
+        described_class.new(
+            :formatted => formatted,
+            :klass => klass
+        )
+      end
+
+      before(:each) do
+        stub_const('QueriedClass', klass)
+
+        # include after stubbing const so that search_i18n_scope can use Class#name
+        klass.send(:include, Metasploit::Model::Search)
+      end
+
+      it 'should call #formatted_operations' do
+        query.should_receive(:formatted_operations).and_return([])
+
+        operations
+      end
+
+      context 'with known operator' do
+        subject(:operator) do
+          operations.first
+        end
+
+        let(:formatted_operator) do
+          @operator.name
+        end
+
+        let(:formatted_value) do
+          ''
+        end
+
+        before(:each) do
+          @operator = klass.search_attribute attribute, :type => type
+        end
+
+        context 'with boolean operator' do
+          let(:type) do
+            :boolean
+          end
+
+          it { should be_a Metasploit::Model::Search::Operation::Boolean }
+
+          context "with 'true'" do
+            let(:formatted_value) do
+              'true'
+            end
+
+            it { should be_valid }
+          end
+
+          context "with 'false'" do
+            let(:formatted_value) do
+              'false'
+            end
+
+            it { should be_valid }
+          end
+
+          context "without 'false' or 'true'" do
+            let(:formatted_value) do
+              'no'
+            end
+
+            it { should_not be_valid }
+          end
+        end
+
+        context 'with date operator' do
+          let(:type) do
+            :date
+          end
+
+          it { should be_a Metasploit::Model::Search::Operation::Date }
+
+          context 'with date' do
+            let(:formatted_value) do
+              Date.today.to_s
+            end
+
+            it { should be_valid }
+          end
+
+          context 'without date' do
+            let(:formatted_value) do
+              'yesterday'
+            end
+
+            it { should_not be_valid }
+          end
+        end
+
+        context 'with integer operator' do
+          let(:type) do
+            :integer
+          end
+
+          it { should be_a Metasploit::Model::Search::Operation::Integer }
+
+          context 'with integer' do
+            let(:formatted_value) do
+              '100'
+            end
+
+            it { should be_valid }
+          end
+
+          context 'with float' do
+            let(:formatted_value) do
+              '100.5'
+            end
+
+            it { should be_invalid }
+          end
+
+          context 'with integer embedded in text' do
+            let(:formatted_value) do
+              'a2c'
+            end
+
+            it { should be_invalid }
+          end
+        end
+
+        context 'with string operator' do
+          let(:type) do
+            :string
+          end
+
+          it { should be_a Metasploit::Model::Search::Operation::String }
+
+          context 'with value' do
+            let(:formatted_value) do
+              'formatted_value'
+            end
+
+            it { should be_valid }
+          end
+
+          context 'without value' do
+            let(:formatted_value) do
+              ''
+            end
+
+            it { should_not be_valid }
+          end
+        end
+      end
+
+      context 'without known operator' do
+        subject(:operation) do
+          operations.first
+        end
+
+        let(:formatted_operator) do
+          'unknown_operator'
+        end
+
+        let(:formatted_value) do
+          'unknown_value'
+        end
+
+        it { should be_a Metasploit::Model::Search::Operation::Base }
+
+        it { should be_invalid }
+      end
     end
   end
 
@@ -516,7 +594,6 @@ describe Metasploit::Model::Search::Query do
       klass.search_attribute :thing_two, :type => :string
     end
 
-
     context 'root' do
       subject(:root) do
         tree
@@ -562,6 +639,103 @@ describe Metasploit::Model::Search::Query do
             end
           end
         end
+      end
+    end
+  end
+
+  context '#without_operator' do
+    subject(:without_operator) do
+      query.without_operator(filtered_operator)
+    end
+
+    #
+    # lets
+    #
+
+    let(:attributes) do
+      Array.new(2) { |i|
+        "attribute_#{i}".to_sym
+      }
+    end
+
+    let(:filtered_operator) do
+      operators.sample
+    end
+
+    let(:klass) do
+      Class.new
+    end
+
+    let(:operators) do
+      attributes.collect { |attribute|
+        klass.search_attribute attribute, type: :string
+      }
+    end
+
+    let(:query) do
+      described_class.new(
+          formatted_operations: formatted_operations,
+          klass: klass
+      )
+    end
+
+    let(:unfiltered_operators) do
+      operators - [filtered_operator]
+    end
+
+    #
+    # Callbacks
+    #
+
+    before(:each) do
+      stub_const('Queried', klass)
+
+      klass.send(:include, Metasploit::Model::Search)
+    end
+
+    context 'with operator' do
+      let(:formatted_operations) do
+        operators.collect { |operator|
+          "#{operator.name}:value"
+        }
+      end
+
+      it 'should return a new query' do
+        without_operator.should_not be query
+      end
+
+      it 'should not have operations on the removed operator' do
+        without_operator.operations_by_operator[filtered_operator].should be_blank
+      end
+
+      it 'should have same #klass as this query' do
+        without_operator.klass.should == query.klass
+      end
+
+      context 'with no other operators' do
+        let(:formatted_operations) do
+          [
+              "#{filtered_operator.name}:value"
+          ]
+        end
+
+        it { should_not be_valid }
+      end
+
+      context 'with other operators' do
+        it { should be_valid }
+      end
+    end
+
+    context 'without operator' do
+      let(:formatted_operations) do
+        unfiltered_operators.collect { |operator|
+          "#{operator.name}:value"
+        }
+      end
+
+      it 'should return this query' do
+        without_operator.should be query
       end
     end
   end

@@ -10,11 +10,25 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
   #   @return [String]
   attr_accessor :formatted
 
+  # @!attribute [rw] formatted_operations
+  #   @note If using `Shellwords.shellsplit` to pre-parse the query, set {#formatted_operations} instead of rejoining
+  #     the shell words with `.join(" ")` and setting {#formatted} as `Shellwords.shellsplit` strips embedded quotes,
+  #     so quoted spaces will not be handled correctly if joining and setting {#formatted}.
+  #
+  #   {#formatted} broken up into individual operation (<operator>:<value>) Strings.
+  attr_writer :formatted_operations
+
   # @!attribute [rw] klass
   #   The klass that is being searched.
   #
   #   @return [Class, #search_operator_by_name]
   attr_accessor :klass
+
+  # @!attribute [rw] operations
+  #   The parsed operations in this query.
+  #
+  #   @return [Array<Metasploit::Model::Search::Operation::Base>] An Array of operations.
+  attr_writer :operations
 
   #
   # Validations
@@ -44,6 +58,13 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
     Shellwords.shellsplit(formatted.to_s)
   end
 
+  # {#formatted} broken up into individual operation (<operator>:<value>) Strings.
+  #
+  # @return [Array<String>]
+  def formatted_operations
+    @formatted_operations ||= self.class.formatted_operations(formatted)
+  end
+
   # Parses {#formatted} to create search operations that can validate if the
   # {Metasploit::Model::Search::Operation::Base#value value} is correct the operation's
   # {Metasploit::Model::Search::Operation::Base#operator operator's} type.
@@ -51,8 +72,6 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
   # @return [Array<Metasploit::Model::Search::Operation::Base>] an Array of operation parsed from {#formatted}.
   def operations
     unless instance_variable_defined? :@operations
-      formatted_operations = self.class.formatted_operations(formatted)
-
       @operations = formatted_operations.flat_map { |formatted_operation|
         Metasploit::Model::Search::Operation.parse(
             :formatted_operation => formatted_operation,
@@ -117,6 +136,26 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
     end
 
     @tree
+  end
+
+  # Returns a new query with all {#operations} on the given `operator` removed.
+  #
+  # @param operator [Metasploit::Model::Search::Operator::Base] an operator that should be removed from this query.
+  # @return [Metasploit::Model:Search::Query] a new query if `operator` is a key in {#operations_by_operator}; otherwise
+  #   this query.
+  def without_operator(operator)
+    operations = operations_by_operator[operator]
+
+    if operations
+      filtered_operations = self.operations - operations
+
+      self.class.new(
+          klass: klass,
+          operations: filtered_operations
+      )
+    else
+      self
+    end
   end
 
   private
