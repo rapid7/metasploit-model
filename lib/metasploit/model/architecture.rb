@@ -236,33 +236,38 @@ module Metasploit
 
       # Adds <attribute>_set methods to class.
       module ClassMethods
-        # Set of valid values for `attribute`.
+        # Set of valid values to search for `attribute`.  Does not include `nil` as search syntax cannot differentiate
+        # '' and nil when parsing.
         #
         # @param attribute [Symbol] attribute name.
         # @return [Set]
         def self.set(attribute)
           SEED_ATTRIBUTES.each_with_object(Set.new) { |attributes, set|
-            set.add attributes.fetch(attribute)
+            value = attributes.fetch(attribute)
+
+            unless value.nil?
+              set.add value
+            end
           }
         end
 
         # @!method abbreviation_set
-        #   Set of valid {Metasploit::Model::Architecture#abbreviation}.
+        #   Set of valid {Metasploit::Model::Architecture#abbreviation} for search.
         #
         #   @return [Set<String>]
         #
         # @!method bits_set
-        #   Set of valid {Metasploit::Model::Architecture#bits}.
+        #   Set of valid {Metasploit::Model::Architecture#bits} for search.
         #
         #   @return [Set<Integer>]
         #
         # @!method endianness_set
-        #   Set of valid {Metasploit::Model::Architecture#endianness}.
+        #   Set of valid {Metasploit::Model::Architecture#endianness} for search.
         #
         #   @return [Set<String>]
         #
         # @!method family_set
-        #   Set of valid {Metasploit::Model::Architecture#family}.
+        #   Set of valid {Metasploit::Model::Architecture#family} for search.
         #
         #   @return [Set<String>]
         [:abbreviation, :bits, :endianness, :family].each do |attribute|

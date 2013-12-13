@@ -283,4 +283,64 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
     it { should ensure_inclusion_of(:family).in_array(described_class::FAMILIES).allow_nil }
     it { should validate_presence_of(:summary) }
   end
+
+  context 'abbreviation_set' do
+    subject(:abbreviation_set) do
+      architecture_class.abbreviation_set
+    end
+
+    it { should_not include nil }
+    it { should include 'armbe' }
+    it { should include 'armle' }
+    it { should include 'cbea' }
+    it { should include 'cbea64' }
+    it { should include 'cmd' }
+    it { should include 'dalvik' }
+    it { should include 'java' }
+    it { should include 'mipsbe' }
+    it { should include 'mipsle' }
+    it { should include 'php' }
+    it { should include 'ppc' }
+    it { should include 'ppc64' }
+    it { should include 'python' }
+    it { should include 'ruby' }
+    it { should include 'sparc' }
+    it { should include 'tty' }
+    it { should include 'x86' }
+    it { should include 'x86_64' }
+  end
+
+  context 'bits_set' do
+    subject(:bits_set) do
+      architecture_class.bits_set
+    end
+
+    it { should_not include nil }
+    it { should include 32 }
+    it { should include 64 }
+  end
+
+  context 'endianness_set' do
+    subject(:endianness_set) do
+      architecture_class.endianness_set
+    end
+
+    it { should_not include nil }
+    it { should include 'big' }
+    it { should include 'little' }
+  end
+
+  context 'family_set' do
+    subject(:family_set) do
+      architecture_class.family_set
+    end
+
+    it { should_not include nil }
+    it { should include 'arm' }
+    it { should include 'cbea' }
+    it { should include 'mips' }
+    it { should include 'ppc' }
+    it { should include 'sparc' }
+    it { should include 'x86' }
+  end
 end
