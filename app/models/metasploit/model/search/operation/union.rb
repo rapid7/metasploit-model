@@ -9,14 +9,51 @@ class Metasploit::Model::Search::Operation::Union < Metasploit::Model::Search::O
   #   Children operations of union.
   #
   #   @return [Array<Metasploit::Model::Search::Operation::Base>]
-  attr_accessor :children
+  attr_writer :children
 
   #
+  #
   # Validations
+  #
+  #
+
+  #
+  # Method Validations
+  #
+
+  # validate_associated is defined by ActiveRecord, so have to do it manually here.
+  validate :children_valid
+
+  #
+  # Attribute Validations
   #
 
   validates :children,
             :length => {
                 :minimum => 1
             }
+
+  #
+  # Methods
+  #
+
+  def children
+    @children ||= []
+  end
+
+  private
+
+  # Validates that {#children} are valid
+  #
+  # @return [void]
+  def children_valid
+    if children.is_a? Enumerable
+      # can't use chilren.all?(&:valid?) as it will short-circuit and want all children to have validation errors
+      valids = children.map(&:valid?)
+
+      unless valids.all?
+        errors.add(:children, :invalid, value: children)
+      end
+    end
+  end
 end

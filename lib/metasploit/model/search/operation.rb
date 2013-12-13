@@ -17,6 +17,10 @@ module Metasploit
 
           formatted_operator, formatted_value = formatted_operation.split(':', 2)
           operator = query.parse_operator(formatted_operator)
+
+          # formatted_value will be nil if formatted_operation did not contain a ':', it should be treated the same
+          # as nothing after the ':'.
+          formatted_value ||= ''
           operation_or_operations = operator.operate_on(formatted_value)
 
           operation_or_operations
