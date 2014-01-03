@@ -30,6 +30,11 @@ class Metasploit::Model::Configuration::Autoload < Metasploit::Model::Configurat
     @all_paths ||= (once_paths + paths).uniq
   end
 
+  # Eager loads all rb files under {#all_paths}.  Paths in {#all_paths} are sorted before loading, so that `app` will
+  # load before `lib`.  Files are required using `ActiveSupport::Dependencies::Loadable#require_dependency` so they
+  # interact with `ActiveSupport::Dependencies` loading correctly.
+  #
+  # @return [void]
   def eager_load!
     # sort to favor app over lib since it is assumed that app/models will define classes and lib will define modules
     # included in those classes that are defined under the class namespaces, so the class needs to be required first
