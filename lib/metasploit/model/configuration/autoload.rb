@@ -30,6 +30,18 @@ class Metasploit::Model::Configuration::Autoload < Metasploit::Model::Configurat
     @all_paths ||= (once_paths + paths).uniq
   end
 
+  def eager_load!
+    # sort to favor app over lib since it is assumed that app/models will define classes and lib will define modules
+    # included in those classes that are defined under the class namespaces, so the class needs to be required first
+    all_paths.sort.each do |load_path|
+      matcher = /\A#{Regexp.escape(load_path)}\/(.*)\.rb\Z/
+
+      Dir.glob("#{load_path}/**/*.rb").sort.each do |file|
+        require_dependency file.sub(matcher, '\1')
+      end
+    end
+  end
+
   # {#relative_once_paths} converted to absolute paths.
   #
   # @return [Array<String>]

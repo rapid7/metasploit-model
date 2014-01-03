@@ -1,3 +1,5 @@
+require 'rspec/core/shared_example_group'
+
 module Metasploit
   module Model
     # Helper methods for running specs for metasploit-model.
