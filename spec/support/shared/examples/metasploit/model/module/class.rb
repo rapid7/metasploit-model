@@ -1241,30 +1241,20 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Class' do
         end
 
         context 'with reference_name' do
+          let(:payload_name) do
+            'payload/name'
+          end
+
+          let(:payload_type_directory) do
+            'singles'
+          end
+
           let(:reference_name) do
-            "payload/singles/reference/name"
+            "#{payload_type_directory}/#{payload_name}"
           end
 
-          before(:each) do
-            ancestor.handler_type = handler_type
-          end
-
-          context 'with handler_type' do
-            let(:handler_type) do
-              FactoryGirl.generate :metasploit_model_module_handler_type
-            end
-
-            it 'should return <reference_name>/<handler_type>' do
-              derived_single_payload_reference_name.should == "#{reference_name}/#{handler_type}"
-            end
-          end
-
-          context 'without handler_type' do
-            let(:handler_type) do
-              nil
-            end
-
-            it { should be_nil }
+          it 'should return Metasploit::Model::Module::Ancestor#payload_name' do
+            expect(derived_single_payload_reference_name).to eq(payload_name)
           end
         end
 
@@ -1314,8 +1304,16 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Class' do
         end
 
         context 'with reference_name' do
+          let(:stage_payload_name) do
+            'payload/name'
+          end
+
           let(:stage_reference_name) do
-            "payload/stages/reference/name"
+            "#{stage_type_directory}/#{stage_payload_name}"
+          end
+
+          let(:stage_type_directory) do
+            'stages'
           end
 
           context 'with 1 stager' do
@@ -1339,8 +1337,8 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Class' do
                 FactoryGirl.generate :metasploit_model_module_handler_type
               end
 
-              it 'should be <stage.reference_name>/<stager.handler_type>' do
-                derived_staged_payload_reference_name.should == "#{stage_reference_name}/#{stager_handler_type}"
+              it 'should be <stage.payload_name>/<stager.handler_type>' do
+                expect(derived_staged_payload_reference_name).to eq("#{stage_payload_name}/#{stager_handler_type}")
               end
             end
 

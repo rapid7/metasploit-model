@@ -1616,6 +1616,216 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Ancestor' do
     end
   end
 
+  context '#payload_name' do
+    subject(:payload_name) do
+      module_ancestor.payload_name
+    end
+
+    let(:module_ancestor) do
+      FactoryGirl.build(
+          module_ancestor_factory,
+          handler_type: handler_type,
+          module_type: module_type,
+          payload_type: payload_type
+      )
+    end
+
+    context '#module_type' do
+      context 'with payload' do
+        #
+        # Shared examples
+        #
+
+        shared_examples_for 'prefix payload_name' do
+          let(:handler_type) do
+            nil
+          end
+
+          context 'with #reference_name' do
+            #
+            # lets
+            #
+
+            let(:expected_payload_name) do
+              'expected/payload/name'
+            end
+
+            let(:reference_name) do
+              "#{payload_type_directory}/#{expected_payload_name}"
+            end
+
+            #
+            # Callbacks
+            #
+
+            before(:each) do
+              module_ancestor.reference_name = reference_name
+            end
+
+            it "strips #payload_type_directory and '/' from #reference_name" do
+              expect(payload_name).to eq(expected_payload_name)
+            end
+          end
+
+          context 'without #reference_name' do
+            before(:each) do
+              module_ancestor.reference_name = nil
+            end
+
+            it { should be_nil }
+          end
+        end
+
+        #
+        # lets
+        #
+
+        let(:module_type) do
+          'payload'
+        end
+
+        context '#payload_type' do
+          context 'with single' do
+            let(:payload_type) do
+              'single'
+            end
+
+            it_should_behave_like 'prefix payload_name' do
+              let(:payload_type_directory) do
+                'singles'
+              end
+            end
+          end
+
+          context 'with stage' do
+            let(:payload_type) do
+              'stage'
+            end
+
+            it_should_behave_like 'prefix payload_name' do
+              let(:payload_type_directory) do
+                'stages'
+              end
+            end
+          end
+
+          context 'with stager' do
+            let(:payload_type) do
+              'stager'
+            end
+
+            context 'with #handler_type' do
+              let(:handler_type) do
+                FactoryGirl.generate :metasploit_model_module_handler_type
+              end
+
+              it 'uses #handler_type' do
+                expect(payload_name).to eq(handler_type)
+              end
+            end
+
+            context 'without #handler_type' do
+              let(:handler_type) do
+                nil
+              end
+
+              it { should be_nil }
+            end
+          end
+
+          context 'with other' do
+            let(:handler_type) do
+              nil
+            end
+
+            let(:payload_type) do
+              'unknown_payload_type'
+            end
+
+            it { should be_nil }
+          end
+        end
+      end
+
+      context 'without payload' do
+        let(:handler_type) do
+          nil
+        end
+
+        let(:module_type) do
+          FactoryGirl.generate :metasploit_model_non_payload_module_type
+        end
+
+        let(:payload_type) do
+          nil
+        end
+
+        it { should be_nil }
+      end
+    end
+  end
+
+  context '#payload_type_directory' do
+    subject(:payload_type_directory) do
+      module_ancestor.payload_type_directory
+    end
+
+    let(:module_ancestor) do
+      FactoryGirl.build(
+          module_ancestor_factory,
+          module_type: module_type
+      )
+    end
+
+    context 'with payload' do
+      let(:module_type) do
+        'payload'
+      end
+
+      before(:each) do
+        module_ancestor.reference_name = reference_name
+      end
+
+      context 'with #reference_name' do
+        let(:expected_payload_type_directory) do
+          payload_type_directories.sample
+        end
+
+        let(:payload_type_directories) do
+          [
+              'singles',
+              'stages',
+              'stagers'
+          ]
+        end
+
+        let(:reference_name) do
+          "#{expected_payload_type_directory}/reference/name/tail"
+        end
+
+        it 'is name before REFERENCE_NAME_SEPARATOR' do
+          expect(payload_type_directory).to eq(expected_payload_type_directory)
+        end
+      end
+
+      context 'without #reference_name' do
+        let(:reference_name) do
+          nil
+        end
+
+        it { should be_nil }
+      end
+    end
+
+    context 'without payload' do
+      let(:module_type) do
+        FactoryGirl.generate :metasploit_model_non_payload_module_type
+      end
+
+      it { should be_nil }
+    end
+  end
+
   context '#relative_file_names' do
     subject(:relative_file_names) do
       module_ancestor.relative_file_names

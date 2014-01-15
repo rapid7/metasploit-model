@@ -387,6 +387,31 @@ module Metasploit
           end
         end
 
+        # The name used to forming the {Metasploit::Model::Module::Class#reference_name} for payloads.
+        #
+        # @return [String] The {#reference_name} without the {#payload_type_directory} if {#payload_type} is `'single'`
+        #   or `'stage'`
+        # @return [String] The {#handler_type} if {#payload_type} is `'stager'`
+        # @return [nil] if {#module_type} is not `'payload'`
+        def payload_name
+          payload_name = nil
+
+          if module_type == Metasploit::Model::Module::Type::PAYLOAD
+            case payload_type
+              when 'single', 'stage'
+                if reference_name && payload_type_directory
+                  escaped_payload_type_directory = Regexp.escape(payload_type_directory)
+                  payload_type_directory_regexp = /^#{escaped_payload_type_directory}\//
+                  payload_name = reference_name.gsub(payload_type_directory_regexp, '')
+                end
+              when 'stager'
+                payload_name = handler_type
+            end
+          end
+
+          payload_name
+        end
+
         # The directory for {#payload_type} under {#module_type_directory} in {#real_path}.
         #
         # @return [String] first directory in reference_name
@@ -397,7 +422,7 @@ module Metasploit
 
           if payload? and reference_name
             head, _tail = reference_name.split(REFERENCE_NAME_SEPARATOR, 2)
-            directory = head.singularize
+            directory = head
           end
 
           directory

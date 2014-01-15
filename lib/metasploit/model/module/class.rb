@@ -323,19 +323,17 @@ module Metasploit
         #
         # Derives {#reference_name} for single payload.
         #
-        # @return [String] '<single_ancestor.reference_name>/<single_ancestor.handler_type>'
+        # @return [String, nil] '<ancestor.payload_name>'
         # @return [nil] unless exactly one {#ancestors ancestor}.
-        # @return [nil] unless {Metasploit::Model::Module::Ancestor#payload_type} is 'single'.
-        # @return [nil] if {Metasploit::Model::Module::Ancestor#reference_name} is `nil`.
-        # @return [nil] if {Metasploit::Model::Module::Ancestor#handler_type} is `nil`.
+        # @return [nil] unless ancestor's {Metasploit::Model::Module::Ancestor#payload_type} is `'single'`.
         def derived_single_payload_reference_name
           derived = nil
 
           if ancestors.length == 1
             ancestor = ancestors.first
 
-            if ancestor.payload_type == 'single' and ancestor.reference_name and ancestor.handler_type
-              derived = "#{ancestor.reference_name}/#{ancestor.handler_type}"
+            if ancestor.payload_type == 'single'
+              derived = ancestor.payload_name
             end
           end
 
@@ -347,11 +345,11 @@ module Metasploit
         #
         # Derives {#reference_name} for staged payload.
         #
-        # @return [String] '<stage_ancestor.reference_name>/<stager_ancestor.handler_type>'
+        # @return [String] '<stage_ancestor.payload_name>/<stager_ancestor.payload_name>'
         # @return [nil] unless exactly two {#ancestors ancestor}.
         # @return [nil] unless {Metasploit::Model::Module::Ancestor#payload_type} is 'single'.
-        # @return [nil] if {Metasploit::Model::Module::Ancestor#reference_name} is `nil`.
-        # @return [nil] if {Metasploit::Model::Module::Ancestor#handler_type} is `nil`.
+        # @return [nil] if {Metasploit::Model::Module::Ancestor#payload_name} is `nil` for the stage.
+        # @return [nil] if {Metasploit::Model::Module::Ancestor#payload_name} is `nil` for the stager.
         def derived_staged_payload_reference_name
           derived = nil
 
@@ -363,15 +361,15 @@ module Metasploit
             if stage_ancestors.length == 1
               stage_ancestor = stage_ancestors.first
 
-              if stage_ancestor.reference_name
+              if stage_ancestor.payload_name
                 stager_ancestors = ancestors_by_payload_type.fetch('stager', [])
 
                 # length can be 0..1
                 if stager_ancestors.length == 1
                   stager_ancestor = stager_ancestors.first
 
-                  if stager_ancestor.handler_type
-                    derived = "#{stage_ancestor.reference_name}/#{stager_ancestor.handler_type}"
+                  if stager_ancestor.payload_name
+                    derived = "#{stage_ancestor.payload_name}/#{stager_ancestor.payload_name}"
                   end
                 end
               end
