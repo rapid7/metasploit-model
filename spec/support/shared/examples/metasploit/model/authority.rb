@@ -109,6 +109,13 @@ Metasploit::Model::Spec.shared_examples_for 'Authority' do
                           :obsolete => false,
                           :summary => 'Waraxe Advisories',
                           :url => 'http://www.waraxe.us/content-cat-1.html'
+
+    it_should_behave_like 'Metasploit::Model::Authority seed',
+                          abbreviation: 'ZDI',
+                          extension_name: 'Metasploit::Model::Authority::Zdi',
+                          obsolete: false,
+                          summary: 'Zero Day Initiative',
+                          url: 'http://www.zerodayinitiative.com/advisories'
   end
 
   context 'validations' do

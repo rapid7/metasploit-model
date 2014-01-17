@@ -61,6 +61,12 @@ class Dummy::Authority < Metasploit::Model::Base
           :obsolete => false,
           :summary => 'Waraxe Advisories',
           :url => 'http://www.waraxe.us/content-cat-1.html'
+      },
+      {
+          abbreviation: 'ZDI',
+          obsolete: false,
+          summary: 'Zero Day Initiative',
+          url: 'http://www.zerodayinitiative.com/advisories'
       }
   ]
 
