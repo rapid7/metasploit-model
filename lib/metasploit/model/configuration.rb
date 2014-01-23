@@ -2,6 +2,10 @@
 #
 # Configuration for a gem's autoload and i18n load paths that works outside of the railties or rails engines systems.
 class Metasploit::Model::Configuration
+  # no autoload paths yet, so have to explicitly require
+  require 'metasploit/model/configuration/parent'
+  extend Metasploit::Model::Configuration::Parent
+
   #
   # Attributes
   #
@@ -12,40 +16,30 @@ class Metasploit::Model::Configuration
   #   @return [Pathname]
 
   #
+  # Children
+  #
+
+  # @!macro [attach] child
+  #   @!attribute [rw] $1_class
+  #     The `Class` used to create {#$1}.
+  #
+  #     @return [Class]
+  #
+  #   @!method $1
+  #     The $1 configuration.
+  #
+  #     @return [Object] an instance of {#$1_class}
+  #
+  #   @!method $1_class
+  #     The `Class` used to create {#$1}.
+  #
+  #     @return [Class]
+  child :autoload
+  child :i18n
+
+  #
   # Methods
   #
-
-  # Autoload path configuration.
-  #
-  # @return [Metasploit::Model::Configuration::Autoload]
-  def autoload
-    unless instance_variable_defined? :@autoload
-      require 'metasploit/model/configuration/autoload'
-
-      autoload = Metasploit::Model::Configuration::Autoload.new
-      autoload.configuration = self
-
-      @autoload = autoload
-    end
-
-    @autoload
-  end
-
-  # Internationalization (I18n) configuration.
-  #
-  # @return [Metasploit::Model::Configuration::I18n]
-  def i18n
-    unless instance_variable_defined? :@i18n
-      require 'metasploit/model/configuration/i18n'
-
-      i18n = Metasploit::Model::Configuration::I18n.new
-      i18n.configuration = self
-
-      @i18n = i18n
-    end
-
-    @i18n
-  end
 
   # The root of the gem.
   #

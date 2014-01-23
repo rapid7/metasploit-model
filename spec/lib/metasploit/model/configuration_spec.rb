@@ -7,41 +7,13 @@ describe Metasploit::Model::Configuration do
     configuration
   end
 
-  context '#autoload' do
-    subject(:autoload) do
-      configuration.autoload
-    end
+  it_should_behave_like 'Metasploit::Model::Configuration::Parent#child',
+                        :autoload,
+                        class: Metasploit::Model::Configuration::Autoload
 
-    it { should be_a Metasploit::Model::Configuration::Autoload }
-
-    context '#configuration' do
-      subject(:autoload_configuration) do
-        autoload.configuration
-      end
-
-      it 'should be this configuration' do
-        autoload_configuration.should == configuration
-      end
-    end
-  end
-
-  context '#i18n' do
-    subject(:i18n) do
-      configuration.i18n
-    end
-
-    it { should be_a Metasploit::Model::Configuration::I18n }
-
-    context '#configuration' do
-      subject(:i18n_configuration) do
-        i18n.configuration
-      end
-
-      it 'should be this configuration' do
-        i18n_configuration.should == configuration
-      end
-    end
-  end
+  it_should_behave_like 'Metasploit::Model::Configuration::Parent#child',
+                        :i18n,
+                        class: Metasploit::Model::Configuration::I18n
 
   context '#root' do
     subject(:root) do
