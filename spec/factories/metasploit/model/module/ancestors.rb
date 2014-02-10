@@ -80,6 +80,42 @@ FactoryGirl.define do
           nil
         end
       }
+
+      #
+      # Callback helpers
+      #
+
+      before_write_template {
+        ->(module_ancestor, evaluator){}
+      }
+      write_template {
+        ->(module_ancestor, evaluator){
+          # validate to derive attributes
+          module_ancestor.valid?
+
+          destination_pathname = module_ancestor.real_pathname
+
+          if destination_pathname
+            metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
+
+            template = Metasploit::Model::Spec::Template.new(
+                destination_pathname: destination_pathname,
+                locals: {
+                    metasploit_module_relative_name: metasploit_module_relative_name,
+                    module_ancestor: module_ancestor
+                },
+                overwrite: false,
+                search_pathnames: [
+                    Pathname.new('module/ancestors')
+                ],
+                source_relative_name: 'base'
+            )
+            template.valid!
+
+            template.write
+          end
+        }
+      }
     end
 
     # depends on module_type
@@ -112,31 +148,9 @@ FactoryGirl.define do
     # Callbacks
     #
 
-    after(:build) do |module_ancestor|
-      # validate to derive attributes
-      module_ancestor.valid?
-
-      destination_pathname = module_ancestor.real_pathname
-
-      if destination_pathname
-        metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
-
-        template = Metasploit::Model::Spec::Template.new(
-            destination_pathname: destination_pathname,
-            locals: {
-                metasploit_module_relative_name: metasploit_module_relative_name,
-                module_ancestor: module_ancestor
-            },
-            overwrite: false,
-            search_pathnames: [
-                Pathname.new('module/ancestors')
-            ],
-            source_relative_name: 'base'
-        )
-        template.valid!
-
-        template.write
-      end
+    after(:build) do |module_ancestor, evaluator|
+      instance_exec(module_ancestor, evaluator, &evaluator.before_write_template)
+      instance_exec(module_ancestor, evaluator, &evaluator.write_template)
     end
   end
 

@@ -49,6 +49,53 @@ FactoryGirl.define do
 
       module_references_length(&arbitrary_supported_length)
       targets_length(&arbitrary_supported_length)
+
+      #
+      # Callback helpers
+      #
+
+      # Can't use the after(:build) system because in Mdm, the associations need to be set before writing the template
+      before_write_template {
+        ->(module_instance, _evaluator){}
+      }
+      write_template {
+        ->(module_instance, _evaluator) {
+          module_class = module_instance.module_class
+
+          if module_class
+            module_class.ancestors.each do |module_ancestor|
+              # validate to derive attributes
+              module_ancestor.valid?
+
+              destination_pathname = module_ancestor.real_pathname
+
+              if destination_pathname
+                metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
+
+                template = Metasploit::Model::Spec::Template.new(
+                    destination_pathname: destination_pathname,
+                    locals: {
+                        metasploit_module_relative_name: metasploit_module_relative_name,
+                        module_ancestor: module_ancestor,
+                        module_class: module_class,
+                        module_instance: module_instance
+                    },
+                    overwrite: true,
+                    search_pathnames: [
+                        Pathname.new('module/instances'),
+                        Pathname.new('module/classes'),
+                        Pathname.new('module/ancestors')
+                    ],
+                    source_relative_name: 'base'
+                )
+                template.valid!
+
+                template.write
+              end
+            end
+          end
+        }
+      }
     end
 
     #
@@ -60,5 +107,10 @@ FactoryGirl.define do
     license { generate :metasploit_model_module_instance_license }
     name { generate :metasploit_model_module_instance_name }
     privileged { generate :metasploit_model_module_instance_privileged }
+
+    after(:build) do |module_instance, evaluator|
+      instance_exec(module_instance, evaluator, &evaluator.before_write_template)
+      instance_exec(module_instance, evaluator, &evaluator.write_template)
+    end
   end
 end

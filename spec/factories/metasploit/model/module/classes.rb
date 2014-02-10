@@ -24,39 +24,53 @@ FactoryGirl.define do
           nil
         end
       }
+
+      #
+      # Callback helpers
+      #
+
+      before_write_template {
+        ->(module_class, evaluator) {}
+      }
+      write_template {
+        ->(module_class, evaluator) {
+          if module_class.rank
+            module_class.ancestors.each do |module_ancestor|
+              # validate to derive attributes
+              module_ancestor.valid?
+
+              destination_pathname = module_ancestor.real_pathname
+
+              if destination_pathname
+                metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
+
+                template = Metasploit::Model::Spec::Template.new(
+                    destination_pathname: destination_pathname,
+                    locals: {
+                        metasploit_module_relative_name: metasploit_module_relative_name,
+                        module_ancestor: module_ancestor,
+                        module_class: module_class
+                    },
+                    overwrite: true,
+                    search_pathnames: [
+                        Pathname.new('module/classes'),
+                        Pathname.new('module/ancestors')
+                    ],
+                    source_relative_name: 'base'
+                )
+                template.valid!
+
+                template.write
+              end
+            end
+          end
+        }
+      }
     end
 
-    after(:build) do |module_class|
-      if module_class.rank
-        module_class.ancestors.each do |module_ancestor|
-          # validate to derive attributes
-          module_ancestor.valid?
-
-          destination_pathname = module_ancestor.real_pathname
-
-          if destination_pathname
-            metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
-
-            template = Metasploit::Model::Spec::Template.new(
-                destination_pathname: destination_pathname,
-                locals: {
-                    metasploit_module_relative_name: metasploit_module_relative_name,
-                    module_ancestor: module_ancestor,
-                    module_class: module_class
-                },
-                overwrite: true,
-                search_pathnames: [
-                    Pathname.new('module/classes'),
-                    Pathname.new('module/ancestors')
-                ],
-                source_relative_name: 'base'
-            )
-            template.valid!
-
-            template.write
-          end
-        end
-      end
+    after(:build) do |module_class, evaluator|
+      instance_exec(evaluator, evaluator, &evaluator.before_write_template)
+      instance_exec(evaluator, evaluator, &evaluator.write_template)
     end
   end
 end
