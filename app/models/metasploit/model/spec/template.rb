@@ -22,12 +22,6 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
   # Attributes
   #
 
-  # @!attribute [rw] result_binding
-  #   The binding to use in {#result} to supply the local variables and methods to evaluate in the template.
-  #
-  #   @return [Binding, Proc]
-  attr_accessor :result_binding
-
   # @!attribute [rw] destination_pathname
   #   The pathname where to {#write} the template results.
   #
