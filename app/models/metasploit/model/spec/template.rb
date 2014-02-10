@@ -82,14 +82,6 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
   # Methods
   #
 
-  def method_missing(method_name, *arguments, &block)
-    if locals and locals.has_key? method_name
-      locals[method_name]
-    else
-      super
-    end
-  end
-
   # Converts the `partial_relative_path` to a real (absolute) pathname that can be passed to {#result} by finding the
   # corresponding file in the {#search_pathnames}.
   #
@@ -110,10 +102,12 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
   #
   # @param partial_relative_path [String] relative path to partial without extension and no leading '_' to match
   #   Rails convention.
+  # @param options (see #result)
+  # @option (see #result)
   # @return [String, nil] result of rendering partial.
-  def render(partial_relative_path)
+  def render(partial_relative_path, options={})
     pathname = partial_pathname(partial_relative_path)
-    result(pathname)
+    result(pathname, options)
   end
 
   # Renders the super template of the current template by searching for the template of the same name under super
@@ -164,15 +158,30 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
 
   # @note Must be an instance method
   # @param pathname [Pathname] pathname to template
-  def result(pathname)
+  # @param options [Hash{Symbol => Object}]
+  # @option options [Hash{Symbol => Object}] :locals Maps name of locals to their value for this result.  Can override
+  #   {#locals}.
+  def result(pathname, options={})
+    options.assert_valid_keys(:locals)
+
     if pathname
       content = pathname.read
       safe_level = nil
       template = ERB.new content, safe_level, EXPLICIT_TRIM_MODE
       template.filename = pathname.to_path
-      # use current binding to allow templates to call {#render} and then use {#method_missing} to allow to call into
-      # the passed {#result_binding}
-      template.result(binding)
+
+      erb_binding = binding.dup
+      locals = self.locals || {}
+      result_locals = options[:locals] || {}
+      merged_locals = locals.merge(result_locals)
+
+      merged_locals.each do |name, value|
+        erb_binding.eval("#{name} = nil; lambda { |value| #{name} = value }").call(value)
+      end
+
+      # use current binding to allow templates to call {#render} and then use {#method_missing} to allow access to
+      # locals
+      template.result(erb_binding)
     else
       ''
     end
