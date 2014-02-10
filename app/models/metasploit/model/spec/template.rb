@@ -13,6 +13,8 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
 
   # Regular expression to parse file from backtrace line
   BACKTRACE_FILE_REGEXP = /(?<file>.*):\d+:in .*/
+  # Trim mode for ERB templates so that lines using <%- -%> will be trimmed of new lines
+  EXPLICIT_TRIM_MODE = '-'
   # File extension for templates.
   EXTENSION = '.rb.erb'
 
@@ -171,7 +173,8 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
   def result(pathname)
     if pathname
       content = pathname.read
-      template = ERB.new content
+      safe_level = nil
+      template = ERB.new content, safe_level, EXPLICIT_TRIM_MODE
       template.filename = pathname.to_path
       # use current binding to allow templates to call {#render} and then use {#method_missing} to allow to call into
       # the passed {#result_binding}
