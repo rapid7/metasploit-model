@@ -90,19 +90,7 @@ FactoryGirl.define do
       }
       write_template {
         ->(module_ancestor, evaluator){
-          # validate to derive attributes
-          module_ancestor.valid?
-
-          destination_pathname = module_ancestor.real_pathname
-
-          if destination_pathname
-            template = Metasploit::Model::Module::Ancestor::Spec::Template.new(
-                module_ancestor: module_ancestor
-            )
-            template.valid!
-
-            template.write
-          end
+          Metasploit::Model::Module::Ancestor::Spec::Template.write(module_ancestor: module_ancestor)
         }
       }
     end
