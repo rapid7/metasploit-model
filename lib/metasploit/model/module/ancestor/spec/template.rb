@@ -42,7 +42,16 @@ class Metasploit::Model::Module::Ancestor::Spec::Template < Metasploit::Model::S
       @destination_pathname = nil
 
       if module_ancestor
-        @destination_pathname = module_ancestor.real_pathname
+        destination_pathname = module_ancestor.real_pathname
+
+        unless destination_pathname
+          # validate to derive real_path and therefore real_pathname
+          module_ancestor.valid?
+
+          destination_pathname = module_ancestor.real_pathname
+        end
+
+        @destination_pathname = destination_pathname
       end
     end
 
