@@ -96,19 +96,8 @@ FactoryGirl.define do
           destination_pathname = module_ancestor.real_pathname
 
           if destination_pathname
-            metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
-
-            template = Metasploit::Model::Spec::Template.new(
-                destination_pathname: destination_pathname,
-                locals: {
-                    metasploit_module_relative_name: metasploit_module_relative_name,
-                    module_ancestor: module_ancestor
-                },
-                overwrite: false,
-                search_pathnames: [
-                    Pathname.new('module/ancestors')
-                ],
-                source_relative_name: 'base'
+            template = Metasploit::Model::Module::Ancestor::Spec::Template.new(
+                module_ancestor: module_ancestor
             )
             template.valid!
 
