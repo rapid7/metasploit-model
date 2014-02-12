@@ -29,7 +29,7 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
   attr_accessor :destination_pathname
 
   # @!attribute [rw] locals
-  #   Local variables to expose to partials
+  #   Local variables to exposed to partials.
   #
   #   @return [Hash{Symbol => Object}]
   attr_accessor :locals
@@ -40,17 +40,18 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
   #   @return [Boolean]
   attr_accessor :overwrite
 
+  # @!attribute [rw] search_pathnames
+  #   Pathnames to search for partials.  First item is search first, etc.
+  #
+  #   @return [Array<Pathname>]
+  attr_accessor :search_pathnames
+
   # @!attribute [rw] source_relative_name
   #   Name of template under {#search_pathnames} without {EXTENSION} similar to how to refer to partials.
   #
   #   @return [String]
   attr_accessor :source_relative_name
 
-  # @!attribute [rw] search_pathnames
-  #   Pathnames to search for partials.  First item is search first, etc.
-  #
-  #   @return [Array<Pathname>]
-  attr_accessor :search_pathnames
 
   #
   # Callbacks

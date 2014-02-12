@@ -1,3 +1,17 @@
+# Writes templates for the {#module_class #module_class's} {Metasploit::Model::Module::Class#ancestors} to disk.
+#
+# @example Update files after changing associations
+#   module_class = FactoryGirl.build(
+#     :dummy_module_class
+#   )
+#   # factory already wrote template when build returned
+#
+#   # update associations
+#   rank = FactoryGirl.generate :dummy_rank
+#   module_class.rank = rank
+#
+#   # Now the template on disk is different than the module_class, so regenerate the template
+#   Metasploit::Model::Module::Class::Spec::Template.write(module_class: module_class)
 class Metasploit::Model::Module::Class::Spec::Template < Metasploit::Model::Base
   extend Metasploit::Model::Spec::Template::Write
 
@@ -7,7 +21,7 @@ class Metasploit::Model::Module::Class::Spec::Template < Metasploit::Model::Base
 
   # @!attribute [rw] module_class
   #   The {Metasploit::Model::Module::Class} whose {Metasploit::Model::Module::Class#ancestors} need to be templated in
-  #   {#module_ancestor_templates}.
+  #   {#ancestor_templates}.
   #
   #   @return [Metasploit::Model::Module::Class]
   attr_accessor :module_class
