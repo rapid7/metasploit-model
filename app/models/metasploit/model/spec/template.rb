@@ -190,11 +190,19 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
 
   class << self
     # The root of all relative {#search_pathnames}.  By changing {root} you can use your own set of templates.
+    #
+    # @return [Pathname] Defaults to 'spec/support/templates/metasploit/model' under Metasploit::Model.root.
     def root
-      @root ||= Metasploit::Model.root.join('spec', 'support', 'templates', 'metasploit', 'model')
+      @@root ||= Metasploit::Model.root.join('spec', 'support', 'templates', 'metasploit', 'model')
     end
 
-    attr_writer :root
+    # Sets the {#root} pathname for all {#search_pathnames}, including those on subclasses.
+    #
+    # @param root [Pathname]
+    # @return [Pathname]
+    def root=(root)
+      @@root = root
+    end
   end
 
   # Converts {#source_relative_name} to a real (absolute) pathname.
