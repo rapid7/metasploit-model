@@ -60,40 +60,7 @@ FactoryGirl.define do
       }
       write_template {
         ->(module_instance, _evaluator) {
-          module_class = module_instance.module_class
-
-          if module_class
-            module_class.ancestors.each do |module_ancestor|
-              # validate to derive attributes
-              module_ancestor.valid?
-
-              destination_pathname = module_ancestor.real_pathname
-
-              if destination_pathname
-                metasploit_module_relative_name = generate :metasploit_model_module_ancestor_metasploit_module_relative_name
-
-                template = Metasploit::Model::Spec::Template.new(
-                    destination_pathname: destination_pathname,
-                    locals: {
-                        metasploit_module_relative_name: metasploit_module_relative_name,
-                        module_ancestor: module_ancestor,
-                        module_class: module_class,
-                        module_instance: module_instance
-                    },
-                    overwrite: true,
-                    search_pathnames: [
-                        Pathname.new('module/instances'),
-                        Pathname.new('module/classes'),
-                        Pathname.new('module/ancestors')
-                    ],
-                    source_relative_name: 'base'
-                )
-                template.valid!
-
-                template.write
-              end
-            end
-          end
+          Metasploit::Model::Module::Instance::Spec::Template.write(module_instance: module_instance)
         }
       }
     end
