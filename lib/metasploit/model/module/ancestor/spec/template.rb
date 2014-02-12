@@ -85,7 +85,7 @@ class Metasploit::Model::Module::Ancestor::Spec::Template < Metasploit::Model::S
     @source_relative_name ||= DEFAULT_SOURCE_RELATIVE_NAME
   end
 
-  # Writes template for :module_ancestor to disk if {#destination_pathname} is not `nil`.
+  # Writes template for :module_ancestor to disk if the template is valid.
   #
   # @param attributes [Hash{Symbol => Object}] Attributes passed to `new`.
   # @return [true] if template was written.
