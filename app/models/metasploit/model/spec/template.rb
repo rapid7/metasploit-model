@@ -210,6 +210,7 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
 
   # Writes result of template to {#destination_pathname}.
   #
+  # @return [void]
   # @raise [Metasploit::Model::Spec::PathnameCollision] if {#overwrite} is false and {#destination_pathname} already
   #   exists.
   def write
