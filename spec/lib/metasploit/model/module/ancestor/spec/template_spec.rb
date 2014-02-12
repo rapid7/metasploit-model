@@ -127,4 +127,48 @@ describe Metasploit::Model::Module::Ancestor::Spec::Template do
       expect(source_relative_name).to eq(described_class::DEFAULT_SOURCE_RELATIVE_NAME)
     end
   end
+
+  context 'write' do
+    subject(:write) do
+      described_class.write(attributes)
+    end
+
+    before(:each) do
+      # Since overwrite is false, have to delete the template that the factories make.
+      module_ancestor.real_pathname.delete
+    end
+
+    context 'with valid' do
+      let(:attributes) do
+        {
+            module_ancestor: module_ancestor
+        }
+      end
+
+      it { should be_true }
+
+      it 'writes template' do
+        # memoize attributes so any other writes besides the one under-test are already run.
+        attributes
+
+        described_class.any_instance.should_receive(:write)
+
+        write
+      end
+    end
+
+    context 'without valid' do
+      let(:attributes) do
+        {}
+      end
+
+      it { should be_false }
+
+      it 'does not write template' do
+        described_class.any_instance.should_not_receive(:write)
+
+        write
+      end
+    end
+  end
 end

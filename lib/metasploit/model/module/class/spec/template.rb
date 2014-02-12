@@ -1,4 +1,6 @@
 class Metasploit::Model::Module::Class::Spec::Template < Metasploit::Model::Base
+  extend Metasploit::Model::Spec::Template::Write
+
   #
   # Attributes
   #
@@ -43,23 +45,6 @@ class Metasploit::Model::Module::Class::Spec::Template < Metasploit::Model::Base
     end
 
     @ancestor_templates
-  end
-
-  # Writes {#ancestor_templates} for :module_class to disk if each {Metasploit::Model::Module::Ancestor::Spec::Template}
-  # is valid.
-  #
-  # @param attributes [Hash{Symbol => Object}] Attributes passed to `new`.
-  # @
-  def self.write(attributes={})
-    template = new(attributes)
-
-    written = template.valid?
-
-    if written
-      template.write
-    end
-
-    written
   end
 
   # Writes {#ancestor_templates} to disk.
