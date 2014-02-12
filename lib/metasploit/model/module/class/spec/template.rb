@@ -24,6 +24,12 @@ class Metasploit::Model::Module::Class::Spec::Template < Metasploit::Model::Base
   # Methods
   #
 
+  # Template for {#module_class} {Metasploit::Model::Module::Class#ancestors} with the addition of {#module_class} to
+  # the {Metasploit::Model::Spec::Template#locals} and adding 'module/classes' to the front of the
+  # {Metasploit::Model::Spec::Template#search_pathnames}.
+  #
+  # @return [Array<Metasploit::Model::Module::Ancestor::Spec::Template>]
+  # @return [[]] if {#module_class} is `nil`.
   def ancestor_templates
     unless instance_variable_defined? :@ancestor_templates
       if module_class
