@@ -4,7 +4,7 @@ def self.handler_module
   # {Metasploit::Model::Module::Ancestor#contents} in metasploit-framework.
   @handler_module ||= ::Module.new {
     def self.general_handler_type
-      <% general_handler_type = FactoryGirl.generate :metasploit_model_module_handler_general_type %>
+      <% general_handler_type = Metasploit::Model::Module::Handler::GENERAL_TYPE_BY_TYPE[module_ancestor.handler_type] %>
       <%= general_handler_type.inspect %>
     end
 

@@ -112,8 +112,9 @@ module Metasploit
                     :nil => {
                         :unless => :handled?
                     },
-                    :presence => {
-                        :if => :handled?
+                    :inclusion => {
+                        in: Metasploit::Model::Module::Handler::TYPES,
+                        if: :handled?
                     }
           validates :module_type,
                     :inclusion => {

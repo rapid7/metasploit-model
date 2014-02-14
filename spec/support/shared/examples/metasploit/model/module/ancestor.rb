@@ -506,7 +506,7 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Ancestor' do
                 it 'should record error on handler_type' do
                   module_ancestor.valid?
 
-                  module_ancestor.errors[:handler_type].should include("can't be blank")
+                  module_ancestor.errors[:handler_type].should include(I18n.translate!('errors.messages.inclusion'))
                 end
               end
             end
@@ -563,7 +563,7 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Ancestor' do
               it 'should record error on handler_type' do
                 module_ancestor.valid?
 
-                module_ancestor.errors[:handler_type].should include("can't be blank")
+                module_ancestor.errors[:handler_type].should include(I18n.translate!('errors.messages.inclusion'))
               end
             end
           end
