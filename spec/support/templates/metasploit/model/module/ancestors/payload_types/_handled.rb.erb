@@ -4,16 +4,17 @@ def self.handler_module
   # {Metasploit::Model::Module::Ancestor#contents} in metasploit-framework.
   @handler_module ||= ::Module.new {
     def self.general_handler_type
-      <% general_handler_type = Metasploit::Model::Module::Handler::GENERAL_TYPE_BY_TYPE[module_ancestor.handler_type] %>
+<%- handler_type = Metasploit::Model::Module::Handler::GENERAL_TYPE_BY_TYPE.keys.sample -%>
+<%- general_handler_type = Metasploit::Model::Module::Handler::GENERAL_TYPE_BY_TYPE[handler_type] -%>
       <%= general_handler_type.inspect %>
     end
 
     def self.handler_type
-      <%= module_ancestor.handler_type.inspect %>
+      <%= handler_type.inspect %>
     end
   }
 end
 
 def self.handler_type_alias
-  @handler_type_alias ||= handler_module.handler_type
+  <%= module_ancestor.handler_type.inspect %>
 end

@@ -41,8 +41,8 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor payload factory' do |op
                 handler_module.handler_type
               end
 
-              it 'should be Metasploit::Model::Module::Ancestor#handler_type' do
-                handler_type.should == module_ancestor.handler_type
+              it 'is different than Metasploit::Model::Module::Ancestor#handler_type' do
+                expect(handler_type).not_to eq(module_ancestor.handler_type)
               end
             end
           end
@@ -50,12 +50,6 @@ shared_examples_for 'Metasploit::Model::Module::Ancestor payload factory' do |op
           context 'handler_type_alias' do
             subject(:handler_type_alias) do
               metasploit_module.handler_type_alias
-            end
-
-            it 'should delegate to handler_module' do
-              handler_module.should_receive(:handler_type)
-
-              handler_type_alias
             end
 
             it 'should be #handler_type' do
