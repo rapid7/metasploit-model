@@ -1,4 +1,7 @@
 FactoryGirl.define do
+  sequence :metasploit_model_module_ancestor_handler_type do |n|
+    "metasploit_model_module_ancestor_handler_type#{n}"
+  end
 
   minimum_version = 1
   maximum_version = 4
@@ -115,7 +118,7 @@ FactoryGirl.define do
       # can't use #handled? because it will check payload_type on model, not ignored field in factory, so use
       # .handled?
       if @instance.class.handled?(:module_type => module_type, :payload_type => derived_payload_type)
-        generate :metasploit_model_module_handler_type
+        generate :metasploit_model_module_ancestor_handler_type
       else
         nil
       end
