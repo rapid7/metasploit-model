@@ -15,6 +15,7 @@ module Metasploit::Model::Spec::Template::Write
   #
   # @return [true] if template was valid and was written.
   # @return [false] if template was invalid and was not written.
+  # @see #write!
   def write(attributes={})
     template = new(attributes)
 
@@ -25,5 +26,17 @@ module Metasploit::Model::Spec::Template::Write
     end
 
     written
+  end
+
+  # Writes templates for `attributes` to disk if created template is valid; otherwise, raises an exception.
+  #
+  # @return [void]
+  # @raise [Metasploit::Model::Invalid] if template is invalid
+  # @see write
+  def write!(attributes={})
+    template = new(attributes)
+
+    template.valid!
+    template.write
   end
 end
