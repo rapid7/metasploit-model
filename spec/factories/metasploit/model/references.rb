@@ -61,7 +61,7 @@ FactoryGirl.define do
   sequence :metasploit_model_reference_zdi_designation do |n|
     year, number = n.divmod(1000)
 
-    "%02d-%04d" % [year, number]
+    "%02d-%03d" % [year, number]
   end
 
   sequence :metasploit_model_reference_url do |n|
