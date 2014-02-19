@@ -19,6 +19,7 @@ module Metasploit
           'cbea64',
           'cmd',
           'dalvik',
+          'firefox',
           'java',
           'mipsbe',
           'mipsle',
@@ -95,6 +96,13 @@ module Metasploit
               :endianness => nil,
               :family => nil,
               :summary => 'Dalvik process virtual machine used in Google Android'
+          },
+          {
+              abbreviation: 'firefox',
+              bits: nil,
+              endianness: nil,
+              family: nil,
+              summary: 'Firefox cross-platform add-on format'
           },
           {
               :abbreviation => 'java',

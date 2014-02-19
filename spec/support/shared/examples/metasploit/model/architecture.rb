@@ -37,6 +37,10 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
         abbreviations.should include('dalvik')
       end
 
+      it 'should include firefox for Firefox cross-platfomr add-on format' do
+        expect(abbreviations).to include('firefox')
+      end
+
       it 'should include java for Java Virtual Machine' do
         abbreviations.should include('java')
       end
@@ -147,6 +151,13 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
                           :summary => 'Dalvik process virtual machine used in Google Android'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          abbreviation: 'firefox',
+                          bits: nil,
+                          endianness: nil,
+                          family: nil,
+                          summary: 'Firefox cross-platform add-on format'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'java',
                           :bits => nil,
                           :endianness => 'big',
@@ -248,6 +259,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
             'cbea64',
             'cmd',
             'dalvik',
+            'firefox',
             'java',
             'mipsbe',
             'mipsle',
@@ -296,6 +308,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
     it { should include 'cbea64' }
     it { should include 'cmd' }
     it { should include 'dalvik' }
+    it { should include 'firefox' }
     it { should include 'java' }
     it { should include 'mipsbe' }
     it { should include 'mipsle' }
