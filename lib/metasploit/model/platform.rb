@@ -19,6 +19,7 @@ module Metasploit
           'BSD' => nil,
           'BSDi' => nil,
           'Cisco' => nil,
+          'Firefox' => nil,
           'FreeBSD' => nil,
           'HPUX' => nil,
           'IRIX' => nil,

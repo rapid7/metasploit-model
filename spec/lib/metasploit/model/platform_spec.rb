@@ -28,6 +28,7 @@ describe Metasploit::Model::Platform,
     it { should include 'BSD' }
     it { should include 'BSDi' }
     it { should include 'Cisco' }
+    it { should include 'Firefox' }
     it { should include 'FreeBSD' }
     it { should include 'HPUX' }
     it { should include 'IRIX' }
