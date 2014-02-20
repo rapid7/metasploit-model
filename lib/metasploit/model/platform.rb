@@ -28,6 +28,7 @@ module Metasploit
           'Linux' => nil,
           'NetBSD' => nil,
           'Netware' => nil,
+          'NodeJS' => nil,
           'OpenBSD' => nil,
           'OSX' => nil,
           'PHP' => nil,

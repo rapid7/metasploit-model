@@ -36,6 +36,7 @@ describe Metasploit::Model::Platform,
     it { should include 'Javascript' }
     it { should include 'NetBSD' }
     it { should include 'Netware' }
+    it { should include 'NodeJS' }
     it { should include 'OpenBSD' }
     it { should include 'OSX' }
     it { should include 'PHP' }
