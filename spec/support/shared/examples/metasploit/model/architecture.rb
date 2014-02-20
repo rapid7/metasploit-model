@@ -50,6 +50,10 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
         abbreviations.should include('mipsle')
       end
 
+      it 'should include nodejs for javascript code that requires NodeJS extensions/libraries' do
+        expect(abbreviations).to include('nodejs')
+      end
+
       it 'should include php for PHP code' do
         abbreviations.should include('php')
       end
@@ -110,6 +114,10 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
 
       it 'includes cbea for 32- and 64-bit Cell Broadband Engine Architecture' do
         expect(families).to include('cbea')
+      end
+
+      it 'includes javascript for NodeJS' do
+        expect(families).to include('javascript')
       end
 
       it 'includes mips for big and little-endian MIPS' do
@@ -227,6 +235,13 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
                           :summary => 'Little-endian MIPS'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          :abbreviation => 'nodejs',
+                          :bits => nil,
+                          :endianness => nil,
+                          :family => 'javascript',
+                          :summary => 'NodeJS'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'php',
                           :bits => nil,
                           :endianness => nil,
@@ -311,6 +326,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
             'java',
             'mipsbe',
             'mipsle',
+            'nodejs',
             'php',
             'ppc',
             'ppc64',
@@ -360,6 +376,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
     it { should include 'java' }
     it { should include 'mipsbe' }
     it { should include 'mipsle' }
+    it { should include 'nodejs' }
     it { should include 'php' }
     it { should include 'ppc' }
     it { should include 'ppc64' }
@@ -400,6 +417,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
     it { should include 'arm' }
     it { should include 'cbea' }
     it { should include 'mips' }
+    it { should include 'javascript' }
     it { should include 'ppc' }
     it { should include 'sparc' }
     it { should include 'x86' }

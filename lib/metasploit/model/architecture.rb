@@ -23,6 +23,7 @@ module Metasploit
           'java',
           'mipsbe',
           'mipsle',
+          'nodejs',
           'php',
           'ppc',
           'ppc64',
@@ -47,6 +48,7 @@ module Metasploit
       FAMILIES = [
           'arm',
           'cbea',
+          'javascript',
           'mips',
           'ppc',
           'sparc',
@@ -124,6 +126,13 @@ module Metasploit
               :endianness => 'little',
               :family => 'mips',
               :summary => 'Little-endian MIPS'
+          },
+          {
+              abbreviation: 'nodejs',
+              bits: nil,
+              endianness: nil,
+              family: 'javascript',
+              summary: 'NodeJS'
           },
           {
               :abbreviation => 'php',
