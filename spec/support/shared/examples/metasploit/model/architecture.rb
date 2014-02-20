@@ -37,7 +37,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
         abbreviations.should include('dalvik')
       end
 
-      it 'should include firefox for Firefox cross-platfomr add-on format' do
+      it 'should include firefox for Firefox cross-platform add-on format' do
         expect(abbreviations).to include('firefox')
       end
 
