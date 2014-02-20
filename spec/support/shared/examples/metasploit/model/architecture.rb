@@ -80,6 +80,54 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
         abbreviations.should include('x86_64')
       end
     end
+
+    context 'BITS' do
+      subject(:bits) do
+        described_class::BITS
+      end
+
+      it { should include 32 }
+      it { should include 64 }
+    end
+
+    context 'ENDIANNESSES' do
+      subject(:endiannesses) do
+        described_class::ENDIANNESSES
+      end
+
+      it { should include 'big' }
+      it { should include 'little' }
+    end
+
+    context 'FAMILIES' do
+      subject(:families) do
+        described_class::FAMILIES
+      end
+
+      it 'includes arm for big- and little-endian ARM' do
+        expect(families).to include('arm')
+      end
+
+      it 'includes cbea for 32- and 64-bit Cell Broadband Engine Architecture' do
+        expect(families).to include('cbea')
+      end
+
+      it 'includes mips for big and little-endian MIPS' do
+        expect(families).to include('mips')
+      end
+
+      it 'includes ppc for 32- and 64-bit PPC' do
+        expect(families).to include('ppc')
+      end
+
+      it 'includes sparc for sparc' do
+        expect(families).to include('sparc')
+      end
+
+      it 'includes x86 for x86 and x86_64' do
+        expect(families).to include('x86')
+      end
+    end
   end
 
   context 'search' do
