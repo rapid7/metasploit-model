@@ -22,8 +22,11 @@ group :test do
 
   # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
   gem 'actionpack', *rails_version_constraint
+  # Uploads simplecov reports to coveralls.io
+  gem 'coveralls', require: false
   # Engine tasks are loaded using railtie
   gem 'railties', *rails_version_constraint
+  gem 'rspec'
   # need rspec-core >= 2.14.0 because 2.14.0 introduced RSpec::Core::SharedExampleGroup::TopLevel
   gem 'rspec-core', '>= 2.14.0'
   # need rspec-rails >= 2.12.0 as 2.12.0 adds support for redefining named subject in nested context that uses the
