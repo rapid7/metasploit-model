@@ -1,4 +1,4 @@
-# Metasploit::Model [![Build Status](https://travis-ci.org/rapid7/metasploit-model.png)](https://travis-ci.org/rapid7/metasploit-model)
+# Metasploit::Model [![Build Status](https://travis-ci.org/rapid7/metasploit-model.png)](https://travis-ci.org/rapid7/metasploit-model)[![Coverage Status](https://coveralls.io/repos/rapid7/metasploit-model/badge.png?branch=feature%2Fcoveralls)](https://coveralls.io/r/rapid7/metasploit-model?branch=feature%2Fcoveralls)
 
 TODO: Write a gem description
 
