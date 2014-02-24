@@ -26,11 +26,28 @@ describe Metasploit::Model::Search::Operator::Union do
       operator.operate_on(formatted_value)
     end
 
+    #
+    # lets
+    #
+
     let(:children) do
       [
-          double('Child')
+          invalid_child,
+          valid_child
       ]
     end
+
+    let(:valid_child) do
+      double('Valid Child', valid?: true)
+    end
+
+    let(:invalid_child) do
+      double('Invalid Child', valid?: false)
+    end
+
+    #
+    # Callbacks
+    #
 
     before(:each) do
       operator.stub(:children => children)
@@ -43,8 +60,12 @@ describe Metasploit::Model::Search::Operator::Union do
         operation.children
       end
 
-      it 'should be #children' do
-        operation_children.should == children
+      it 'rejected invalid children' do
+        expect(operation_children).not_to include(invalid_child)
+      end
+
+      it 'includes valid children' do
+        expect(operation_children).to include(valid_child)
       end
     end
 
