@@ -16,6 +16,7 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
       it { should include('BSD') }
       it { should include('BSDi') }
       it { should include('Cisco') }
+      it { should include('Firefox') }
       it { should include('FreeBSD') }
       it { should include('HPUX') }
       it { should include('IRIX') }
@@ -24,6 +25,7 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
       it { should include('Linux') }
       it { should include('NetBSD') }
       it { should include('Netware') }
+      it { should include('NodeJS') }
       it { should include('OpenBSD') }
       it { should include('OSX') }
       it { should include('PHP') }

@@ -37,6 +37,10 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
         abbreviations.should include('dalvik')
       end
 
+      it 'should include firefox for Firefox privileged javascript API' do
+        expect(abbreviations).to include('firefox')
+      end
+
       it 'should include java for Java Virtual Machine' do
         abbreviations.should include('java')
       end
@@ -44,6 +48,10 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
       it 'should include endian-ware MIPS' do
         abbreviations.should include('mipsbe')
         abbreviations.should include('mipsle')
+      end
+
+      it 'should include nodejs for javascript code that requires NodeJS extensions/libraries' do
+        expect(abbreviations).to include('nodejs')
       end
 
       it 'should include php for PHP code' do
@@ -74,6 +82,58 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
       it 'should include 32-bit and 64-bit x86' do
         abbreviations.should include('x86')
         abbreviations.should include('x86_64')
+      end
+    end
+
+    context 'BITS' do
+      subject(:bits) do
+        described_class::BITS
+      end
+
+      it { should include 32 }
+      it { should include 64 }
+    end
+
+    context 'ENDIANNESSES' do
+      subject(:endiannesses) do
+        described_class::ENDIANNESSES
+      end
+
+      it { should include 'big' }
+      it { should include 'little' }
+    end
+
+    context 'FAMILIES' do
+      subject(:families) do
+        described_class::FAMILIES
+      end
+
+      it 'includes arm for big- and little-endian ARM' do
+        expect(families).to include('arm')
+      end
+
+      it 'includes cbea for 32- and 64-bit Cell Broadband Engine Architecture' do
+        expect(families).to include('cbea')
+      end
+
+      it 'includes javascript for NodeJS' do
+        expect(families).to include('javascript')
+      end
+
+      it 'includes mips for big and little-endian MIPS' do
+        expect(families).to include('mips')
+      end
+
+      it 'includes ppc for 32- and 64-bit PPC' do
+        expect(families).to include('ppc')
+      end
+
+      it 'includes sparc for sparc' do
+        expect(families).to include('sparc')
+      end
+
+      it 'includes x86 for x86 and x86_64' do
+        expect(families).to include('x86')
       end
     end
   end
@@ -147,6 +207,13 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
                           :summary => 'Dalvik process virtual machine used in Google Android'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          abbreviation: 'firefox',
+                          bits: nil,
+                          endianness: nil,
+                          family: 'javascript',
+                          summary: "Firefox's privileged javascript API"
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'java',
                           :bits => nil,
                           :endianness => 'big',
@@ -166,6 +233,13 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
                           :endianness => 'little',
                           :family => 'mips',
                           :summary => 'Little-endian MIPS'
+
+    it_should_behave_like 'Metasploit::Model::Architecture seed',
+                          :abbreviation => 'nodejs',
+                          :bits => nil,
+                          :endianness => nil,
+                          :family => 'javascript',
+                          :summary => 'NodeJS'
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'php',
@@ -248,9 +322,11 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
             'cbea64',
             'cmd',
             'dalvik',
+            'firefox',
             'java',
             'mipsbe',
             'mipsle',
+            'nodejs',
             'php',
             'ppc',
             'ppc64',
@@ -296,9 +372,11 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
     it { should include 'cbea64' }
     it { should include 'cmd' }
     it { should include 'dalvik' }
+    it { should include 'firefox' }
     it { should include 'java' }
     it { should include 'mipsbe' }
     it { should include 'mipsle' }
+    it { should include 'nodejs' }
     it { should include 'php' }
     it { should include 'ppc' }
     it { should include 'ppc64' }
@@ -339,6 +417,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
     it { should include 'arm' }
     it { should include 'cbea' }
     it { should include 'mips' }
+    it { should include 'javascript' }
     it { should include 'ppc' }
     it { should include 'sparc' }
     it { should include 'x86' }
