@@ -103,8 +103,8 @@ module Metasploit
               abbreviation: 'firefox',
               bits: nil,
               endianness: nil,
-              family: nil,
-              summary: 'Firefox cross-platform add-on format'
+              family: 'javascript',
+              summary: "Firefox's privileged javascript API"
           },
           {
               :abbreviation => 'java',

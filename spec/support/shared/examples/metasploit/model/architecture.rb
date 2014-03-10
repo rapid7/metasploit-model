@@ -37,7 +37,7 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
         abbreviations.should include('dalvik')
       end
 
-      it 'should include firefox for Firefox cross-platform add-on format' do
+      it 'should include firefox for Firefox privileged javascript API' do
         expect(abbreviations).to include('firefox')
       end
 
@@ -210,8 +210,8 @@ Metasploit::Model::Spec.shared_examples_for 'Architecture' do
                           abbreviation: 'firefox',
                           bits: nil,
                           endianness: nil,
-                          family: nil,
-                          summary: 'Firefox cross-platform add-on format'
+                          family: 'javascript',
+                          summary: "Firefox's privileged javascript API"
 
     it_should_behave_like 'Metasploit::Model::Architecture seed',
                           :abbreviation => 'java',
