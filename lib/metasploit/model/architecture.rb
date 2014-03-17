@@ -19,9 +19,11 @@ module Metasploit
           'cbea64',
           'cmd',
           'dalvik',
+          'firefox',
           'java',
           'mipsbe',
           'mipsle',
+          'nodejs',
           'php',
           'ppc',
           'ppc64',
@@ -46,6 +48,7 @@ module Metasploit
       FAMILIES = [
           'arm',
           'cbea',
+          'javascript',
           'mips',
           'ppc',
           'sparc',
@@ -97,6 +100,13 @@ module Metasploit
               :summary => 'Dalvik process virtual machine used in Google Android'
           },
           {
+              abbreviation: 'firefox',
+              bits: nil,
+              endianness: nil,
+              family: 'javascript',
+              summary: "Firefox's privileged javascript API"
+          },
+          {
               :abbreviation => 'java',
               :bits => nil,
               :endianness => 'big',
@@ -116,6 +126,13 @@ module Metasploit
               :endianness => 'little',
               :family => 'mips',
               :summary => 'Little-endian MIPS'
+          },
+          {
+              abbreviation: 'nodejs',
+              bits: nil,
+              endianness: nil,
+              family: 'javascript',
+              summary: 'NodeJS'
           },
           {
               :abbreviation => 'php',

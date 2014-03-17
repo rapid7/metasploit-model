@@ -122,6 +122,18 @@ Metasploit::Model::Spec.shared_examples_for 'Reference' do
 
           it_should_behave_like 'derives', :url, :validates => false
         end
+
+        context 'ZDI' do
+          let(:abbreviation) do
+            'ZDI'
+          end
+
+          let(:designation) do
+            FactoryGirl.generate :metasploit_model_reference_zdi_designation
+          end
+
+          it_should_behave_like 'derives', :url, validates: false
+        end
       end
     end
   end
