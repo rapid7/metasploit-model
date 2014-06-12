@@ -13,7 +13,9 @@ describe Metasploit::Model::Search::Operation::Boolean do
   end
 
   context 'validations' do
-    it { should ensure_inclusion_of(:value).in_array([false, true]) }
+    it { should allow_value(false).for(:value) }
+    it { should allow_value(true).for(:value) }
+    it { should_not allow_value(nil).for(:value) }
   end
 
   context '#value' do
