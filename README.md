@@ -1,6 +1,10 @@
 # Metasploit::Model [![Build Status](https://travis-ci.org/rapid7/metasploit-model.png?branch=feature/exploit)](https://travis-ci.org/rapid7/metasploit-model)[![Coverage Status](https://coveralls.io/repos/rapid7/metasploit-model/badge.png?branch=feature%2Fexploit)](https://coveralls.io/r/rapid7/metasploit-model?branch=feature%2Fexploit)
 
-TODO: Write a gem description
+## Versioning
+
+`Metasploit::Model` is versioned using [semantic versioning 2.0](http://semver.org/spec/v2.0.0.html).  Each branch
+should set `Metasploit::Model::Version::PRERELEASE` to the branch name, while master should have no `PRERELEASE`
+and the `PRERELEASE` section of `Metasploit::Model::VERSION` does not exist.
 
 ## Installation
 
