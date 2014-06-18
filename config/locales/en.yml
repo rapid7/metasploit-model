@@ -1,0 +1,209 @@
+en:
+  metasploit:
+    model:
+      ancestors:
+        metasploit/model/architecture:
+          search:
+            operator:
+              names:
+                abbreviation:
+                  help: "Abbreviation for architecture, such as x86, etc."
+                bits:
+                  help: "Number of bits supported by the architecture.  Certain architectures, such as those for programming languages like Ruby and PHP, do not have bits."
+                endianness:
+                  help: "Whether the architecture is big or little endian.  Certain architectures, such as those for programming languages like Ruby and PHP, do not have an endianness."
+                family:
+                  help: "The CPU architecture family.  For example x86_64 and x86 are both in the x86 family.  Certain architectures, such as those for programming languages like Ruby and PHP, do not have a family."
+
+        metasploit/model/author:
+          search:
+            operator:
+              names:
+                name:
+                  help: "Full name (first + last name) or handle of the author."
+
+        metasploit/model/authority:
+          search:
+            operator:
+              names:
+                abbreviation:
+                  help:  "Abbreviation or initialism for authority, such as CVE for 'Common Vulnerability and Exposures'."
+
+        metasploit/model/email_address:
+          search:
+            operator:
+              names:
+                domain:
+                  help: "The domain part of the email address after the '@'."
+                full:
+                  help: "The full email address <local>@<domain>"
+                local:
+                  help: "The local part of the email address before the '@'."
+
+        metasploit/model/module/action:
+          search:
+            operator:
+              names:
+                name:
+                  help: "The name of the module action."
+
+        metasploit/model/module/class:
+          search:
+            operator:
+              names:
+                full_name:
+                  help: "<module_type>/<reference_name>"
+                module_type:
+                  help: "The type of this module."
+                payload_type:
+                  help: "For payload modules, the type of payload, either 'single' or 'staged'."
+                reference_name:
+                  help: "The reference name relative to the module_type."
+
+        metasploit/model/module/instance:
+          search:
+            operator:
+              names:
+                app:
+                  help: "The type of application. either client or server, which maps to stance:passive or stance:aggressive, respectively."
+                author:
+                  help: "Either the author's name or email address.  Maps to authors.name, email_addresses.local, and/or email_addresses.domain."
+                description:
+                  help: "A long, paragraph description of what the module does."
+                disclosed_on:
+                  help: "The date the vulnerability exploited by this module was disclosed to the public."
+                license:
+                  help: "The name of the software license for the module's code."
+                name:
+                  help: "The human readable name of the module.  It can be thought of as the summary or title of the module."
+                os:
+                  help: "Module OS in platforms.name or targets.name."
+                platform:
+                  help: "Module platform in platforms.name or targets.name."
+                privileged:
+                  help: "Whether the module requires privileged access to run."
+                ref:
+                  help: "Reference to module using obsolete \"<context>-<id>\" syntax, which maps to the newer authorities.abbreviation, references.designation or references.url."
+                stance:
+                  help: "Whether the module is active or passive."
+                text:
+                  help: "Search most of the text fields of the module metadata.  Maps to description, name, actions.name, architectures.abbreviation, platform, or ref."
+
+        metasploit/model/module/rank:
+          search:
+            operator:
+              names:
+                name:
+                  help: "Name of the rank."
+                number:
+                  help: "Numerical value of the rank.  Higher numbers are better."
+
+        metasploit/model/module/target:
+          search:
+            operator:
+              names:
+                name:
+                  help: "Name of module target."
+
+        metasploit/model/platform:
+          search:
+            operator:
+              names:
+                fully_qualified_name:
+                  help: "Fully-qualified name of the platform."
+
+        metasploit/model/reference:
+          search:
+            operator:
+              names:
+                designation:
+                  help: "A designation (usually a string of numbers and dashes) assigned by the reference's authority.  If the reference has no authority, then only url will be set, such as for references to proof-of-concept (PoC) blog posts."
+                url:
+                  help: "URL to web page with information about referenced exploit.  The URL may be null if the authority is obsolete."
+
+      attributes:
+        metasploit/model/module/instance:
+          actions:
+            one: 'action'
+            other: 'actions'
+          module_authors:
+            one: 'module author'
+            other: 'module authors'
+          module_references:
+            one: 'module reference'
+            other: 'module references'
+          targets:
+            one: 'target'
+            other: 'targets'
+
+      errors:
+        messages:
+          boolean: "is not a boolean (false or true)."
+          model_invalid: "Validation failed: %{errors}"
+
+        models:
+          metasploit/model/module/instance:
+            attributes:
+              actions:
+                wrong_length: "cannot have any actions"
+
+              architectures:
+                extra: "has extra architectures (%{extra}) not found on targets"
+                missing: "is missing architectures (%{missing}) from targets"
+
+              module_architectures:
+                too_short: "is too short (minimum is %{count} module architectures)"
+                wrong_length: "cannot have any module architectures"
+
+              module_platforms:
+                too_short: "is too short (minimum is %{count} module platforms)"
+                wrong_length: "cannot have any module platforms"
+
+              module_references:
+                too_short: "is too short (minimum is %{count} module references)"
+                wrong_length: "cannot have any module references"
+
+              platforms:
+                extra: "has extra platforms (%{extra}) not found on targets"
+                missing: "is missing platforms (%{missing}) from targets"
+
+              targets:
+                too_short: "is too short (minimum is %{count} targets)"
+                wrong_length: "cannot have any targets"
+
+          metasploit/model/search/operation/date:
+            attributes:
+              value:
+                unparseable_date: "is not a parseable Date"
+
+          metasploit/model/search/operation/null:
+            attributes:
+              operator:
+                type: "is not a %{type}"
+
+          metasploit/model/search/operation/set:
+            attributes:
+              value:
+                inclusion: "is not part of the set (%{set})"
+
+          metasploit/model/search/operation/union:
+            attributes:
+              children:
+                too_short: "is too short (minimum is %{count} child)"
+
+          metasploit/model/search/operator/null:
+            attributes:
+              name:
+                unknown: "is unknown"
+
+          metasploit/model/search/query:
+            attributes:
+              operations:
+                too_short: "is too short (minimum is %{count} operation)"
+
+      search:
+        operator:
+          ancestors:
+            metasploit/model/search/operator/deprecated/authority:
+              help: "Modules with reference from the %{name} authority.  Maps to `authorities.abbreviation:%{name} references.designation:<value>`."
+

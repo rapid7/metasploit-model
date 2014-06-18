@@ -1,0 +1,4 @@
+module <%= metasploit_module_relative_name %>
+  <%= render 'methods' %>
+  <%= render "payload_types/#{module_ancestor.payload_type}" %>
+end
