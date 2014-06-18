@@ -49,10 +49,15 @@ issue tracking software.
 
 #### `PRERELEASE`
 
-1. Update `PRERELEASE` to match the `SUMMARY` in the branch name.
+1. Update `PRERELEASE` to match the `SUMMARY` in the branch name.  If you branched from `master`, and [version.rb](lib/metasploit/model/version.rb) does not have `PRERELEASE` defined, then adding the following lines after `PATCH`: 
+```
+# The prerelease version, scoped to the {PATCH} version number.
+PRERELEASE = '<SUMMARY>'
+```
 2. `rake spec`
 3.  Verify the specs pass, which indicates that `PRERELEASE` was updated correctly.
 4. Commit the change `git commit -a`
+
 
 #### Your changes
 
