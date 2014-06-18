@@ -100,6 +100,33 @@ You should also include at least one scenario to manually check the changes outs
 
 The 'Post-merge Steps' are a reminder to the reviewer of the Pull Request of how to update the [`PRERELEASE`](lib/metasploit/model/version.rb) so that [version_spec.rb](spec/lib/metasploit/model/version_spec.rb) passes on the target branch after the merge.
 
+DESTINATION is the name of the destination branch into which the merge is being made.  SOURCE_SUMMARY is the SUMMARY from TYPE/ISSUE/SUMMARY branch name for the SOURCE branch that is being made.
+
+When merging to `master`:
+
+```
+# Post-merge Steps
+
+Perform these steps prior to pushing to master or the build will be broke on master.
+
+## Version
+- [ ] Edit `lib/metasploit/model/version.rb`
+- [ ] Remove `PRERELEASE` and its comment as `PRERELEASE` is not defined on master.
+
+## Gem build
+- [ ] gem build *.gemspec
+- [ ] VERIFY the gem has no '.pre' version suffix.
+
+## RSpec
+- [ ] `rake spec`
+- [ ] VERIFY version examples pass without failures
+
+## Commit & Push
+- [ ] `git commit -a`
+- [ ] `git push origin master`
+```
+
+When merging to DESTINATION other than `master`:
 
 ```
 # Post-merge Steps
@@ -119,18 +146,8 @@ Perform these steps prior to pushing to DESTINATION or the build will be broke o
 - [ ] VERIFY version examples pass without failures
 
 ## Commit & Push
-- [ ] Commit and push changed to `lib/metasploit/model/version.rb` to `DESTINATION`.
-```
-
-DESTINATION is the name of the destination branch into which the merge is being made.  SOURCE_SUMMARY is the SUMMARY
-from TYPE/ISSUE/SUMMARY branch name for the SOURCE branch that is being made.
-
-If the DESTINATION is to master, then use the following for the Version section:
-
-```
-## Version
-- [ ] Edit 'lib/metasploit/model/version.rb`.
-- [ ] Remove `PRERELEASE` and its comment as `PRERELEASE` is not defined on master.
+- [ ] `git commit -a`
+- [ ] `git push origin master`
 ```
 
 * Add a 'Release Steps' comment
