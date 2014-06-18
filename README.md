@@ -107,8 +107,8 @@ The 'Post-merge Steps' are a reminder to the reviewer of the Pull Request of how
 Perform these steps prior to pushing to DESTINATION or the build will be broke on DESTINATION.
 
 ## Version
-- [x] Edit `lib/metasploit/model/version.rb`
-- [x] Change `PRELEASE` from `SOURCE_SUMMARY` to `DESTINATION_SUMMARY` to match the branch (DESTINATION) summary (DESTINATION_SUMMARY)
+- [ ] Edit `lib/metasploit/model/version.rb`
+- [ ] Change `PRELEASE` from `SOURCE_SUMMARY` to `DESTINATION_SUMMARY` to match the branch (DESTINATION) summary (DESTINATION_SUMMARY)
 
 ## Gem build
 - [ ] gem build *.gemspec
@@ -124,6 +124,14 @@ Perform these steps prior to pushing to DESTINATION or the build will be broke o
 
 DESTINATION is the name of the destination branch into which the merge is being made.  SOURCE_SUMMARY is the SUMMARY
 from TYPE/ISSUE/SUMMARY branch name for the SOURCE branch that is being made.
+
+If the DESTINATION is to master, then use the following for the Version section:
+
+```
+## Version
+- [ ] Edit 'lib/metasploit/model/version.rb`.
+- [ ] Remove `PRERELEASE` and its comment as `PRERELEASE` is not defined on master.
+```
 
 * Add a 'Release Steps' comment
 
