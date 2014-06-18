@@ -147,7 +147,7 @@ Perform these steps prior to pushing to DESTINATION or the build will be broke o
 
 ## Commit & Push
 - [ ] `git commit -a`
-- [ ] `git push origin master`
+- [ ] `git push origin DESTINATION`
 ```
 
 * Add a 'Release Steps' comment
