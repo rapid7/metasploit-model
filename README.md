@@ -152,7 +152,7 @@ Perform these steps prior to pushing to DESTINATION or the build will be broke o
 
 * Add a 'Release Steps' comment
 
-The 'Post-merge Steps' are a reminder to the reviewer of the Pull Request of how to release the gem.
+The 'Release Steps' are a reminder to the reviewer of the Pull Request of how to release the gem.
 
 ```
 # Release
