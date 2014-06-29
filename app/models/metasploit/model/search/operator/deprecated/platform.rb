@@ -1,6 +1,6 @@
 # Translates `<name>:<value>` to the union of `platforms.name:<value>` and `targets.name:<value>` in order to support
 # the `os` and `platform` operators.
-class Metasploit::Model::Search::Operator::Deprecated::Platform < Metasploit::Model::Search::Operator::Union
+class Metasploit::Model::Search::Operator::Deprecated::Platform < Metasploit::Model::Search::Operator::Group::Union
   #
   # CONSTANTS
   #

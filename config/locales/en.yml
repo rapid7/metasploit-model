@@ -186,7 +186,7 @@ en:
               value:
                 inclusion: "is not part of the set (%{set})"
 
-          metasploit/model/search/operation/union:
+          metasploit/model/search/operation/group/base:
             attributes:
               children:
                 too_short: "is too short (minimum is %{count} child)"

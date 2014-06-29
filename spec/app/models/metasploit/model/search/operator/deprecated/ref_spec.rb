@@ -12,7 +12,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
   end
 
   context '#children' do
-    include_context 'Metasploit::Model::Search::Operator::Union#children'
+    include_context 'Metasploit::Model::Search::Operator::Group::Union#children'
 
     let(:abbreviation_operator) do
       Metasploit::Model::Search::Operator::Attribute.new(

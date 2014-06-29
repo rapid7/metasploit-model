@@ -37,7 +37,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
   end
 
   context '#children' do
-    include_context 'Metasploit::Model::Search::Operator::Union#children'
+    include_context 'Metasploit::Model::Search::Operator::Group::Union#children'
 
     let(:action_name_operator) do
       Metasploit::Model::Search::Operator::Attribute.new(

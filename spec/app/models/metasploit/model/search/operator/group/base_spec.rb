@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operator::Union do
+describe Metasploit::Model::Search::Operator::Group::Base do
   subject(:operator) do
     described_class.new
   end
@@ -53,7 +53,7 @@ describe Metasploit::Model::Search::Operator::Union do
       operator.stub(:children => children)
     end
 
-    it { should be_a Metasploit::Model::Search::Operation::Union }
+    it { should be_a Metasploit::Model::Search::Operation::Group::Base }
 
     context 'children' do
       subject(:operation_children) do

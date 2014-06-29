@@ -1,6 +1,6 @@
 # Translates `ref:<value>` to union of `authorities.abbreviation:<value>`, `references.designation:<value>`, and
 # `references.designation:<value>`.
-class Metasploit::Model::Search::Operator::Deprecated::Ref < Metasploit::Model::Search::Operator::Union
+class Metasploit::Model::Search::Operator::Deprecated::Ref < Metasploit::Model::Search::Operator::Group::Union
   # Array of `authorities.abbreviation:<formatted_value>`, `references.designation:<formatted_value>`, and
   # `references.url:<formatted_value>`.  If `formatted_value` contains a '-' then the portion of `formatted_value`
   # before '-' is treated is passed to `authorities.abbreviation` and the portion of `formatted_value` after '-' is

@@ -16,7 +16,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Platform do
     ['os', 'platform'].sample
   end
 
-  it { should be_a Metasploit::Model::Search::Operator::Union }
+  it { should be_a Metasploit::Model::Search::Operator::Group::Union }
 
   context 'CONSTANTS' do
     context 'FORMATTED_OPERATORS' do
@@ -34,7 +34,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Platform do
   end
 
   context '#children' do
-    include_context 'Metasploit::Model::Search::Operator::Union#children'
+    include_context 'Metasploit::Model::Search::Operator::Group::Union#children'
 
     let(:formatted_value) do
       'platform_or_target'
