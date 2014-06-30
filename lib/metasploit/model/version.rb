@@ -7,7 +7,7 @@ module Metasploit
       # The minor version number, scoped to the {MAJOR} version number.
       MINOR = 25
       # The patch number, scoped to the {MINOR} version number.
-      PATCH = 0
+      PATCH = 1
       # The prerelease version number, scoped to the {PATCH} version number.
       PRERELEASE = 'metasploit-model-search-operator-and-operation-groups'
 
