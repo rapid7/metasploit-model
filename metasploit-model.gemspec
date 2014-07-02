@@ -20,7 +20,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
 
   # documentation
-  spec.add_development_dependency 'yard'
+  # 0.8.7.4 has a bug where attribute setters show up as undocumented
+  spec.add_development_dependency 'yard', '< 0.8.7.4'
 
   # Dependency loading
   spec.add_runtime_dependency 'activesupport'

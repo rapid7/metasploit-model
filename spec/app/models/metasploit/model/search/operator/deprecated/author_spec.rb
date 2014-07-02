@@ -14,7 +14,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
   it { should be_a Metasploit::Model::Search::Operator::Delegation }
 
   context '#children' do
-    include_context 'Metasploit::Model::Search::Operator::Union#children'
+    include_context 'Metasploit::Model::Search::Operator::Group::Union#children'
 
     let(:author_class) do
       Class.new

@@ -1,6 +1,6 @@
-# A union of one or more {#children child operations} from an operator's `#operate_on`, should be visited the same as
+# A group of one or more {#children child operations} from an operator's `#operate_on`, should be visited the same as
 # {Metasploit::Model::Search::Group::Base}.
-class Metasploit::Model::Search::Operation::Union < Metasploit::Model::Search::Operation::Base
+class Metasploit::Model::Search::Operation::Group::Base < Metasploit::Model::Search::Operation::Base
   #
   # Attributes
   #

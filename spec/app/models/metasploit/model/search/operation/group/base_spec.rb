@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operation::Union do
-  subject(:union) do
+describe Metasploit::Model::Search::Operation::Group::Base do
+  subject(:group) do
     described_class.new
   end
 
@@ -13,7 +13,7 @@ describe Metasploit::Model::Search::Operation::Union do
 
       context '#children_valid' do
         subject(:children_valid) do
-          union.send(:children_valid)
+          group.send(:children_valid)
         end
 
         #
@@ -24,7 +24,7 @@ describe Metasploit::Model::Search::Operation::Union do
           I18n.translate!(:'errors.messages.invalid')
         end
 
-        let(:union) do
+        let(:group) do
           described_class.new(
               children: children
           )
@@ -53,9 +53,9 @@ describe Metasploit::Model::Search::Operation::Union do
             end
 
             it 'does not add error on :children' do
-              union.valid?
+              group.valid?
 
-              union.errors[:children].should_not include(error)
+              group.errors[:children].should_not include(error)
             end
           end
 
@@ -72,9 +72,9 @@ describe Metasploit::Model::Search::Operation::Union do
             end
 
             it 'should add error on :children' do
-              union.valid?
+              group.valid?
 
-              union.errors[:children].should include(error)
+              group.errors[:children].should include(error)
             end
           end
         end
@@ -85,9 +85,9 @@ describe Metasploit::Model::Search::Operation::Union do
           end
 
           it 'does not add error on :children' do
-            union.valid?
+            group.valid?
 
-            union.errors[:children].should_not include(error)
+            group.errors[:children].should_not include(error)
           end
         end
       end
@@ -96,7 +96,7 @@ describe Metasploit::Model::Search::Operation::Union do
 
   context '#children' do
     subject(:children) do
-      union.children
+      group.children
     end
 
     context 'default' do
@@ -110,7 +110,7 @@ describe Metasploit::Model::Search::Operation::Union do
         ]
       end
 
-      let(:union) do
+      let(:group) do
         described_class.new(
             children: expected_children
         )

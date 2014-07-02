@@ -1,11 +1,11 @@
 # Search the equivalent of the text fields from `Mdm::Module::Detail` and its associations, making a union of
 # `description`, `name`, `actions.name`, `architectures.abbreviation`, `platform`, and `ref`.
-class Metasploit::Model::Search::Operator::Deprecated::Text < Metasploit::Model::Search::Operator::Union
+class Metasploit::Model::Search::Operator::Deprecated::Text < Metasploit::Model::Search::Operator::Group::Union
   #
   # CONSTANTS
   #
 
-  # Names of operators that are unioned together for {Metasploit::Model::Search::Operator::Union#operate_on}.
+  # Names of operators that are unioned together for {Metasploit::Model::Search::Operator::Group::Union#operate_on}.
   OPERATOR_NAMES = [
       'description',
       'name',
