@@ -2,9 +2,7 @@
 
 ## Versioning
 
-`Metasploit::Model` is versioned using [semantic versioning 2.0](http://semver.org/spec/v2.0.0.html).  Each branch
-should set `Metasploit::Model::Version::PRERELEASE` to the branch name, while master should have no `PRERELEASE`
-and the `PRERELEASE` section of `Metasploit::Model::VERSION` does not exist.
+`Metasploit::Model` is versioned using [semantic versioning 2.0](http://semver.org/spec/v2.0.0.html).  Each branch should set `Metasploit::Model::Version::PRERELEASE` to the branch SUMMARY, while master should have no `PRERELEASE` and the `PRERELEASE` section of `Metasploit::Model::VERSION` does not exist.
 
 ## Installation
 
@@ -26,8 +24,4 @@ TODO: Write usage instructions here
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+See [CONTRIBUTING.md](CONTRIBUTING.md)
