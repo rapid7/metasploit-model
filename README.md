@@ -1,4 +1,4 @@
-# Metasploit::Model [![Build Status](https://travis-ci.org/rapid7/metasploit-model.png)](https://travis-ci.org/rapid7/metasploit-model)[![Coverage Status](https://coveralls.io/repos/rapid7/metasploit-model/badge.png?branch=feature%2Fexploit)](https://coveralls.io/r/rapid7/metasploit-model)
+# Metasploit::Model [![Build Status](https://travis-ci.org/rapid7/metasploit-model.png)](https://travis-ci.org/rapid7/metasploit-model)[![Coverage Status](https://coveralls.io/repos/rapid7/metasploit-model/badge.png?branch=feature%2Fexploit)](https://coveralls.io/r/rapid7/metasploit-model)[![Inline docs](http://inch-ci.org/github/rapid7/metasploit-model.svg?branch=master)](http://inch-ci.org/github/rapid7/metasploit-model)
 
 ## Versioning
 
