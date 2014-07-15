@@ -41,6 +41,9 @@ module Metasploit::Model::Login::Status
   # guessing
   LOCKED_OUT = 'Locked Out'
 
+  # This status will never be used for a Login, but is required as a result status for certain LoginScanners.
+  NO_AUTH_REQUIRED = 'No Auth Required'
+
   # When the `Metasploit::Credential::Login#service` allows access using `Metasploit::Credential::Login#core`.
   SUCCESSFUL = 'Successful'
 
