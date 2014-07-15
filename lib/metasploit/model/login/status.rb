@@ -60,6 +60,7 @@ module Metasploit::Model::Login::Status
       DISABLED,
       INCORRECT,
       LOCKED_OUT,
+      NO_AUTH_REQUIRED,
       SUCCESSFUL,
       UNABLE_TO_CONNECT,
       UNTRIED
