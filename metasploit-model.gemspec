@@ -5,7 +5,7 @@ require 'metasploit/model/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'metasploit-model'
-  spec.version       = Metasploit::Model::VERSION
+  spec.version       = Metasploit::Model::GEM_VERSION
   spec.authors       = ['Luke Imhoff']
   spec.email         = ['luke_imhoff@rapid7.com']
   spec.description   = %q{Common code, such as validators and mixins, that are shared between ActiveModels in metasploit-framework and ActiveRecords in metasploit_data_models.}
