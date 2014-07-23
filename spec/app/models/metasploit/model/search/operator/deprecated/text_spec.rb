@@ -54,7 +54,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:actions_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :actions,
-          :attribute_operator => action_name_operator,
+          :source_operator => action_name_operator,
           :klass => klass
       )
     end
@@ -74,7 +74,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:architectures_abbreviation_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :architectures,
-          :attribute_operator => architecture_abbreviation_operator,
+          :source_operator => architecture_abbreviation_operator,
           :klass => klass
       )
     end
@@ -94,7 +94,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:authorities_abbreviation_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :authorities,
-          :attribute_operator => authority_abbreviation_operator,
+          :source_operator => authority_abbreviation_operator,
           :klass => klass
       )
     end
@@ -141,7 +141,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:platforms_fully_qualified_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :platforms,
-          :attribute_operator => platform_fully_qualified_name_operator,
+          :source_operator => platform_fully_qualified_name_operator,
           :klass => klass
       )
     end
@@ -167,7 +167,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:references_designation_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :references,
-          :attribute_operator => reference_designation_operator,
+          :source_operator => reference_designation_operator,
           :klass => klass
       )
     end
@@ -183,7 +183,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:references_url_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :references,
-          :attribute_operator => reference_url_operator,
+          :source_operator => reference_url_operator,
           :klass => klass
       )
     end
@@ -203,7 +203,7 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
     let(:targets_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :targets,
-          :attribute_operator => target_name_operator,
+          :source_operator => target_name_operator,
           :klass => klass
       )
     end
@@ -253,8 +253,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
         child('actions.name')
       end
 
-      it 'should use formatted value for value' do
-        operation.value.should == formatted_value
+      context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+        subject(:source_operation) {
+          operation.source_operation
+        }
+
+        it 'should use formatted value for value' do
+          expect(source_operation.value).to eq(formatted_value)
+        end
       end
     end
 
@@ -263,8 +269,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
         child('architectures.abbreviation')
       end
 
-      it 'should use formatted value for value' do
-        operation.value.should == formatted_value
+      context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+        subject(:source_operation) {
+          operation.source_operation
+        }
+
+        it 'should use formatted value for value' do
+          expect(source_operation.value).to eq(formatted_value)
+        end
       end
     end
 
@@ -289,8 +301,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
             grandchild('platforms.fully_qualified_name')
           end
 
-          it 'should use formatted value for value' do
-            grandchild_operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              grandchild_operation.source_operation
+            }
+
+            it 'should use formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
 
@@ -299,8 +317,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
             grandchild('targets.name')
           end
 
-          it 'should use formatted value for value' do
-            grandchild_operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              grandchild_operation.source_operation
+            }
+
+            it 'should use formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
       end
@@ -327,8 +351,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
             grandchild('authorities.abbreviation')
           end
 
-          it 'should use formatted value for value' do
-            grandchild_operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              grandchild_operation.source_operation
+            }
+
+            it 'should use formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
 
@@ -337,8 +367,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
             grandchild('references.designation')
           end
 
-          it 'should use formatted value for value' do
-            grandchild_operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              grandchild_operation.source_operation
+            }
+
+            it 'should use formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
 
@@ -347,8 +383,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Text do
             grandchild('references.url')
           end
 
-          it 'should use formatted value for value' do
-            grandchild_operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              grandchild_operation.source_operation
+            }
+
+            it 'should use formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
       end

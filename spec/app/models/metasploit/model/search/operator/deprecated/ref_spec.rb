@@ -29,8 +29,8 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
     let(:authorities_abbreviation_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :authorities,
-          :attribute_operator => abbreviation_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => abbreviation_operator
       )
     end
 
@@ -49,16 +49,16 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
     let(:references_designation_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :references,
-          :attribute_operator => designation_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => designation_operator
       )
     end
 
     let(:references_url_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :references,
-          :attribute_operator => url_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => url_operator
       )
     end
 
@@ -124,8 +124,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('references.url')
             end
 
-            it "should use portion of formatted value after 'URL-' for value" do
-              operation.value.should == tail
+            context 'Metasploit::Model::Search::Operation::Association' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "uses portion of formatted value after 'URL-' for value" do
+                expect(source_operation.value).to eq(tail)
+              end
             end
           end
         end
@@ -160,8 +166,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('references.designation')
             end
 
-            it "should use portion of formatted value after '-' for value" do
-              operation.value.should == tail
+            context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "uses portion of formatted value after '-' for value" do
+                expect(source_operation.value).to eq(tail)
+              end
             end
           end
 
@@ -182,8 +194,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('authorities.abbreviation')
             end
 
-            it "should use portion of formatted value before '-' as value" do
-              operation.value.should == head
+            context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "uses portion of formatted value before '-' as value" do
+                expect(source_operation.value).to eq(head)
+              end
             end
           end
 
@@ -192,8 +210,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('references.designation')
             end
 
-            it "should use portion of formatted value after '-' as value" do
-              operation.value.should == tail
+            context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "uses portion of formatted value after '-' as value" do
+                expect(source_operation.value).to eq(tail)
+              end
             end
           end
 
@@ -218,8 +242,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('authorities.abbreviation')
             end
 
-            it "should use portion of formatted value before '-' for value" do
-              operation.value.should == head
+            context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "use portion of formatted value before '-' for value" do
+                expect(source_operation.value).to eq(head)
+              end
             end
           end
 
@@ -250,8 +280,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('authorities.abbreviation')
             end
 
-            it "should use portion of format value before '-' for value" do
-              operation.value.should == head
+            context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "uses portion of format value before '-' for value" do
+                expect(source_operation.value).to eq(head)
+              end
             end
           end
 
@@ -260,8 +296,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
               child('references.designation')
             end
 
-            it "should use portion of format value after '-' for value" do
-              operation.value.should == tail
+            context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+              subject(:source_operation) {
+                operation.source_operation
+              }
+
+              it "uses portion of format value after '-' for value" do
+                expect(source_operation.value).to eq(tail)
+              end
             end
           end
 
@@ -297,8 +339,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
             child('authorities.abbreviation')
           end
 
-          it 'should use formatted value for value' do
-            operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              operation.source_operation
+            }
+
+            it 'uses formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
 
@@ -307,8 +355,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
             child('references.designation')
           end
 
-          it 'should use formatted value for value' do
-            operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              operation.source_operation
+            }
+
+            it 'uses formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
 
@@ -317,8 +371,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Ref do
             child('references.url')
           end
 
-          it 'should use formatted value for value' do
-            operation.value.should == formatted_value
+          context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+            subject(:source_operation) {
+              operation.source_operation
+            }
+
+            it 'uses formatted value for value' do
+              expect(source_operation.value).to eq(formatted_value)
+            end
           end
         end
       end

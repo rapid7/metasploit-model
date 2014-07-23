@@ -109,9 +109,9 @@ describe Metasploit::Model::Search do
               end
             end
 
-            context 'attribute_operator' do
-              subject(:indirect_attribute_operator) do
-                operator.attribute_operator
+            context 'source_operator' do
+              subject(:source_operator) do
+                operator.source_operator
               end
 
               let(:direct_attribute_operator) do
@@ -119,7 +119,7 @@ describe Metasploit::Model::Search do
               end
 
               it 'should be operator from associated class' do
-                indirect_attribute_operator.should == direct_attribute_operator
+                source_operator.should == direct_attribute_operator
               end
             end
 

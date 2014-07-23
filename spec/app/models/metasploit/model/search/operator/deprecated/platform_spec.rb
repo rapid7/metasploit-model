@@ -55,8 +55,8 @@ describe Metasploit::Model::Search::Operator::Deprecated::Platform do
     let(:platforms_fully_qualified_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :platforms,
-          :attribute_operator => platform_fully_qualified_name_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => platform_fully_qualified_name_operator
       )
     end
 
@@ -75,8 +75,8 @@ describe Metasploit::Model::Search::Operator::Deprecated::Platform do
     let(:targets_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :targets,
-          :attribute_operator => target_name_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => target_name_operator
       )
     end
 
@@ -94,8 +94,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Platform do
         child('platforms.fully_qualified_name')
       end
 
-      it 'should use formatted value for value' do
-        operation.value.should == formatted_value
+      context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+        subject(:source_operation) {
+          operation.source_operation
+        }
+
+        it 'uses formatted value for value' do
+          expect(source_operation.value).to eq(formatted_value)
+        end
       end
     end
 
@@ -104,8 +110,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Platform do
         child('targets.name')
       end
 
-      it 'should use formatted value for value' do
-        operation.value.should == formatted_value
+      context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+        subject(:source_operation) {
+          operation.source_operation
+        }
+
+        it 'uses formatted value for value' do
+          expect(source_operation.value).to eq(formatted_value)
+        end
       end
     end
   end

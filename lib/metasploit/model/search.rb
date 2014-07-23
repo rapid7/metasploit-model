@@ -41,16 +41,13 @@ module Metasploit
               association_class = reflection.klass
 
               # don't use search_operator_by_name as association operators on operators won't work
-              association_class.search_with_operator_by_name.each_value do |with_operator|
-                # non-attribute operators on association are assumed not to work
-                if with_operator.respond_to? :attribute
-                  association_operator = Metasploit::Model::Search::Operator::Association.new(
-                      :association => association,
-                      :attribute_operator => with_operator,
-                      :klass => self
-                  )
-                  @search_operator_by_name[association_operator.name] = association_operator
-                end
+              association_class.search_with_operator_by_name.each_value do |source_operator|
+                association_operator = Metasploit::Model::Search::Operator::Association.new(
+                    association: association,
+                    klass: self,
+                    source_operator: source_operator
+                )
+                @search_operator_by_name[association_operator.name] = association_operator
               end
             end
           end
