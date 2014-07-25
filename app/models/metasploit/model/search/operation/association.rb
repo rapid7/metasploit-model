@@ -1,3 +1,7 @@
+# An operation with a {Metasploit::Model::Search::Operator::Association} for
+# {Metasploit::Model::Search::Operation::Base#operator} that wraps a {#source_operation} produced by the
+# {Metasploit::Model::Search::Operator::Association#source_operator}.  This allows an arbitrary number of associations
+# to be changed together until a non-association operation is found that actually validates the value.
 class Metasploit::Model::Search::Operation::Association < Metasploit::Model::Search::Operation::Base
   #
   # Attributes
