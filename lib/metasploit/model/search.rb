@@ -25,30 +25,8 @@ module Metasploit
               @search_operator_by_name[operator.name] = operator
             end
 
-            search_association_set.each do |association|
-              begin
-                reflection = reflect_on_association(association)
-              rescue NameError
-                raise NameError,
-                      "#{self} does not respond to reflect_on_association.  " \
-                      "It can be added to ActiveModels by including Metasploit::Model::Association into the class."
-              end
-
-              unless reflection
-                raise Metasploit::Model::Association::Error.new(:model => self, :name => association)
-              end
-
-              association_class = reflection.klass
-
-              # don't use search_operator_by_name as association operators on operators won't work
-              association_class.search_with_operator_by_name.each_value do |source_operator|
-                association_operator = Metasploit::Model::Search::Operator::Association.new(
-                    association: association,
-                    klass: self,
-                    source_operator: source_operator
-                )
-                @search_operator_by_name[association_operator.name] = association_operator
-              end
+            search_association_operators.each do |operator|
+              @search_operator_by_name[operator.name] = operator
             end
           end
 

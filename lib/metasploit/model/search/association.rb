@@ -13,17 +13,34 @@ module Metasploit
           # @param association [#to_sym] name of association to search.
           # @return [void]
           def search_association(association)
-            search_association_set.add(association.to_sym)
+            search_association_tree[association.to_sym] ||= nil
           end
 
-          # Set of all associations that are searchable.
+          # Registers association for search.
           #
-          # @example Adding association to search
-          #   search_association :things
+          # @param associations [Array<Array, Hash, Symbol>, Hash, Symbol]
+          # @return [void]
+          def search_associations(*associations)
+            expanded_associations = Metasploit::Model::Association::Tree.expand(associations)
+
+            @search_association_tree = Metasploit::Model::Association::Tree.merge(
+                search_association_tree,
+                expanded_associations
+            )
+          end
+
+          def search_association_operators
+            @search_association_operators ||= Metasploit::Model::Association::Tree.operators(
+                search_association_tree,
+                class: self
+            )
+          end
+
+          # Tree of associations that are searchable.
           #
-          # @return [Set<Symbol>]
-          def search_association_set
-            @search_association_set ||= Set.new
+          # @return [Hash{Symbol => Hash,nil}]
+          def search_association_tree
+            @search_association_tree ||= {}
           end
         end
       end
