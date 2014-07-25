@@ -35,8 +35,8 @@ module Metasploit
         #
         # Merges two expanded association trees.
         #
-        # @param first_expanded [nil, Hash{Symbol => nil,Hash}] An expanded association tree as from {#expand}
-        # @param second_expanded [nil, Hash{Symbol => nil,Hash}] An expanded association tree as from {#expand}
+        # @param first_expanded [nil, Hash{Symbol => nil,Hash}] An expanded association tree as from {expand}
+        # @param second_expanded [nil, Hash{Symbol => nil,Hash}] An expanded association tree as from {expand}
         # @return [nil, Hash{Symbol => nil,Hash}] a new expanded association tree.
         def self.merge(first_expanded, second_expanded)
           if first_expanded.nil? && second_expanded.nil?
