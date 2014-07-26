@@ -2,7 +2,45 @@ module Metasploit
   module Model
     module Search
       module Operator
-        # Methods to lookup help text for an operator with a given `#name` registered to a given `#klass`.
+        # This allows the help to be looked up using `I18n`, and for the
+        # help to be customized based on the following criteria:
+        #
+        # `klass` on which the operator is declared, including any `Module#ancestors` and the operator `name`
+        #
+        #     # config/locales/<lang>.yml
+        #     <lang>:
+        #       <klass.i18n_scope>:
+        #         ancestors:
+        #           <klass_ancestor.model_name.i18n_key>:
+        #             search:
+        #               operator:
+        #                 names:
+        #                   <name>:
+        #                     help: "Help for searching <name> on <klass>"
+        #
+        # `class` of the operator, including any `Module#ancestors` and the operator `name`
+        #
+        #     # config/locales/<lang>.yml
+        #     <lang>:
+        #       <operator.class.i18n_scope>:
+        #         search:
+        #           operator:
+        #             ancestors:
+        #               <operator_class_ancestor.model_name.i18n_key>:
+        #                 <name>:
+        #                   help: "Help for searching <name> using <operator.class>"
+        #
+        # `class` of the operator, including any `Module#ancestors` without the operator `name`
+        #
+        #     # config/locales/<lang>.yml
+        #     <lang>:
+        #       <operator.class.i18n_scope>:
+        #         search:
+        #           operator:
+        #             ancestors:
+        #               <operator_class_ancestor.model_name.i18n_key>:
+        #                 help: "Help for searching using <operator.class>"
+        #
         module Help
           # @note This uses I18n.translate along with {Metasploit::Model::Translation#search_i18n_scope},
           #   the value is not cached to support changing the I18n.locale and getting the correct help message for that
