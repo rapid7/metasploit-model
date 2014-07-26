@@ -1,4 +1,24 @@
-# @abstract Operator that only returns a single operation from {#operate_on}.
+# If all you want do is customize the name and operation `Class` that your custom operator class returns from
+# `#operate_on`, then you can subclass {Metasploit::Model::Search::Operator::Single} instead of
+# {Metasploit::Model::Search::Operator::Base}.
+#
+#     class MyOperator < Metasploit::Model::Search::Operator::Single
+#       # Name of this operator.  The name of the operator is matched to the string before the ':' in a formatted
+#       # operation.
+#       #
+#       # @return [Symbol]
+#       def name
+#         # ...
+#       end
+#
+#       # `Class.name` of `Class` returned from {Metasploit::Model::Search::Operator::Single#operate_on}.
+#       #
+#       # @return [String] a `Class.name`
+#       def operation_class_name
+#         # ...
+#       end
+#     end
+#
 class Metasploit::Model::Search::Operator::Single < Metasploit::Model::Search::Operator::Base
   #
   # CONSTANTS
