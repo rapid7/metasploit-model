@@ -1,7 +1,95 @@
 module Metasploit
   module Model
     module Search
-      # Registers associations that can be searched.
+      # Use search operators registered on an associated class using
+      # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute},
+      # {Metasploit::Model::Search::With::ClassMethods#search_with}.
+      #
+      # Searchable associations are declared explicitly so that associations cycles can be avoided and the search
+      # interface can be tuned for clarity and complexity.
+      #
+      # # Testing
+      #
+      # {ClassMethods#search_association} calls can be tested with the 'search_association' shared example.  First,
+      # ensure the shared examples from `metasploit-model` are required in your `spec_helper.rb`:
+      #
+      #     # spec/spec_helper.rb
+      #     support_glob = Metasploit::Model::Engine.root.join('spec', 'support', '**', '*.rb')
+      #
+      #     Dir.glob(support_glob) do |path|
+      #       require path
+      #     end
+      #
+      # In the spec for the `Class` that called `search_association`, use the 'search_association' shared example:
+      #
+      #     # spec/app/models/my_class_spec.rb
+      #     require 'spec_helper'
+      #
+      #     describe MyClass do
+      #       context 'search' do
+      #         context 'associations' do
+      #           it_should_be_like 'search_association', :association_name
+      #         end
+      #       end
+      #     end
+      #
+      # @example Search near and far associations
+      #   class Root
+      #     include Metasploit::Model::Association
+      #     include Metasploit::Model::Search
+      #
+      #     #
+      #     # Associations
+      #     #
+      #
+      #     association :children,
+      #                 class_name: 'Child'
+      #
+      #     #
+      #     # Search
+      #     #
+      #
+      #     search_association children: :grandchildren
+      #   end
+      #
+      #   class Child
+      #     include Metasploit::Model::Association
+      #     include Metasploit::Model::Search
+      #
+      #     #
+      #     # Associations
+      #     #
+      #
+      #     association :grandchildren,
+      #                 class_name: 'Grandchild'
+      #
+      #     #
+      #     # Search
+      #     #
+      #
+      #     search_attribute :name,
+      #                      type: :string
+      #   end
+      #
+      #   class Grandchild
+      #     include Metasploit::Model::Search
+      #
+      #     search_attribute :age,
+      #                      type: :integer
+      #   end
+      #
+      #   Root.search_operator_by_name.each_value
+      #   # :'children.name'
+      #   # :'children.grandchildren.age'
+      #
+      #   Child.search_operator_by_name.each_value
+      #   # :name
+      #   # @note ``:'grandchildren.age'`` is not in `Child`'s operators because it didn't declare
+      #   #   `search_association :grandchildren`, only `Root` did.
+      #
+      #   Grandchild.search_operator_name
+      #   # :age
+      #
       module Association
         extend ActiveSupport::Concern
 
