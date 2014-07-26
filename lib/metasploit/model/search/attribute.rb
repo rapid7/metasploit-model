@@ -62,6 +62,56 @@ module Metasploit
       #         end
       #       end
       #     end
+      #
+      # @example search an attribute for `true` or `false`
+      #    search_attribute :flag,
+      #                     type: :boolean
+      #
+      # @example search an attribute for an integer
+      #    search_attribute :age,
+      #                     type: :integer
+      #
+      # @example search an attribute for a restricted set of integers
+      #    #
+      #    # Search
+      #    #
+      #
+      #    search_attribute :bits,
+      #                     set: :integer
+      #
+      #    #
+      #    # Class Methods
+      #    #
+      #
+      #    # Return set of allowed values for {#bits} search.
+      #    #
+      #    # @return [Set<Integer>]
+      #    def self.bits_set
+      #      @bits_set ||= Set.new([32, 64])
+      #    end
+      #
+      # @example search an attribute for a restricted set of strings
+      #    #
+      #    # Search
+      #    #
+      #
+      #    search_attribute :endianness,
+      #                     set: :string
+      #
+      #    #
+      #    # Class Methods
+      #    #
+      #
+      #    # Return set of allowed values for {#endianness} search.
+      #    #
+      #    # @return [Set<String>]
+      #    def self.endianness_set
+      #      @endianness_set ||= Set.new(['big', 'litte'])
+      #    end
+      #
+      # @example search an attribute by substring (case-insensitve LIKE)
+      #    search_attribute :description,
+      #                     type: :string
       module Attribute
         extend ActiveSupport::Concern
 
@@ -70,27 +120,7 @@ module Metasploit
         # Adds {#search_attribute} DSL to make {Metasploit::Model::Search::Operator::Attribute attribute search
         # operators}.
         module ClassMethods
-          # Registers attribute for search.  Help for the operator supports i18n.
-          #
-          # @example defining help
-          #    # lib/metasploit/model/module/instance.rb
-          #    module Metasploit::Model::Module::Instance
-          #      include Metasploit::Model::Search
-          #
-          #      included do
-          #        search_attribute :description, type: :string
-          #      end
-          #    end
-          #
-          #    # config/locales/en.yml
-          #    en:
-          #      metasploit:
-          #        model:
-          #          module:
-          #            instance:
-          #              search_attribute:
-          #                description:
-          #                  help: "A long, paragraph description of what the module does."
+          # {include:Metasploit::Model::Search::Attribute}
           #
           # @param attribute [#to_sym] name of attribute to search.
           # @param options [Hash{Symbol => String}]
