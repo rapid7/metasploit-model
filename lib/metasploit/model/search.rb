@@ -2,6 +2,65 @@ module Metasploit
   module Model
     # DSL to define associations and attributes that can be searched.  Making an association searchable, will expose
     # the attributes that association's class defined as searchable.
+    #
+    # # Operators
+    #
+    # Search operators define how to search against a given `Class`.
+    #
+    # ## Attributes
+    #
+    # Boolean, `Date`, `Integer`, and `String` attributes can be searched with
+    # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute search_attribute}.  `Integer` and `String`
+    # attributes can be further restricted to a defined `Set` of values.
+    #
+    #     class Part
+    #       include Metasploit::Model::Search
+    #
+    #       search_attribute :part,
+    #                        :integer
+    #     end
+    #
+    # The above defines the `:part` operator on `Part`.
+    #
+    # ## Custom search operators
+    #
+    # If a search operator does not directly correspond to an attribute or a the attribute needs custom validation, then
+    # a custom {Metasploit::Model::Search::Operator operator class} can be setup as the search operator
+    #
+    #     class Search::Operator::UUID
+    #       def name
+    #         :uuid
+    #       end
+    #     end
+    #
+    #     class Part
+    #       include Metasploit::Model::Search
+    #
+    #       search_with Search::Operator::UUID
+    #     end
+    #
+    # The above defines the `:uuid` operator on `Part`.
+    #
+    # ## Associations
+    #
+    # Search operators registered with
+    # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute search_attribute} or
+    # {Metasploit::Model::Search::With::ClassMethods#search_with search_with} on an associated `Class` can be searched
+    # with {Metasploit::Model::Search::Association::ClassMethods#search_association}:
+    #
+    #     class Widget
+    #       include Metasploit::Model::Search
+    #
+    #       # declare parts association
+    #
+    #       search_association :parts
+    #     end
+    #
+    # The above will define the `:'parts.number'` and `:'parts.uuid'` operator on `Widget`.
+    #
+    # # Queries
+    #
+    # {include:Metasploit::Model::Search::Query}
     module Search
       extend ActiveSupport::Concern
 
