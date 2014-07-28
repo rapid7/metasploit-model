@@ -38,5 +38,18 @@ describe Metasploit::Model::Realm::Key do
       it { should == 'PostgreSQL Database' }
       it { should be_in described_class::ALL }
     end
+
+    context 'SHORT_NAMES' do
+      subject { described_class::SHORT_NAMES }
+      it 'should have String keys' do
+        subject.keys.each { |key|
+          key.should be_a(String)
+        }
+      end
+      context 'values' do
+        subject { described_class::SHORT_NAMES.values.sort }
+        it { should match_array(described_class::ALL.sort) }
+      end
+    end
   end
 end
