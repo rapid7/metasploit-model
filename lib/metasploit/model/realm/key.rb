@@ -34,4 +34,13 @@ module Metasploit::Model::Realm::Key
       ORACLE_SYSTEM_IDENTIFIER,
       POSTGRESQL_DATABASE
   ]
+
+  # A map of short names, suitable for use on the command line, to the
+  # full human-readable constants above.
+  SHORT_NAMES = {
+    'domain' => ACTIVE_DIRECTORY_DOMAIN,
+    'db2db'  => DB2_DATABASE,
+    'sid'    => ORACLE_SYSTEM_IDENTIFIER,
+    'pgdb'   => POSTGRESQL_DATABASE,
+  }
 end
