@@ -1,7 +1,50 @@
 module Metasploit
   module Model
     module Search
-      # Generalizes operators from attributes to anything directly registered as an operator on a class.
+      # Generalizes {Metasploit::Model::Search::Attribute operators from attributes} to anything directly registered as
+      # an operator on a class.
+      #
+      # {include:Metasploit::Model::Search::Operator}
+      #
+      # # Testing
+      #
+      # {ClassMethods#search_with} calls can be tested with the 'search_with' shared example.  First, ensure
+      # the shared examples from `metasploit-model` are required in your `spec_helper.rb`:
+      #
+      #     # spec/spec_helper.rb
+      #     support_glob = Metasploit::Model::Engine.root.join('spec', 'support', '**', '*.rb')
+      #
+      #     Dir.glob(support_glob) do |path|
+      #       require path
+      #     end
+      #
+      # In the spec fo the `Class` that called `search_with`, use the 'search_with' shared example by passing the
+      # arguments passed to {ClassMethods#search_attribute}.
+      #
+      #     # app/models/my_class.rb
+      #     class MyClass
+      #       include Metasploit::Model::Search
+      #
+      #       #
+      #       # Search
+      #       #
+      #
+      #       search_with MyOperatorClass,
+      #                   foo: :bar
+      #     end
+      #
+      #     # spec/app/models/my_class_spec.rb
+      #     require 'spec_helper'
+      #
+      #     describe MyClass do
+      #       context 'search' do
+      #         context 'attributes' do
+      #           it_should_behave_like 'search_with',
+      #                                 MyOperatorClass,
+      #                                 foo: :bar
+      #         end
+      #       end
+      #     end
       module With
         extend ActiveSupport::Concern
 

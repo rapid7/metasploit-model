@@ -37,7 +37,19 @@ shared_examples_for 'search query with Metasploit::Model::Search::Operator::Depr
           operation_with_formatted_operator('authorities.abbreviation')
         end
 
-        its(:value) { should == formatted_operator }
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          context 'Metasploit::Model::Search::Operation::Base#value' do
+            subject(:value) {
+              source_operation.value
+            }
+
+            it { should == formatted_operator }
+          end
+        end
       end
 
       context 'references.designation' do
@@ -45,13 +57,13 @@ shared_examples_for 'search query with Metasploit::Model::Search::Operator::Depr
           operation_with_formatted_operator('references.designation')
         end
 
-        context 'value' do
-          subject(:value) do
-            operation.value
-          end
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
 
-          it 'should be formatted value' do
-            value.should == formatted_value
+          it 'uses formatted value for value' do
+            expect(source_operation.value).to eq(formatted_value)
           end
         end
       end

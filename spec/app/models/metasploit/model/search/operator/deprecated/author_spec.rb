@@ -23,8 +23,8 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
     let(:authors_name_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :authors,
-          :attribute_operator => name_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => name_operator
       )
     end
 
@@ -43,16 +43,16 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
     let(:email_addresses_domain_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :email_addresses,
-          :attribute_operator => domain_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => domain_operator
       )
     end
 
     let(:email_addresses_local_operator) do
       Metasploit::Model::Search::Operator::Association.new(
           :association => :email_addresses,
-          :attribute_operator => local_operator,
-          :klass => klass
+          :klass => klass,
+          :source_operator => local_operator
       )
     end
 
@@ -96,8 +96,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
           child('authors.name')
         end
 
-        it 'should use entire formatted value' do
-          operation.value.should == formatted_value
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          it 'uses entire formatted value' do
+            expect(source_operation.value).to eq(formatted_value)
+          end
         end
       end
 
@@ -106,8 +112,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
           child('email_addresses.domain')
         end
 
-        it "should use portion of formatted value after '@'" do
-          operation.value.should == domain
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          it "uses portion of formatted value after '@'" do
+            expect(source_operation.value).to eq(domain)
+          end
         end
       end
 
@@ -116,8 +128,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
           child('email_addresses.local')
         end
 
-        it "should use portion of formated value before '@'" do
-          operation.value.should == local
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          it "uses portion of formated value before '@'" do
+            expect(source_operation.value).to eq(local)
+          end
         end
       end
     end
@@ -132,8 +150,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
           child('authors.name')
         end
 
-        it 'should use entire formatted value' do
-          operation.value.should == formatted_value
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          it 'uses entire formatted value' do
+            expect(source_operation.value).to eq(formatted_value)
+          end
         end
       end
 
@@ -142,8 +166,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
           child('email_addresses.domain')
         end
 
-        it 'should use entire formatted value' do
-          operation.value.should == formatted_value
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          it 'uses entire formatted value' do
+            expect(source_operation.value).to eq(formatted_value)
+          end
         end
       end
 
@@ -152,8 +182,14 @@ describe Metasploit::Model::Search::Operator::Deprecated::Author do
           child('email_addresses.local')
         end
 
-        it 'should use entire formatted value' do
-          operation.value.should == formatted_value
+        context 'Metasploit::Model::Search::Operation::Association#source_operation' do
+          subject(:source_operation) {
+            operation.source_operation
+          }
+
+          it 'uses entire formatted value' do
+            expect(source_operation.value).to eq(formatted_value)
+          end
         end
       end
     end

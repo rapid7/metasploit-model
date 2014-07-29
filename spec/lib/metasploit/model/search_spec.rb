@@ -52,137 +52,78 @@ describe Metasploit::Model::Search do
     end
 
     context 'with search association' do
+      let(:associated_attribute) do
+        :association_name
+      end
+
       let(:association) do
         :associated_things
       end
 
+      let(:association_class) do
+        Class.new
+      end
+
+      let(:class_name) do
+        'AssociatedThing'
+      end
+
       before(:each) do
         base_class.search_association association
+        base_class.send(:include, Metasploit::Model::Association)
+
+        stub_const(class_name, association_class)
+
+        # Include after stub so search_i18n_scope can use Class#name without error
+        association_class.send(:include, Metasploit::Model::Search)
+        association_class.search_attribute associated_attribute, :type => :string
+
+        base_class.association association, :class_name => class_name
       end
 
-      context 'with reflect_on_association' do
-        before(:each) do
-          base_class.send(:include, Metasploit::Model::Association)
+      context 'operator' do
+        subject(:operator) do
+          search_operator_by_name[expected_name]
         end
 
-        context 'with association' do
-          let(:associated_attribute) do
-            :association_name
+        let(:expected_name) do
+          "#{association}.#{associated_attribute}".to_sym
+        end
+
+        it { should be_a Metasploit::Model::Search::Operator::Association }
+
+        context 'association' do
+          subject(:operator_association) do
+            operator.association
           end
 
-          let(:association_class) do
-            Class.new
-          end
-
-          let(:class_name) do
-            'AssociatedThing'
-          end
-
-          before(:each) do
-            stub_const(class_name, association_class)
-
-            # Include after stub so search_i18n_scope can use Class#name without error
-            association_class.send(:include, Metasploit::Model::Search)
-            association_class.search_attribute associated_attribute, :type => :string
-
-            base_class.association association, :class_name => class_name
-          end
-
-          context 'operator' do
-            subject(:operator) do
-              search_operator_by_name[expected_name]
-            end
-
-            let(:expected_name) do
-              "#{association}.#{associated_attribute}".to_sym
-            end
-
-            it { should be_a Metasploit::Model::Search::Operator::Association }
-
-            context 'association' do
-              subject(:operator_association) do
-                operator.association
-              end
-
-              it 'should be the registered association' do
-                operator_association.should == association
-              end
-            end
-
-            context 'attribute_operator' do
-              subject(:indirect_attribute_operator) do
-                operator.attribute_operator
-              end
-
-              let(:direct_attribute_operator) do
-                association_class.search_operator_by_name.values.first
-              end
-
-              it 'should be operator from associated class' do
-                indirect_attribute_operator.should == direct_attribute_operator
-              end
-            end
-
-            context 'klass' do
-              subject(:klass) do
-                operator.klass
-              end
-
-              it 'should be class that called search_operator_by_name' do
-                klass.should == base_class
-              end
-            end
+          it 'should be the registered association' do
+            operator_association.should == association
           end
         end
 
-        context 'without association' do
-          it 'should raise Metasploit::Model::Association::Error' do
-            expect {
-              search_operator_by_name
-            }.to raise_error(Metasploit::Model::Association::Error)
+        context 'source_operator' do
+          subject(:source_operator) do
+            operator.source_operator
           end
 
-          context 'error' do
-            let(:error) do
-              begin
-                search_operator_by_name
-              rescue Metasploit::Model::Association::Error => error
-                error
-              end
-            end
+          let(:direct_attribute_operator) do
+            association_class.search_operator_by_name.values.first
+          end
 
-            context 'model' do
-              subject(:model) do
-                error.model
-              end
-
-              it 'should be class on which search_operator_by_name was called' do
-                model.should == base_class
-              end
-            end
-
-            context 'name' do
-              subject(:name) do
-                error.name
-              end
-
-              it 'should be association name' do
-                name.should == association
-              end
-            end
+          it 'should be operator from associated class' do
+            source_operator.should == direct_attribute_operator
           end
         end
-      end
 
-      context 'without reflect_on_association' do
-        it 'should raise ArgumentError' do
-          expect {
-            search_operator_by_name
-          }.to raise_error(
-                   NameError,
-                   "#{base_class} does not respond to reflect_on_association.  " \
-                     "It can be added to ActiveModels by including Metasploit::Model::Association into the class."
-               )
+        context 'klass' do
+          subject(:klass) do
+            operator.klass
+          end
+
+          it 'should be class that called search_operator_by_name' do
+            klass.should == base_class
+          end
         end
       end
     end

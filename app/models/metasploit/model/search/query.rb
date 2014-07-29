@@ -1,4 +1,23 @@
-# A search query on a {#klass}.  Parses query from {#formatted} string.
+# Once {Metasploit::Model::Search::Operator search operators} are {Metasploit::Model::Search defined}, a formatted
+# query, composed of space separated formatted operation, `<operator.name>:<formatted_value>`, can be parsed to
+# produce a validatable query.
+#
+#     query = Metasploit::Model::Search::Query.new(
+#       formatted: 'parts.number:1 parts.number:2 parts.uuid:EX,QR'
+#     )
+#
+# Operations using the same operator are unioned together, while operations with different operator are intersected
+# together, so the above formatted query can be thought of as
+# `(parts.number:1 || parts.number:2) && parts.uuid:EX,QR`.
+#
+# # Results
+#
+# Once a {Metasploit::Model::Search::Query} is defined, it needs to be converted to a data store specific visitor.
+#
+# Visitors for `ActiveRecord` are defined in
+# {http://rubydoc.info/gems/metasploit_data_models/MetasploitDataModels/Search/Visitor MetasploitDataModels::Search::Visitor}.
+#
+# If you want to define your own visitors, you can subclass {Metasploit::Model::Visitation::Visitor}.
 class Metasploit::Model::Search::Query < Metasploit::Model::Base
   #
   # Attributes
