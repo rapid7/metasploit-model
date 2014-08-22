@@ -1,10 +1,17 @@
 #
 # Gems
 #
+# gems must load explicitly any gem declared in gemspec
+# @see https://github.com/bundler/bundler/issues/2018#issuecomment-6819359
+#
+#
+
 require 'active_model'
 require 'active_support'
 # not loaded by default with require 'active_support'
 require 'active_support/dependencies'
+# Protect attributes from mass-assignment in ActiveRecord models.
+require 'protected_attributes'
 
 #
 # Project

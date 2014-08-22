@@ -1,6 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
-require 'rails/all'
+# Pick the frameworks you want:
+require 'active_model/railtie'
+require "action_controller/railtie"
 
 Bundler.require(*Rails.groups)
 # require the engine being tested.  In a non-dummy app this would be handled by the engine's gem being in the Gemfile
