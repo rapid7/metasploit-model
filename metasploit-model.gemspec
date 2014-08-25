@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard', '< 0.8.7.4'
 
   # Dependency loading
-  rails_version_constraints = ['~> 4.0', '< 4.1.0']
+  rails_version_constraints = ['>= 4.0.9', '< 4.1.0']
   
   spec.add_runtime_dependency 'activesupport', *rails_version_constraints
 
