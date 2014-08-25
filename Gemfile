@@ -16,7 +16,7 @@ group :test do
   # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
   # between its dependencies, which is now handled by this constraint.
   rails_version_constraint = [
-      '~> 4.0',
+      '>= 4.0.9',
       '< 4.1.0'
   ]
 
