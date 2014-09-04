@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   # Rails 4 has switched over to strong params, we still need protected_attributes
   spec.add_runtime_dependency 'protected_attributes'
 
-  spec.add_development_dependency 'bundler', '~> 1.7'
+  # spec.add_development_dependency 'bundler', '~> 1.7'
   spec.add_development_dependency 'rake'
 
   # documentation
