@@ -49,6 +49,7 @@ module Metasploit
           # The help for this operator.
           #
           # @see https://github.com/rails/rails/blob/6c2810b8ed692004dca43e554982cdfdb8517b80/activemodel/lib/active_model/errors.rb#L408-L435
+          # @return [String] help text for this operator
           def help
             defaults = []
             klass_i18n_scope = klass.i18n_scope
@@ -71,9 +72,9 @@ module Metasploit
             # use first default as key because it is most specific default, that is closest to klass.
             key = defaults.shift
             options = {
-                default: defaults,
-                model: klass.model_name.human,
-                name: name
+              default: defaults,
+              model: klass.model_name.human,
+              name: name
             }
 
             ::I18n.translate(key, options)

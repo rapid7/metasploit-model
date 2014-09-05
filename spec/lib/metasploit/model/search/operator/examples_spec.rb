@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operator::Help do
-  it_should_behave_like 'Metasploit::Model::Search::Operator::Help' do
+describe Metasploit::Model::Search::Operator::Examples do
+  it_should_behave_like 'Metasploit::Model::Search::Operator::Examples' do
     let(:operator) do
       operator_class.new(
         klass: klass,
