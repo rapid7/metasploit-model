@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
 
   # Dependency loading
   spec.add_runtime_dependency 'activesupport'
+  spec.add_runtime_dependency 'railties', '< 4.0.0'
 
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard
