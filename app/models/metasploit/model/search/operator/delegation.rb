@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator'
+
 # An operator that delegates to another operator(s).
 class Metasploit::Model::Search::Operator::Delegation < Metasploit::Model::Search::Operator::Base
   #

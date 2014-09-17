@@ -7,9 +7,12 @@ module Metasploit
       # Code shared between `Mdm::Module::Instance` and `Metasploit::Framework::Module::Instance`.
       module Instance
         extend ActiveModel::Naming
+        extend ActiveSupport::Autoload
         extend ActiveSupport::Concern
 
         include Metasploit::Model::Translation
+
+        autoload :Spec
 
         #
         # CONSTANTS

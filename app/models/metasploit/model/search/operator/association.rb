@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator'
+
 # A search operator declared with
 # {Metasploit::Model::Search::Association::ClassMethods#search_association search_association}.
 class Metasploit::Model::Search::Operator::Association < Metasploit::Model::Search::Operator::Base

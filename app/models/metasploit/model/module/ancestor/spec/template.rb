@@ -1,3 +1,4 @@
+require 'metasploit/model/module/ancestor/spec'
 require 'metasploit/model/spec/template/write'
 
 # Writes templates for the {#module_ancestor} to disk.

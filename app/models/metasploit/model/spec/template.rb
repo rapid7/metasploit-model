@@ -1,3 +1,6 @@
+require 'metasploit/model/base'
+require 'metasploit/model/spec'
+
 # Processes {EXTENSION '.rb.erb'} templates to create {Metasploit::Model::Module::Ancestor#contents} that contain the
 # same metadata as the {Metasploit::Model::Module::Ancestor},
 # {Metasploit::Model::Module::Class}, {Metasploit::Model::Module::Instance} and associations for those contents.  This

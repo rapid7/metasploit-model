@@ -73,6 +73,7 @@ module Metasploit
       include Metasploit::Model::Search::Attribute
       include Metasploit::Model::Search::With
 
+      autoload :Group
       autoload :Operation
       autoload :Operator
 

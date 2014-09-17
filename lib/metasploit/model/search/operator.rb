@@ -57,6 +57,8 @@ module Metasploit
       module Operator
         extend ActiveSupport::Autoload
 
+        autoload :Deprecated
+        autoload :Group
         autoload :Help
       end
     end

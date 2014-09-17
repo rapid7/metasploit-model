@@ -1,3 +1,7 @@
+require 'metasploit/model/base'
+require 'metasploit/model/module/instance/spec'
+require 'metasploit/model/spec/template/write'
+
 # Writes templates for the {#module_instance #module_instance's}
 # {Metasploit::Model::Module::Instance#module_class #module_class's} {Metasploit::Model::Module::Class#ancestors} to
 # disk.

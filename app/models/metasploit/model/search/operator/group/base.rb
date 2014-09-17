@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator/group'
+
 # Operator that {#operate_on produces} {Metasploit::Model::Search::Operation::Group::Base group operations}.
 class Metasploit::Model::Search::Operator::Group::Base < Metasploit::Model::Search::Operator::Delegation
   #

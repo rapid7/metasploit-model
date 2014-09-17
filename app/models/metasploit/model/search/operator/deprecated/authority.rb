@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator/deprecated'
+
 # Operator for the direct, single authority reference search.  Translates `<abbreviation>:<designation>` to
 # `authorities.abbreviation:<abbreviation> references.designation:<designation>`.
 class Metasploit::Model::Search::Operator::Deprecated::Authority < Metasploit::Model::Search::Operator::Delegation
