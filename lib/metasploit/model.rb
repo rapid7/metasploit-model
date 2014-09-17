@@ -9,13 +9,9 @@ require 'active_support/dependencies'
 #
 # Project
 #
-require 'metasploit/model/version'
 
-# Only include the Rails engine when using Rails.  This allows the non-Rails projects, like metasploit-framework to use
-# the validators by calling Metasploit::Model.require_validators.
-if defined? Rails
-  require 'metasploit/model/engine'
-end
+require 'metasploit/model/engine'
+require 'metasploit/model/version'
 
 # Top-level namespace shared between metasploit-model, metasploit-framework, and Pro.
 module Metasploit
