@@ -1,12 +1,18 @@
+require 'metasploit/model/translation'
+
 module Metasploit
   module Model
     module Module
       # Code shared between `Mdm::Module::Target` and `Metasploit::Framework::Module::Target`.
       module Target
         extend ActiveModel::Naming
+        extend ActiveSupport::Autoload
         extend ActiveSupport::Concern
 
         include Metasploit::Model::Translation
+
+        autoload :Architecture
+        autoload :Platform
 
         included do
           include ActiveModel::MassAssignmentSecurity

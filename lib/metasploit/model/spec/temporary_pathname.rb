@@ -1,3 +1,6 @@
+# to ensure Metasploit::Model::Spec::Error is setup for autoloading
+require 'metasploit/model/spec'
+
 module Metasploit
   module Model
     module Spec

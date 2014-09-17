@@ -1,3 +1,5 @@
+require 'metasploit/model/login'
+
 # Canonical `Metasploit::Credential::Login#status`.
 #
 # `Metasploit::Credential::Login#status` is restricted to values in {ALL}, so new valid values need to be added to this

@@ -1,3 +1,5 @@
+require 'metasploit/model/search/with'
+
 module Metasploit
   module Model
     module Search

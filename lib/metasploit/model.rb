@@ -20,15 +20,28 @@ module Metasploit
   # separate gem for this shard code outside of metasploit_data_models is necessary as metasploit_data_models is an
   # optional dependency for metasploit-framework as metasploit-framework can work without a database.
   module Model
-    require 'metasploit/model/configured'
-    extend Metasploit::Model::Configured
+    extend ActiveSupport::Autoload
 
-    lib_metasploit_pathname = Pathname.new(__FILE__).dirname
-    lib_pathname = lib_metasploit_pathname.parent
-    configuration.root = lib_pathname.parent
-
-    configuration.autoload.relative_paths << File.join('app', 'validators')
+    autoload :Architecture
+    autoload :Association
+    autoload :Author
+    autoload :Authority
+    autoload :Base
+    autoload :Derivation
+    autoload :EmailAddress
+    autoload :Error
+    autoload :File
+    autoload :Invalid
+    autoload :Login
+    autoload :Module
+    autoload :NilifyBlanks
+    autoload :Platform
+    autoload :RealPathname
+    autoload :Realm
+    autoload :Reference
+    autoload :Search
+    autoload :Spec
+    autoload :Translation
+    autoload :Visitation
   end
 end
-
-Metasploit::Model.setup

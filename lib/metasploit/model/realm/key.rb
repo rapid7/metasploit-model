@@ -1,3 +1,5 @@
+require 'metasploit/model/realm'
+
 # Canonical `Metasploit::Credential::Realm#key`s.
 #
 # `Metasploit::Credential::Realm#key` is restricted to values in {ALL}, so new valid values need to be added to this

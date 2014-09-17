@@ -63,10 +63,18 @@ module Metasploit
     # {include:Metasploit::Model::Search::Query}
     module Search
       extend ActiveSupport::Concern
+      extend ActiveSupport::Autoload
+
+      require 'metasploit/model/search/association'
+      require 'metasploit/model/search/attribute'
+      require 'metasploit/model/search/with'
 
       include Metasploit::Model::Search::Association
       include Metasploit::Model::Search::Attribute
       include Metasploit::Model::Search::With
+
+      autoload :Operation
+      autoload :Operator
 
       # Allows operators registered with {Metasploit::Model::Search::Association::ClassMethods#search_association} and
       # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute} to be looked up by name.

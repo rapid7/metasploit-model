@@ -1,3 +1,5 @@
+require 'pathname'
+
 module Metasploit
   module Model
     # Adds {#real_pathname} to class, which will convert `#real_path` `String` to a `Pathname`.

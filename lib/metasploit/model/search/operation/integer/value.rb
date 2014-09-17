@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation/integer'
+
 # Concerns type casting of a raw value to an `Integer`.
 module Metasploit::Model::Search::Operation::Integer::Value
   #

@@ -1,11 +1,25 @@
+require 'metasploit/model/search'
+require 'metasploit/model/translation'
+
 module Metasploit
   module Model
     # Code shared between `Mdm::Authority` and `Metasploit::Framework::Authority`.
     module Authority
       extend ActiveModel::Naming
+      extend ActiveSupport::Autoload
       extend ActiveSupport::Concern
 
       include Metasploit::Model::Translation
+
+      autoload :Bid
+      autoload :Cve
+      autoload :Msb
+      autoload :Osvdb
+      autoload :Pmasa
+      autoload :Secunia
+      autoload :UsCertVu
+      autoload :Waraxe
+      autoload :Zdi
 
       included do
         include ActiveModel::MassAssignmentSecurity

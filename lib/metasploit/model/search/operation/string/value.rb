@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation/string'
+
 # Concerns type casting of a raw value to a `String`.
 module Metasploit::Model::Search::Operation::String::Value
   #

@@ -1,3 +1,6 @@
+require 'metasploit/model/nilify_blanks'
+require 'metasploit/model/translation'
+
 module Metasploit
   module Model
     module Module

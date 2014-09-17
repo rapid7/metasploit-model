@@ -4,8 +4,12 @@
 # ensures that when the {Metasploit::Model::Module::Ancestor#contents} are loaded in metasploit-framework, the same
 # metadata instances are derived from the contents ensuring idempotency of the contents and metadata parsing loop.
 class Metasploit::Model::Spec::Template < Metasploit::Model::Base
+  extend ActiveSupport::Autoload
   extend ActiveModel::Callbacks
+
   include ActiveModel::Validations::Callbacks
+
+  autoload :Write
 
   #
   # CONSTANTS
@@ -193,7 +197,7 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
     #
     # @return [Pathname] Defaults to 'spec/support/templates/metasploit/model' under Metasploit::Model.root.
     def root
-      @@root ||= Metasploit::Model.root.join('spec', 'support', 'templates', 'metasploit', 'model')
+      @@root ||= Metasploit::Model::Engine.root.join('spec', 'support', 'templates', 'metasploit', 'model')
     end
 
     # Sets the {#root} pathname for all {#search_pathnames}, including those on subclasses.
