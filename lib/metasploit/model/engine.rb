@@ -1,4 +1,5 @@
 require 'rails'
+
 module Metasploit
   module Model
     # Rails engine for Metasploit::Model.  Will automatically be used if `Rails` is defined when
