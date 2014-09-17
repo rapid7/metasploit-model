@@ -1,3 +1,5 @@
+require 'metasploit/model/spec/error'
+
 module Metasploit
   module Model
     module Spec

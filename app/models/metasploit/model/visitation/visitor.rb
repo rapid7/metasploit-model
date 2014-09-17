@@ -1,3 +1,6 @@
+require 'metasploit/model/base'
+require 'metasploit/model/visitation'
+
 # Visits node in a {http://en.wikipedia.org/wiki/Tree_(data_structure) tree}, such as
 # {Metasploit::Model::Search::Query#tree}.
 class Metasploit::Model::Visitation::Visitor < Metasploit::Model::Base

@@ -4,10 +4,17 @@ module Metasploit
   module Model
     # Helper methods for running specs for metasploit-model.
     module Spec
+      require 'metasploit/model/spec/temporary_pathname'
+
+      extend ActiveSupport::Autoload
       extend Metasploit::Model::Spec::TemporaryPathname
       # without this, Module.shared_examples_for will be used and RSpec will count shared_examples created with
       # {shared_examples_for} to not be declared at the top-level.
       extend RSpec::Core::SharedExampleGroup::TopLevelDSL
+
+      autoload :Error
+      autoload :I18nExceptionHandler
+      autoload :PathnameCollision
 
       # Defines a shared examples for a `Module` under the {Metasploit::Model} namespace.  This `Module` is assumed to
       # be a mixin that can be mixed into an ActiveModel in metasploit-framework or an ActiveRecord in

@@ -1,3 +1,5 @@
+require 'metasploit/model/error'
+
 module Metasploit
   module Model
     # Error raised if a {Metasploit::Model} ActiveModel is invalid.

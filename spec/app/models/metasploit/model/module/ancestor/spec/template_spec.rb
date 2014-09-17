@@ -83,7 +83,7 @@ describe Metasploit::Model::Module::Ancestor::Spec::Template do
     end
   end
 
-  context '#metapsloit_module_relative_name' do
+  context '#metasploit_module_relative_name' do
     subject(:metasploit_module_relative_name) do
       template.metasploit_module_relative_name
     end

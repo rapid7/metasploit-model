@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation'
+
 # Operation on an attribute that has a constrained Set of valid
 # {Metasploit::Model::Search::Operation::Base#value values}.
 class Metasploit::Model::Search::Operation::Set < Metasploit::Model::Search::Operation::Base

@@ -3,7 +3,11 @@ module Metasploit
     # Allows registering the class name of assocations similar to ActiveRecord associations, so that ActiveModel
     # associations can be reflected with the same API as ActiveRecord associations.
     module Association
+      extend ActiveSupport::Autoload
       extend ActiveSupport::Concern
+
+      autoload :Error
+      autoload :Tree
 
       # Defines DSL for define associations on ActiveModels with {#association}, which can then be retrieved in bulk
       # with {#association_by_name} or a single association's reflection by name with {#reflect_on_association}.

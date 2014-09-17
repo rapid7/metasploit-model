@@ -55,7 +55,11 @@ module Metasploit
       #
       # {include:Metasploit::Model::Search::Operator::Single}
       module Operator
+        extend ActiveSupport::Autoload
 
+        autoload :Deprecated
+        autoload :Group
+        autoload :Help
       end
     end
   end

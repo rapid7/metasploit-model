@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator/deprecated'
+
 # Translates `ref:<value>` to union of `authorities.abbreviation:<value>`, `references.designation:<value>`, and
 # `references.designation:<value>`.
 class Metasploit::Model::Search::Operator::Deprecated::Ref < Metasploit::Model::Search::Operator::Group::Union

@@ -1,12 +1,18 @@
+require 'metasploit/model/module/type'
+require 'metasploit/model/translation'
+
 module Metasploit
   module Model
     module Module
       # Code shared between `Mdm::Module::Ancestor` and `Metasploit::Framework::Module::Ancestor`.
       module Ancestor
         extend ActiveModel::Naming
+        extend ActiveSupport::Autoload
         extend ActiveSupport::Concern
 
         include Metasploit::Model::Translation
+
+        autoload :Spec
 
         #
         # CONSTANTS

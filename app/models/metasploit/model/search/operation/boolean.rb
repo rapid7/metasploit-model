@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation'
+
 # Search operation with {Metasploit::Model::Search::Operation::Base#operator} with `#type` `:boolean`.  Validates that
 # value is a proper boolean (`false` or `true`) or the `String` version of either.
 class Metasploit::Model::Search::Operation::Boolean < Metasploit::Model::Search::Operation::Base
