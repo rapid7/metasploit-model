@@ -8,8 +8,6 @@ module Metasploit
       MINOR = 27
       # The patch number, scoped to the {MINOR} version number.
       PATCH = 0
-      # The pre-release version, scoped to the {PATCH} version number.
-      PRERELEASE = 'dep-railties'
 
       # The full version string, including the {MAJOR}, {MINOR}, {PATCH}, and optionally, the {PRERELEASE} in the
       # {http://semver.org/spec/v2.0.0.html semantic versioning v2.0.0} format.
