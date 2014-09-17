@@ -203,7 +203,7 @@ class Metasploit::Model::Spec::Template < Metasploit::Model::Base
       @@root ||= Metasploit::Model::Engine.root.join('spec', 'support', 'templates', 'metasploit', 'model')
     end
 
-    # Sets the {#root} pathname for all {#search_pathnames}, including those on subclasses.
+    # Sets the {root} pathname for all {#search_pathnames}, including those on subclasses.
     #
     # @param root [Pathname]
     # @return [Pathname]
