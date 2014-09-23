@@ -1,9 +1,3 @@
-module Metasploit
-  module Model
-    module Spec
-      # Error raised by Metasploit::Model::Spec methods.
-      class Error < StandardError
-      end
-    end
-  end
+# Error raised by Metasploit::Model::Spec methods.
+class Metasploit::Model::Spec::Error < StandardError
 end

@@ -1,5 +1,3 @@
-require 'metasploit/model/authority'
-
 # Secunia authority-specific code.
 module Metasploit::Model::Authority::Secunia
   # Returns URL to {Metasploit::Model::Reference#designation Secunia Advisory ID's} page on Secunia.

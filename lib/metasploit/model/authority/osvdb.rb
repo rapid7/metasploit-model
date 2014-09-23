@@ -1,5 +1,3 @@
-require 'metasploit/model/authority'
-
 # Open Sourced Vulnerability Database authority-specific code.
 module Metasploit::Model::Authority::Osvdb
   # Returns URL to {Metasploit::Model::Reference#designation OSVDB ID's} page.

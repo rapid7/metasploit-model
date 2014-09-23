@@ -1,6 +1,3 @@
-require 'metasploit/model/base'
-require 'metasploit/model/search/operation'
-
 # Base of all search operations that combine an {#operator} with the {#value} it is operating on.  Subclasses allow
 # validations specific to the {#operator} {Metasploit::Model::Search::Operator::Single#type type}.
 class Metasploit::Model::Search::Operation::Base < Metasploit::Model::Base

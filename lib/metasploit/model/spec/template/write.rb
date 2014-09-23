@@ -1,5 +1,3 @@
-require 'metasploit/model/spec/template'
-
 # Extend to add a class method to create a new template and write it only if valid.
 #
 # @example extend and write

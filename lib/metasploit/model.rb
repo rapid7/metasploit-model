@@ -3,8 +3,6 @@
 #
 require 'active_model'
 require 'active_support'
-# not loaded by default with require 'active_support'
-require 'active_support/dependencies'
 
 #
 # Project
@@ -12,6 +10,13 @@ require 'active_support/dependencies'
 
 require 'metasploit/model/engine'
 require 'metasploit/model/version'
+
+autoload :DerivationValidator, 'derivation_validator'
+autoload :DynamicLengthValidator, 'dynamic_length_validator'
+autoload :IpFormatValidator, 'ip_format_validator'
+autoload :NilValidator, 'nil_validator'
+autoload :ParametersValidator, 'parameters_validator'
+autoload :PasswordIsStrongValidator, 'password_is_strong_validator'
 
 # Top-level namespace shared between metasploit-model, metasploit-framework, and Pro.
 module Metasploit
