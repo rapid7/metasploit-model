@@ -1,6 +1,11 @@
 # Operation on an attribute that has a constrained Set of valid
 # {Metasploit::Model::Search::Operation::Base#value values}.
 class Metasploit::Model::Search::Operation::Set < Metasploit::Model::Search::Operation::Base
+  extend ActiveSupport::Autoload
+
+  autoload :Integer
+  autoload :String
+
   #
   # Validations
   #

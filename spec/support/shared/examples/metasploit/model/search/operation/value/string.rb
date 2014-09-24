@@ -1,4 +1,4 @@
-shared_examples_for 'Metasploit::Model::Search::Operation::String::Value' do
+shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' do
   let(:operation_class) do
     described_class
   end
@@ -8,7 +8,7 @@ shared_examples_for 'Metasploit::Model::Search::Operation::String::Value' do
       operation_class
     end
 
-    it { should include Metasploit::Model::Search::Operation::String::Value }
+    it { should include Metasploit::Model::Search::Operation::Value::String }
   end
 
   context '#value' do

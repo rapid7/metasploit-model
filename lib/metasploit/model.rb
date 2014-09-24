@@ -8,21 +8,22 @@
 
 require 'active_model'
 require 'active_support'
-# not loaded by default with require 'active_support'
-require 'active_support/dependencies'
 # Protect attributes from mass-assignment in ActiveRecord models.
 require 'protected_attributes'
 
 #
 # Project
 #
+
+require 'metasploit/model/engine'
 require 'metasploit/model/version'
 
-# Only include the Rails engine when using Rails.  This allows the non-Rails projects, like metasploit-framework to use
-# the validators by calling Metasploit::Model.require_validators.
-if defined? Rails
-  require 'metasploit/model/engine'
-end
+autoload :DerivationValidator, 'derivation_validator'
+autoload :DynamicLengthValidator, 'dynamic_length_validator'
+autoload :IpFormatValidator, 'ip_format_validator'
+autoload :NilValidator, 'nil_validator'
+autoload :ParametersValidator, 'parameters_validator'
+autoload :PasswordIsStrongValidator, 'password_is_strong_validator'
 
 # Top-level namespace shared between metasploit-model, metasploit-framework, and Pro.
 module Metasploit
@@ -31,15 +32,28 @@ module Metasploit
   # separate gem for this shard code outside of metasploit_data_models is necessary as metasploit_data_models is an
   # optional dependency for metasploit-framework as metasploit-framework can work without a database.
   module Model
-    require 'metasploit/model/configured'
-    extend Metasploit::Model::Configured
+    extend ActiveSupport::Autoload
 
-    lib_metasploit_pathname = Pathname.new(__FILE__).dirname
-    lib_pathname = lib_metasploit_pathname.parent
-    configuration.root = lib_pathname.parent
-
-    configuration.autoload.relative_paths << File.join('app', 'validators')
+    autoload :Architecture
+    autoload :Association
+    autoload :Author
+    autoload :Authority
+    autoload :Base
+    autoload :Derivation
+    autoload :EmailAddress
+    autoload :Error
+    autoload :File
+    autoload :Invalid
+    autoload :Login
+    autoload :Module
+    autoload :NilifyBlanks
+    autoload :Platform
+    autoload :RealPathname
+    autoload :Realm
+    autoload :Reference
+    autoload :Search
+    autoload :Spec
+    autoload :Translation
+    autoload :Visitation
   end
 end
-
-Metasploit::Model.setup

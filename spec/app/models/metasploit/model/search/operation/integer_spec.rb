@@ -5,5 +5,5 @@ describe Metasploit::Model::Search::Operation::Integer do
     it { should validate_numericality_of(:value).only_integer }
   end
 
-  it_should_behave_like 'Metasploit::Model::Search::Operation::Integer::Value'
+  it_should_behave_like 'Metasploit::Model::Search::Operation::Value::Integer'
 end

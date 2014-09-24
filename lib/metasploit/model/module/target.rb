@@ -1,80 +1,78 @@
-module Metasploit
-  module Model
-    module Module
-      # Code shared between `Mdm::Module::Target` and `Metasploit::Framework::Module::Target`.
-      module Target
-        extend ActiveModel::Naming
-        extend ActiveSupport::Concern
+# Code shared between `Mdm::Module::Target` and `Metasploit::Framework::Module::Target`.
+module Metasploit::Model::Module::Target
+  extend ActiveModel::Naming
+  extend ActiveSupport::Autoload
+  extend ActiveSupport::Concern
 
-        include Metasploit::Model::Translation
+  include Metasploit::Model::Translation
 
-        included do
-          include ActiveModel::MassAssignmentSecurity
-          include ActiveModel::Validations
-          include Metasploit::Model::Search
+  autoload :Architecture
+  autoload :Platform
 
-          #
-          # Mass Assignment Security
-          #
+  included do
+    include ActiveModel::MassAssignmentSecurity
+    include ActiveModel::Validations
+    include Metasploit::Model::Search
 
-          attr_accessible :name
+    #
+    # Mass Assignment Security
+    #
 
-          #
-          # Search Attributes
-          #
+    attr_accessible :name
 
-          search_attribute :name, :type => :string
+    #
+    # Search Attributes
+    #
 
-          #
-          # Validators
-          #
+    search_attribute :name, :type => :string
 
-          validates :module_instance, :presence => true
-          validates :name, :presence => true
-          validates :target_architectures, presence: true
-          validates :target_platforms, presence: true
-        end
+    #
+    # Validators
+    #
 
-        #
-        # Associations
-        #
-
-        # @!attribute [r] architectures
-        #   Architectures that this target supports, either by being declared specifically for this target or because
-        #   this target did not override architectures and so inheritted the architecture set from the class.
-        #
-        #   @return [Array<Metasploit::Model::Architecture>]
-
-        # @!attribute [rw] module_instance
-        #   Module where this target was declared.
-        #
-        #   @return [Metasploit::Model::Module::Instance]
-
-        # @!attribute [r] platforms
-        #   Platforms that this target supports, either by being declared specifically for this target or because this
-        #   target did not override platforms and so inheritted the platform set from the class.
-        #
-        #   @return [Array<Metasploit::Model::Platform>]
-
-        # @!attribute [rw] target_architectures
-        #   Joins this target to its {#architectures}
-        #
-        #   @return [Array<Metasploit::Model::Module::Target::Architecture]
-
-        # @!attribute [rw] target_platforms
-        #   Joins this target to its {#platforms}
-        #
-        #   @return [Array<Metasploit::Model::Module::Target::Platform>]
-
-        #
-        # Attributes
-        #
-
-        # @!attribute [rw] name
-        #   The name of this target.
-        #
-        #   @return [String]
-      end
-    end
+    validates :module_instance, :presence => true
+    validates :name, :presence => true
+    validates :target_architectures, presence: true
+    validates :target_platforms, presence: true
   end
+
+  #
+  # Associations
+  #
+
+  # @!attribute [r] architectures
+  #   Architectures that this target supports, either by being declared specifically for this target or because
+  #   this target did not override architectures and so inheritted the architecture set from the class.
+  #
+  #   @return [Array<Metasploit::Model::Architecture>]
+
+  # @!attribute [rw] module_instance
+  #   Module where this target was declared.
+  #
+  #   @return [Metasploit::Model::Module::Instance]
+
+  # @!attribute [r] platforms
+  #   Platforms that this target supports, either by being declared specifically for this target or because this
+  #   target did not override platforms and so inheritted the platform set from the class.
+  #
+  #   @return [Array<Metasploit::Model::Platform>]
+
+  # @!attribute [rw] target_architectures
+  #   Joins this target to its {#architectures}
+  #
+  #   @return [Array<Metasploit::Model::Module::Target::Architecture]
+
+  # @!attribute [rw] target_platforms
+  #   Joins this target to its {#platforms}
+  #
+  #   @return [Array<Metasploit::Model::Module::Target::Platform>]
+
+  #
+  # Attributes
+  #
+
+  # @!attribute [rw] name
+  #   The name of this target.
+  #
+  #   @return [String]
 end

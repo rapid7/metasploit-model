@@ -27,20 +27,25 @@ module Metasploit::Model::Realm::Key
   # database and does not allow authenticating to just a server (which would be an `Mdm::Service`).
   POSTGRESQL_DATABASE = 'PostgreSQL Database'
 
+  # This is a Wildcard Realm Type which indicates we don't know or care what type of Realm it is.
+  WILDCARD = '*'
+
   # All values that are valid for {Metasploit::Credential::Realm#key}.
   ALL = [
-      ACTIVE_DIRECTORY_DOMAIN,
-      DB2_DATABASE,
-      ORACLE_SYSTEM_IDENTIFIER,
-      POSTGRESQL_DATABASE
+    ACTIVE_DIRECTORY_DOMAIN,
+    DB2_DATABASE,
+    ORACLE_SYSTEM_IDENTIFIER,
+    POSTGRESQL_DATABASE,
+    WILDCARD
   ]
 
   # A map of short names, suitable for use on the command line, to the
   # full human-readable constants above.
   SHORT_NAMES = {
-    'domain' => ACTIVE_DIRECTORY_DOMAIN,
-    'db2db'  => DB2_DATABASE,
-    'sid'    => ORACLE_SYSTEM_IDENTIFIER,
-    'pgdb'   => POSTGRESQL_DATABASE,
+    'domain'   => ACTIVE_DIRECTORY_DOMAIN,
+    'db2db'    => DB2_DATABASE,
+    'sid'      => ORACLE_SYSTEM_IDENTIFIER,
+    'pgdb'     => POSTGRESQL_DATABASE,
+    'wildcard' => WILDCARD
   }
 end

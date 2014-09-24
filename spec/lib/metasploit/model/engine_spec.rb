@@ -71,7 +71,7 @@ describe Metasploit::Model::Engine do
 
         context 'with FactoryGirl defined' do
           it 'should prepend full path to spec/factories to FactoryGirl.definition_file_paths' do
-            definition_file_path = Metasploit::Model.root.join('spec', 'factories')
+            definition_file_path = Metasploit::Model::Engine.root.join('spec', 'factories')
 
             FactoryGirl.definition_file_paths.should_receive(:unshift).with(definition_file_path)
 
