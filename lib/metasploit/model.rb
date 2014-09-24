@@ -4,13 +4,6 @@
 require 'active_model'
 require 'active_support'
 
-#
-# Project
-#
-
-require 'metasploit/model/engine'
-require 'metasploit/model/version'
-
 autoload :DerivationValidator, 'derivation_validator'
 autoload :DynamicLengthValidator, 'dynamic_length_validator'
 autoload :IpFormatValidator, 'ip_format_validator'
@@ -50,3 +43,11 @@ module Metasploit
     autoload :Visitation
   end
 end
+
+#
+# Project - require Metasploit::Model to be defined
+#
+
+# MUST require and not autoload as Rails::Engine loading works based subclass registration
+require 'metasploit/model/engine'
+require 'metasploit/model/version'
