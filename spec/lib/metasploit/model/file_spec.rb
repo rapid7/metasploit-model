@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Metasploit::Model::File do
   unless RUBY_PLATFORM =~ /java/ && Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.14')
-    it 'should aliase ::File' do
+    it 'aliases ::File' do
       expect(described_class).to equal(::File)
     end
   end
