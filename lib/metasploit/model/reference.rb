@@ -1,3 +1,5 @@
+require 'metasploit/model/translation'
+
 module Metasploit
   module Model
     # Code shared between `Mdm::Reference` and `Metasploit::Framework::Reference`.

@@ -1,3 +1,5 @@
+require 'metasploit/model/authority'
+
 # United States Computer Emergency Readiness Team Vulnerability Notes Database authority-specific code.
 module Metasploit::Model::Authority::UsCertVu
   # Returns URL to {Metasploit::Model::Reference#designation Vul ID's} page on US CERT Notes Database.

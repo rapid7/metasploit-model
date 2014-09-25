@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation'
+
 # Operation that uses a {Metasploit::Model::Search::Operation::Null null operator}.
 class Metasploit::Model::Search::Operation::Null < Metasploit::Model::Search::Operation::Base
   #

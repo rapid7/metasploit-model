@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation'
+
 # An operation with a {Metasploit::Model::Search::Operator::Association} for
 # {Metasploit::Model::Search::Operation::Base#operator} that wraps a {#source_operation} produced by the
 # {Metasploit::Model::Search::Operator::Association#source_operator}.  This allows an arbitrary number of associations

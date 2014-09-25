@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator/deprecated'
+
 # Search the equivalent of the text fields from `Mdm::Module::Detail` and its associations, making a union of
 # `description`, `name`, `actions.name`, `architectures.abbreviation`, `platform`, and `ref`.
 class Metasploit::Model::Search::Operator::Deprecated::Text < Metasploit::Model::Search::Operator::Group::Union

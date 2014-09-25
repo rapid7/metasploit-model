@@ -19,6 +19,7 @@ describe Metasploit::Model::Realm::Key do
       it { should include described_class::ACTIVE_DIRECTORY_DOMAIN }
       it { should include described_class::ORACLE_SYSTEM_IDENTIFIER }
       it { should include described_class::POSTGRESQL_DATABASE }
+      it { should include described_class::WILDCARD }
     end
 
     context 'ORACLE_SYSTEM_IDENTIFIER' do
@@ -36,6 +37,15 @@ describe Metasploit::Model::Realm::Key do
       end
 
       it { should == 'PostgreSQL Database' }
+      it { should be_in described_class::ALL }
+    end
+
+    context 'WILDCARD' do
+      subject(:wildcard) do
+        described_class::WILDCARD
+      end
+
+      it { should == '*' }
       it { should be_in described_class::ALL }
     end
 

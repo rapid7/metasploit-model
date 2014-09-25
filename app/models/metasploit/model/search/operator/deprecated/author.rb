@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operator/deprecated'
+
 # Operator that emulates the behavior of 'author' operator that could search `Mdm::Module::Detail` by making
 # {Metasploit::Model::Search::Operation::Group::Union} between `authors.name`, `email_addresss.domain`, and
 # `email_addresses.local`.

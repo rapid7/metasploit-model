@@ -15,7 +15,7 @@ describe Metasploit::Model::Spec do
     end
 
     let(:pathname) do
-      Metasploit::Model.root.join('spec', 'pathname')
+      Metasploit::Model::Engine.root.join('spec', 'pathname')
     end
 
     context 'with temporary_pathname set' do
@@ -68,7 +68,7 @@ describe Metasploit::Model::Spec do
 
     context 'with @temporary_pathname defined' do
       let(:pathname) do
-        Metasploit::Model.root.join('spec', 'pathname')
+        Metasploit::Model::Engine.root.join('spec', 'pathname')
       end
 
       before(:each) do
@@ -100,7 +100,7 @@ describe Metasploit::Model::Spec do
 
   context 'temporary_pathname=' do
     let(:temporary_pathname) do
-      Metasploit::Model.root.join('spec', 'temporary_pathname')
+      Metasploit::Model::Engine.root.join('spec', 'temporary_pathname')
     end
 
     it 'should set @temporary_pathname' do

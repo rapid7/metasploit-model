@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   rails_version_constraints = ['>= 4.0.9', '< 4.1.0']
   
   spec.add_runtime_dependency 'activesupport', *rails_version_constraints
+  spec.add_runtime_dependency 'railties', *rails_version_constraints
 
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard

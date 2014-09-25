@@ -1,3 +1,5 @@
+require 'metasploit/model/authority'
+
 # Zero Day Initiative authority-specific code.
 module Metasploit::Model::Authority::Zdi
   # Returns URL to {Metasploit::Model::Reference#designation the ZDI ID's} page on ZDI.

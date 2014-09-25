@@ -1,3 +1,5 @@
+require 'metasploit/model/spec'
+
 # Raises all I18n errors as exceptions so that missing translations (or other errors) with en.yml are caught by the
 # specs.
 #

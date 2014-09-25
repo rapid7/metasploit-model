@@ -4,6 +4,10 @@ module Metasploit
       # Namespace for search operations.  {parse} acts as a factory to parse a `String` and return a type-specific
       # operation.
       module Operation
+        extend ActiveSupport::Autoload
+
+        autoload :Group
+
         # @param options [Hash{Symbol => Object}]
         # @option options [Metasploit::Module::Search::Query] :query The query that the parsed operation is a part.
         # @option options [String] :formatted_operation A '<operator>:<value>' string.

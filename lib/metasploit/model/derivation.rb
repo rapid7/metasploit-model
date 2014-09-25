@@ -7,7 +7,7 @@ module Metasploit
     #
     # @example Full setup
     #   class Person < ActiveRecord::Base
-    #     include MetasploitDataModels::Derivation
+    #     include Metasploit::Model::Derivation
     #
     #     #
     #     # Attributes
@@ -46,7 +46,10 @@ module Metasploit
     #     end
     #   end
     module Derivation
+      extend ActiveSupport::Autoload
       extend ActiveSupport::Concern
+
+      autoload :FullName
 
       included do
         include ActiveModel::Validations

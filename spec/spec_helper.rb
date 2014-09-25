@@ -19,19 +19,17 @@ require 'rspec/autorun'
 # full backtrace in logs so its easier to trace errors
 Rails.backtrace_cleaner.remove_silencers!
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-support_glob = Metasploit::Model.root.join('spec', 'support', '**', '*.rb')
+spec_pathname = Metasploit::Model::Engine.root.join('spec')
 
-Dir.glob(support_glob) do |path|
-  require path
+Dir[spec_pathname.join('support', '**', '*.rb')].each do |f|
+  require f
 end
 
 RSpec.configure do |config|
   config.before(:suite) do
     # this must be explicitly set here because it should always be spec/tmp for w/e project is using
     # Metasploit::Model::Spec to handle file system clean up.
-    Metasploit::Model::Spec.temporary_pathname = Metasploit::Model.root.join('spec', 'tmp')
+    Metasploit::Model::Spec.temporary_pathname = spec_pathname.join('tmp')
     # Clean up any left over files from a previously aborted suite
     Metasploit::Model::Spec.remove_temporary_pathname
 

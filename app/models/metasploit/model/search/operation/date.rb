@@ -1,3 +1,5 @@
+require 'metasploit/model/search/operation'
+
 # Search operation with {Metasploit::Model::Search::Operation::Base#operator} with `#type` ':date'.  Validates that
 # value is `String` that can parsed with `Date.parse` or already a `Date`.
 class Metasploit::Model::Search::Operation::Date < Metasploit::Model::Search::Operation::Base
