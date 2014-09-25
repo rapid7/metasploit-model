@@ -1,5 +1,3 @@
-require 'metasploit/model/search/operator'
-
 # A search operator declared with
 # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute search_attribute}.
 class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search::Operator::Single

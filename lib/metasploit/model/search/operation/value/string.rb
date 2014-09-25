@@ -1,5 +1,5 @@
 # Concerns type casting of a raw value to a `String`.
-module Metasploit::Model::Search::Operation::String::Value
+module Metasploit::Model::Search::Operation::Value::String
   #
   # Methods
   #

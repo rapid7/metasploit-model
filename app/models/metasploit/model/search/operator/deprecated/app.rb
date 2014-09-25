@@ -1,5 +1,3 @@
-require 'metasploit/model/search/operator/deprecated'
-
 # Emulates the deprecated `app` operator by converting it to the union of `authors.name:<value>`,
 # `email_addresses.local<value before '@'>`, and `email_addresses.domain:<value before '@'>` in {#operate_on}.
 class Metasploit::Model::Search::Operator::Deprecated::App < Metasploit::Model::Search::Operator::Delegation

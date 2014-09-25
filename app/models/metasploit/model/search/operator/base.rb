@@ -1,7 +1,3 @@
-require 'metasploit/model/base'
-require 'metasploit/model/search/operator'
-require 'metasploit/model/search/operator/help'
-
 # Instead of writing an operator completely from scratch, you can subclass
 # {Metasploit::Model::Search::Operator::Base}.
 #

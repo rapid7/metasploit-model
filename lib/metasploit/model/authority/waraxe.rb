@@ -1,5 +1,3 @@
-require 'metasploit/model/authority'
-
 # Waraxe authority-specific code.
 module Metasploit::Model::Authority::Waraxe
   #

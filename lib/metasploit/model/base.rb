@@ -1,5 +1,3 @@
-require 'metasploit/model/translation'
-
 # Superclass for all Metasploit::Models.  Just adds a default {#initialize} to make models mimic behavior of
 # ActiveRecord::Base subclasses.
 class Metasploit::Model::Base

@@ -1,110 +1,104 @@
-require 'metasploit/model/translation'
+# Code shared between `Mdm::Reference` and `Metasploit::Framework::Reference`.
+module Metasploit::Model::Reference
+  extend ActiveModel::Naming
+  extend ActiveSupport::Concern
 
-module Metasploit
-  module Model
-    # Code shared between `Mdm::Reference` and `Metasploit::Framework::Reference`.
-    module Reference
-      extend ActiveModel::Naming
-      extend ActiveSupport::Concern
+  include Metasploit::Model::Translation
 
-      include Metasploit::Model::Translation
+  included do
+    include ActiveModel::MassAssignmentSecurity
+    include ActiveModel::Validations
+    include Metasploit::Model::Derivation
+    include Metasploit::Model::Search
 
-      included do
-        include ActiveModel::MassAssignmentSecurity
-        include ActiveModel::Validations
-        include Metasploit::Model::Derivation
-        include Metasploit::Model::Search
+    #
+    # Derivations
+    #
 
-        #
-        # Derivations
-        #
+    derives :url, :validate => false
 
-        derives :url, :validate => false
+    #
+    # Mass Assignment Security
+    #
 
-        #
-        # Mass Assignment Security
-        #
+    attr_accessible :designation
+    attr_accessible :url
 
-        attr_accessible :designation
-        attr_accessible :url
+    #
+    # Search Attributes
+    #
 
-        #
-        # Search Attributes
-        #
+    search_attribute :designation, :type => :string
+    search_attribute :url, :type => :string
 
-        search_attribute :designation, :type => :string
-        search_attribute :url, :type => :string
+    #
+    # Validations
+    #
 
-        #
-        # Validations
-        #
+    validates :designation,
+              :presence => {
+                  :if => :authority?
+              },
+              :nil => {
+                  :unless => :authority?
+              }
+    validates :url,
+              :presence => {
+                  :unless => :authority?
+              }
+  end
 
-        validates :designation,
-                  :presence => {
-                      :if => :authority?
-                  },
-                  :nil => {
-                      :unless => :authority?
-                  }
-        validates :url,
-                  :presence => {
-                      :unless => :authority?
-                  }
-      end
+  #
+  # Associations
+  #
 
-      #
-      # Associations
-      #
+  # @!attribute [rw] authority
+  #   The {Metasploit::Model::Authority authority} that assigned {#designation}.
+  #
+  #   @return [Metasploit::Model::Authority, nil]
 
-      # @!attribute [rw] authority
-      #   The {Metasploit::Model::Authority authority} that assigned {#designation}.
-      #
-      #   @return [Metasploit::Model::Authority, nil]
+  # @!attribute [r] module_instances
+  #   {Metasploit::Model::Module::Instance Modules} that exploit this reference or describe a proof-of-concept (PoC)
+  #   code that the module is based on.
+  #
+  #   @return [Array<Metasploit::Model::Module::Instance>]
 
-      # @!attribute [r] module_instances
-      #   {Metasploit::Model::Module::Instance Modules} that exploit this reference or describe a proof-of-concept (PoC)
-      #   code that the module is based on.
-      #
-      #   @return [Array<Metasploit::Model::Module::Instance>]
+  #
+  # Attributes
+  #
 
-      #
-      # Attributes
-      #
+  # @!attribute [rw] designation
+  #   A designation (usually a string of numbers and dashes) assigned by {#authority}.
+  #
+  #   @return [String, nil]
 
-      # @!attribute [rw] designation
-      #   A designation (usually a string of numbers and dashes) assigned by {#authority}.
-      #
-      #   @return [String, nil]
+  # @!attribute [rw] url
+  #   URL to web page with information about referenced exploit.
+  #
+  #   @return [String, nil]
 
-      # @!attribute [rw] url
-      #   URL to web page with information about referenced exploit.
-      #
-      #   @return [String, nil]
+  #
+  # Instance Methods
+  #
 
-      #
-      # Instance Methods
-      #
+  # Returns whether {#authority} is not `nil`.
+  #
+  # @return [true] unless {#authority} is `nil`.
+  # @return [false] if {#authority} is `nil`.
+  def authority?
+    authority.present?
+  end
 
-      # Returns whether {#authority} is not `nil`.
-      #
-      # @return [true] unless {#authority} is `nil`.
-      # @return [false] if {#authority} is `nil`.
-      def authority?
-        authority.present?
-      end
+  # Derives {#url} based how {#authority} routes {#designation designations} to a URL.
+  #
+  # @return [String, nil]
+  def derived_url
+    derived = nil
 
-      # Derives {#url} based how {#authority} routes {#designation designations} to a URL.
-      #
-      # @return [String, nil]
-      def derived_url
-        derived = nil
-
-        if authority and designation.present?
-          derived = authority.designation_url(designation)
-        end
-
-        derived
-      end
+    if authority and designation.present?
+      derived = authority.designation_url(designation)
     end
+
+    derived
   end
 end

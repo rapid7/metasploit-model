@@ -1,5 +1,5 @@
 # Concerns type casting of a raw value to an `Integer`.
-module Metasploit::Model::Search::Operation::Integer::Value
+module Metasploit::Model::Search::Operation::Value::Integer
   #
   # Attributes
   #

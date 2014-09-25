@@ -1,5 +1,3 @@
-require 'metasploit/model/authority'
-
 # phpMyAdmin Security Announcement authority-specific code.
 module Metasploit::Model::Authority::Pmasa
   # Returns URL to {Metasploit::Model::Reference#designation phpMyAdmin Security Advisory's} page on phpMyAdmin's site.

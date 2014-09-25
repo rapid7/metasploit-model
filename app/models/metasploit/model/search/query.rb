@@ -1,6 +1,3 @@
-require 'metasploit/model/base'
-require 'metasploit/model/search'
-
 # Once {Metasploit::Model::Search::Operator search operators} are {Metasploit::Model::Search defined}, a formatted
 # query, composed of space separated formatted operation, `<operator.name>:<formatted_value>`, can be parsed to
 # produce a validatable query.

@@ -1,5 +1,3 @@
-require 'metasploit/model/search/operator'
-
 # Operator used when the formatted operator name does not match a class's operators.
 class Metasploit::Model::Search::Operator::Null < Metasploit::Model::Search::Operator::Single
   #
