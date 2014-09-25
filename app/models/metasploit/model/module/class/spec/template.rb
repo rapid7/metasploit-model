@@ -1,7 +1,3 @@
-require 'metasploit/model/base'
-require 'metasploit/model/module/class/spec'
-require 'metasploit/model/spec/template/write'
-
 # Writes templates for the {#module_class #module_class's} {Metasploit::Model::Module::Class#ancestors} to disk.
 #
 # @example Update files after changing associations

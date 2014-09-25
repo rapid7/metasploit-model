@@ -1,7 +1,3 @@
-module Metasploit
-  module Model
-    # Base class for error hierarchy for {Metasploit::Model}
-    class Error < StandardError
-    end
-  end
+# Base class for error hierarchy for {Metasploit::Model}
+class Metasploit::Model::Error < StandardError
 end

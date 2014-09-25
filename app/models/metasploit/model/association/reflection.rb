@@ -1,6 +1,3 @@
-require 'metasploit/model/association'
-require 'metasploit/model/base'
-
 # Reflection of the call to {Metasploit::Model::Association::ClassMethods#association}.
 class Metasploit::Model::Association::Reflection < Metasploit::Model::Base
   #

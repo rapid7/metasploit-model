@@ -1,5 +1,3 @@
-require 'metasploit/model/authority'
-
 # Common Vulnerabilities and Exposures authority-specific code.
 module Metasploit::Model::Authority::Cve
   # Returns URL to {Metasploit::Model::Reference#designation the CVE ID's} page on CVE Details.

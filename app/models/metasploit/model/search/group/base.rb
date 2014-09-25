@@ -1,6 +1,3 @@
-require 'metasploit/model/base'
-require 'metasploit/model/search/group'
-
 # Groups together {Metasploit::Model::Search::Operation::Base operations} and/or or nested groups.
 class Metasploit::Model::Search::Group::Base < Metasploit::Model::Base
   #

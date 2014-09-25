@@ -1,5 +1,3 @@
-require 'metasploit/model'
-
 if RUBY_PLATFORM =~ /java/ && Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.14')
   require 'java'
 

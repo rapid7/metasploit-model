@@ -1,5 +1,3 @@
-require 'metasploit/model/search/operation/group'
-
 # A group of one or more {#children child operations} from an operator's `#operate_on`, should be visited the same as
 # {Metasploit::Model::Search::Group::Base}.
 class Metasploit::Model::Search::Operation::Group::Base < Metasploit::Model::Search::Operation::Base

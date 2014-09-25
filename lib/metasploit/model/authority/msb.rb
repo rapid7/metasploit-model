@@ -1,5 +1,3 @@
-require 'metasploit/model/authority'
-
 # Microsoft Security Bulletin authority-specific code.
 module Metasploit::Model::Authority::Msb
   # Returns URL to {Metasploit::Model::Reference#designation the security bulletin's} page on Technet.
