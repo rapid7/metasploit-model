@@ -49,5 +49,4 @@ end
 #
 
 # MUST require and not autoload as Rails::Engine loading works based subclass registration
-require 'metasploit/model/engine'
 require 'metasploit/model/version'
