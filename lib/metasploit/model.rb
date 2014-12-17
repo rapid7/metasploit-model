@@ -4,8 +4,6 @@
 require 'active_model'
 require 'active_support'
 
-autoload :DerivationValidator, 'derivation_validator'
-autoload :DynamicLengthValidator, 'dynamic_length_validator'
 autoload :IpFormatValidator, 'ip_format_validator'
 autoload :NilValidator, 'nil_validator'
 autoload :ParametersValidator, 'parameters_validator'
