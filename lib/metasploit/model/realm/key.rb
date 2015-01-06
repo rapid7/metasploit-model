@@ -27,6 +27,10 @@ module Metasploit::Model::Realm::Key
   # database and does not allow authenticating to just a server (which would be an `Mdm::Service`).
   POSTGRESQL_DATABASE = 'PostgreSQL Database'
 
+  # A SAP client number. Each SAP instance can run multiple clients which are
+  # identified by a three digit number, e.g. 000, 001, or 066.
+  SAP_CLIENT = 'SAP Client'
+
   # This is a Wildcard Realm Type which indicates we don't know or care what type of Realm it is.
   WILDCARD = '*'
 
@@ -36,6 +40,7 @@ module Metasploit::Model::Realm::Key
     DB2_DATABASE,
     ORACLE_SYSTEM_IDENTIFIER,
     POSTGRESQL_DATABASE,
+    SAP_CLIENT,
     WILDCARD
   ]
 
@@ -46,6 +51,7 @@ module Metasploit::Model::Realm::Key
     'db2db'    => DB2_DATABASE,
     'sid'      => ORACLE_SYSTEM_IDENTIFIER,
     'pgdb'     => POSTGRESQL_DATABASE,
+    'client'   => SAP_CLIENT,
     'wildcard' => WILDCARD
   }
 end
