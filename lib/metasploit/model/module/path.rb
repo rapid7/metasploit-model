@@ -23,14 +23,6 @@ module Metasploit::Model::Module::Path
     before_validation :normalize_real_path
 
     #
-    # Mass Assignment Security
-    #
-
-    attr_accessible :gem
-    attr_accessible :name
-    attr_accessible :real_path
-
-    #
     # Validations
     #
 

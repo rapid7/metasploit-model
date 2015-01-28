@@ -18,13 +18,6 @@ module Metasploit::Model::Reference
     derives :url, :validate => false
 
     #
-    # Mass Assignment Security
-    #
-
-    attr_accessible :designation
-    attr_accessible :url
-
-    #
     # Search Attributes
     #
 

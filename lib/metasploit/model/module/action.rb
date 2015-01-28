@@ -11,12 +11,6 @@ module Metasploit::Model::Module::Action
     include Metasploit::Model::Search
 
     #
-    # Mass Assignment Security
-    #
-
-    attr_accessible :name
-
-    #
     # Search Attributes
     #
 

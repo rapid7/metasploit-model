@@ -32,13 +32,6 @@ module Metasploit::Model::Module::Rank
     include Metasploit::Model::Search
 
     #
-    # Mass Assignment Security
-    #
-
-    attr_accessible :name
-    attr_accessible :number
-
-    #
     # Search Attributes
     #
 

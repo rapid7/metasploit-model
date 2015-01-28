@@ -8,8 +8,6 @@
 
 require 'active_model'
 require 'active_support'
-# Protect attributes from mass-assignment in ActiveRecord models.
-require 'protected_attributes'
 
 autoload :DerivationValidator, 'derivation_validator'
 autoload :DynamicLengthValidator, 'dynamic_length_validator'

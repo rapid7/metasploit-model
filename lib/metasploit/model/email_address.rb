@@ -20,14 +20,6 @@ module Metasploit::Model::EmailAddress
     derives :local, :validate => true
 
     #
-    # Mass Assignment Security
-    #
-
-    attr_accessible :domain
-    attr_accessible :full
-    attr_accessible :local
-
-    #
     # Search Attributes
     #
 

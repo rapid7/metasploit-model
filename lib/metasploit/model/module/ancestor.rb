@@ -86,24 +86,6 @@ module Metasploit::Model::Module::Ancestor
     derives :real_path_sha1_hex_digest, :validate => false
 
     #
-    # Mass Assignment Security
-    #
-
-    # full_name is NOT accessible since it's derived and must match {#derived_full_name} so there's no reason for a
-    # user to set it.
-    # handler_type is accessible because it's needed to derive {Metasploit::Model::Module::Class#reference_name}.
-    attr_accessible :handler_type
-    # module_type is accessible because it's needed to derive {#full_name} and {#real_path}.
-    attr_accessible :module_type
-    # payload_type is NOT accessible since it's derived and must match {#derived_payload_type}.
-    # reference_name is accessible because it's needed to derive {#full_name} and {#real_path}.
-    attr_accessible :reference_name
-    # real_path is accessible since {#module_type} and {#reference_name} can be derived from real_path.
-    attr_accessible :real_path
-    # real_path_modified_at is NOT accessible since it's derived
-    # real_path_sha1_hex_digest is NOT accessible since it's derived
-
-    #
     # Validations
     #
 
