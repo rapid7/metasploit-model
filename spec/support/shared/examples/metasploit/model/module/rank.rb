@@ -53,11 +53,6 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Rank' do
     end
   end
 
-  context 'mass assignment security' do
-    it { should allow_mass_assignment_of(:name) }
-    it { should allow_mass_assignment_of(:number) }
-  end
-
   context 'search' do
     context 'attributes' do
       it_should_behave_like 'search_attribute', :name, :type => :string

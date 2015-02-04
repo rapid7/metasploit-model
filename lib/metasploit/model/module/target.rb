@@ -10,7 +10,6 @@ module Metasploit::Model::Module::Target
   autoload :Platform
 
   included do
-    include ActiveModel::MassAssignmentSecurity
     include ActiveModel::Validations
     include Metasploit::Model::Search
 

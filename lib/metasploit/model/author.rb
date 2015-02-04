@@ -6,7 +6,6 @@ module Metasploit::Model::Author
   include Metasploit::Model::Translation
 
   included do
-    include ActiveModel::MassAssignmentSecurity
     include ActiveModel::Validations
     include Metasploit::Model::Search
 

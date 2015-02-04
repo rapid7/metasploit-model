@@ -423,33 +423,6 @@ Metasploit::Model::Spec.shared_examples_for 'Module::Ancestor' do
     end
   end
 
-  context 'mass assignment security' do
-    it 'should not allow mass assignment of full_name since it must match derived_full_name' do
-      module_ancestor.should_not allow_mass_assignment_of(:full_name)
-    end
-
-    it { should allow_mass_assignment_of(:handler_type) }
-    it { should allow_mass_assignment_of(:module_type) }
-
-    it 'should not allow mass assignment of payload_type since it must match derived_payload_type' do
-      module_ancestor.should_not allow_mass_assignment_of(:payload_type)
-    end
-
-    it 'should allow mass assignment of real_path to allow derivation of module_type and reference_name' do
-      module_ancestor.should allow_mass_assignment_of(:real_path)
-    end
-
-    it 'should not allow mass assignment of real_path_modified_at since it is derived' do
-      module_ancestor.should_not allow_mass_assignment_of(:real_path_modified_at)
-    end
-
-    it 'should not allow mass assignment of real_path_sha1_hex_digest since it is derived' do
-      module_ancestor.should_not allow_mass_assignment_of(:real_path_sha1_hex_digest)
-    end
-
-    it { should_not allow_mass_assignment_of(:parent_path_id) }
-  end
-
   context 'validations' do
     subject(:module_ancestor) do
       # Don't use factory so that nil values can be tested without the nil being replaced with derived value

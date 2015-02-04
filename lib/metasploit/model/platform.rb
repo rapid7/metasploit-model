@@ -85,7 +85,6 @@ module Metasploit::Model::Platform
   }
 
   included do
-    include ActiveModel::MassAssignmentSecurity
     include ActiveModel::Validations
     include Metasploit::Model::Derivation
     include Metasploit::Model::Search

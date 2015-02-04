@@ -22,12 +22,6 @@ Metasploit::Model::Spec.shared_examples_for 'EmailAddress' do
     end
   end
 
-  context 'mass assignment security' do
-    it { should allow_mass_assignment_of(:domain) }
-    it { should allow_mass_assignment_of(:full) }
-    it { should allow_mass_assignment_of(:local) }
-  end
-
   context 'search' do
     context 'attributes' do
       it_should_behave_like 'search_attribute', :domain, :type => :string

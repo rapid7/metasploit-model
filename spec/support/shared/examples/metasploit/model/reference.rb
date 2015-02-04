@@ -176,11 +176,6 @@ Metasploit::Model::Spec.shared_examples_for 'Reference' do
     end
   end
 
-  context 'mass assignment security' do
-    it { should allow_mass_assignment_of(:designation) }
-    it { should allow_mass_assignment_of(:url) }
-  end
-
   context 'search' do
     context 'attributes' do
       it_should_behave_like 'search_attribute', :designation, :type => :string

@@ -54,7 +54,6 @@ module Metasploit::Model::Module::Ancestor
   SHA1_HEX_DIGEST_REGEXP = /\A[0-9a-z]{40}\Z/
 
   included do
-    include ActiveModel::MassAssignmentSecurity
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
     include Metasploit::Model::Derivation

@@ -27,7 +27,6 @@ module Metasploit::Model::Module::Rank
   NAME_BY_NUMBER = NUMBER_BY_NAME.invert
 
   included do
-    include ActiveModel::MassAssignmentSecurity
     include ActiveModel::Validations
     include Metasploit::Model::Search
 

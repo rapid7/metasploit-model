@@ -33,13 +33,6 @@ Metasploit::Model::Spec.shared_examples_for 'Authority' do
     end
   end
 
-  context 'mass assignment security' do
-    it { should allow_mass_assignment_of(:abbreviation) }
-    it { should allow_mass_assignment_of(:obsolete) }
-    it { should allow_mass_assignment_of(:summary) }
-    it { should allow_mass_assignment_of(:url) }
-  end
-
   context 'search' do
     context 'attributes' do
       it_should_behave_like 'search_attribute', :abbreviation, :type => :string

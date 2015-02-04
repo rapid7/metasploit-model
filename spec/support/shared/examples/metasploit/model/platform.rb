@@ -148,10 +148,6 @@ Metasploit::Model::Spec.shared_examples_for 'Platform' do
     it_should_behave_like 'derives', :fully_qualified_name, :validates => true
   end
 
-  context 'mass assignment security' do
-    it { should allow_mass_assignment_of(:relative_name) }
-  end
-
   context 'search' do
     context 'attributes' do
       it_should_behave_like 'search_attribute',
