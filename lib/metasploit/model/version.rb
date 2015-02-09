@@ -8,8 +8,6 @@ module Metasploit
       MINOR = 29
       # The patch number, scoped to the {MINOR} version number.
       PATCH = 0
-      # The prerelease version, scoped to the {MAJOR}, {MINOR}, and {PATCH} version numbers.
-      PRERELEASE = 'extract-cache-from-metasploit-model'
 
       # The full version string, including the {MAJOR}, {MINOR}, {PATCH}, and optionally, the {PRERELEASE} in the
       # {http://semver.org/spec/v2.0.0.html semantic versioning v2.0.0} format.
