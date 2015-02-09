@@ -36,11 +36,10 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
       english_translations = translations_by_locale.fetch(:en)
       metasploit_translations = english_translations.fetch(:metasploit)
       @metasploit_model_translations = metasploit_translations.fetch(:model)
-      ancestors_translations = @metasploit_model_translations.fetch(:ancestors)
 
-      @original_ancestors_translations = ancestors_translations.dup
+      expect(@metasploit_model_translations).not_to have_key(:ancestors)
 
-      ancestors_translations.merge!(
+      @metasploit_model_translations[:ancestors] = {
           klass.model_name.i18n_key => {
               search: {
                   operator: {
@@ -52,12 +51,11 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
                   }
               }
           }
-
-      )
+      }
     end
 
     after(:each) do
-      @metasploit_model_translations[:ancestors] = @original_ancestors_translations
+      @metasploit_model_translations.delete(:ancestors)
     end
 
     it 'should use #klass #i18n_scope to lookup translations specific to the #klass or one of its ancestors' do

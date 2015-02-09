@@ -7,7 +7,7 @@ shared_examples_for 'search_association' do |association|
     end
 
     it 'should have operators for association' do
-      association_operators.should_not be_empty
+      expect(association_operators).not_to be_empty
     end
   end
 end
