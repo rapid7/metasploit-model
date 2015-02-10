@@ -3,11 +3,25 @@ RSpec::Matchers.define :validate_nilness_of do |attribute|
     "require nil for #{attribute}"
   end
 
-  failure_message_for_should do |instance|
+  failure_message_method = :failure_message_for_should
+
+  # RSpec compatibility without deprecation warnings
+  if respond_to?(:failure_message)
+    failure_message_method = :failure_message
+  end
+
+  send(failure_message_method) do |instance|
     "Expected errors to include 'must be nil' when #{attribute} is set to an arbitrary string"
   end
 
-  failure_message_for_should_not do |instance|
+  failure_message_when_negated_method = :failure_message_for_should_not
+
+  # RSpec compatibility without deprecation warnings
+  if respond_to?(:failure_message_when_negated)
+    failure_message_when_negated_method = :failure_message_when_negated
+  end
+
+  send(failure_message_when_negated_method) do |instance|
     "Expected errors not to include 'must be nil' when #{attribute} is set"
   end
 
