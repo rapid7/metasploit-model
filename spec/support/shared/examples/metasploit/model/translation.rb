@@ -4,7 +4,7 @@ shared_examples_for 'Metasploit::Model::Translation' do |options={}|
   metasploit_model_ancestor = options.fetch(:metasploit_model_ancestor)
 
   it 'should include Metasploit::Model::Translation' do
-    base_class.should include Metasploit::Model::Translation
+    expect(base_class).to include Metasploit::Model::Translation
   end
 
   unless metasploit_model_ancestor.is_a? Class

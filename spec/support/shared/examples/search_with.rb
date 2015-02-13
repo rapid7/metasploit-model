@@ -11,7 +11,9 @@ shared_examples_for 'search_with' do |operation_class, options={}|
     options.each do |key, value|
       # skip :name since it use used to look up operator, so it's already been checked or with_operator would be `nil`
       unless key == :name
-        its(key) { should == value }
+        it "has #{key.inspect} of #{value.inspect}" do
+          expect(with_operator.send(key)).to eq(value)
+        end
       end
     end
 
@@ -28,7 +30,7 @@ shared_examples_for 'search_with' do |operation_class, options={}|
         end
 
         it 'should have translation' do
-          help.should_not include('translation missing')
+          expect(help).not_to include('translation missing')
         end
       end
     end
