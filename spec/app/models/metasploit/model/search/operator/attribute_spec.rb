@@ -32,7 +32,7 @@ describe Metasploit::Model::Search::Operator::Attribute do
 
   context 'validations' do
     it { should validate_presence_of(:attribute) }
-    it { should ensure_inclusion_of(:type).in_array(described_class::TYPES) }
+    it { should validate_inclusion_of(:type).in_array(described_class::TYPES) }
   end
 
   context '#attribute_enumerable' do
