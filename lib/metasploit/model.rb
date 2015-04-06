@@ -8,6 +8,8 @@
 
 require 'active_model'
 require 'active_support'
+# Protect attributes from mass-assignment in ActiveRecord models.
+require 'protected_attributes'
 
 autoload :IpFormatValidator, 'ip_format_validator'
 autoload :NilValidator, 'nil_validator'

@@ -27,8 +27,11 @@ Gem::Specification.new do |spec|
 
   # Dependency loading
   rails_version_constraints = ['>= 4.0.9', '< 4.1.0']
-
+  
   spec.add_runtime_dependency 'activesupport', *rails_version_constraints
+
+  # Rails 4 has switched over to strong params, we still need protected_attributes
+  spec.add_runtime_dependency 'protected_attributes'
 
   spec.add_runtime_dependency 'railties', *rails_version_constraints
 
