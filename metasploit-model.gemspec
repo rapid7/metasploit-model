@@ -30,9 +30,6 @@ Gem::Specification.new do |spec|
   
   spec.add_runtime_dependency 'activesupport', *rails_version_constraints
 
-  # Rails 4 has switched over to strong params, we still need protected_attributes
-  spec.add_runtime_dependency 'protected_attributes'
-
   spec.add_runtime_dependency 'railties', *rails_version_constraints
 
   if RUBY_PLATFORM =~ /java/
