@@ -105,7 +105,11 @@ RSpec.describe Metasploit::Model::Spec do
       expect {
         described_class.temporary_pathname = temporary_pathname
       }.to change {
-        described_class.instance_variable_get(:@temporary_pathname)
+                   if described_class.instance_variable_defined? :@temporary_pathname
+                     described_class.instance_variable_get(:@temporary_pathname)
+                   else
+                     nil
+                   end
       }.to(temporary_pathname)
     end
   end

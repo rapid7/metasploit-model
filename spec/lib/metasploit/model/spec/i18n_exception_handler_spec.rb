@@ -30,7 +30,7 @@ RSpec.describe Metasploit::Model::Spec::I18nExceptionHandler do
       expect {
         call
       }.to raise_error(converted_exception.class) do |actual_exception|
-        actual_exception.class == converted_exception.class
+        expect(actual_exception.class).to eq(converted_exception.class)
         expect(actual_exception.key).to eq(converted_exception.key)
         expect(actual_exception.locale).to eq(converted_exception.locale)
         expect(actual_exception.options).to eq(converted_exception.options)

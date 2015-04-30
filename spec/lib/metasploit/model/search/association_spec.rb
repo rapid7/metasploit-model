@@ -54,7 +54,7 @@ RSpec.describe Metasploit::Model::Search::Association do
 
   context 'search_associations' do
     subject(:search_associations) {
-      base_class.search_associations *associations
+      base_class.search_associations(*associations)
     }
 
     let(:associations) {

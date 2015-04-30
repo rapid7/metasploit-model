@@ -37,7 +37,7 @@ RSpec.describe Metasploit::Model::NilifyBlanks do
     it 'should support adding multiple attributes' do
       attributes = [:a, :b]
 
-      base_class.nilify_blank *attributes
+      base_class.nilify_blank(*attributes)
 
       attributes.each do |attribute|
         expect(base_class.nilify_blank_attribute_set).to include(attribute)

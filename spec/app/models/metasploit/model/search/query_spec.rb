@@ -612,8 +612,8 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
 
         it 'should have same operator for each child of a union' do
           children.each do |child|
-            operator_set = child.children.inject(Set.new) { |operator_set, operation|
-              operator_set.add operation.operator
+            operator_set = child.children.inject(Set.new) { |block_operator_set, operation|
+              block_operator_set.add operation.operator
             }
 
             expect(operator_set.length).to eq(1)
