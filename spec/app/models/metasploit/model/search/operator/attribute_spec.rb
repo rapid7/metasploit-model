@@ -1,5 +1,5 @@
 RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
-  it { should be_a Metasploit::Model::Search::Operator::Single }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Single }
 
   context 'CONSTANTS' do
     context 'TYPES' do
@@ -7,30 +7,30 @@ RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
         described_class::TYPES
       end
 
-      it { should include(:boolean) }
-      it { should include(:date) }
+      it { is_expected.to include(:boolean) }
+      it { is_expected.to include(:date) }
       it {
-        should include(
+        is_expected.to include(
                    {
                        set: :integer
                    }
                )
       }
       it {
-        should include(
+        is_expected.to include(
                    {
                        set: :string
                    }
                )
       }
-      it { should include(:integer) }
-      it { should include(:string) }
+      it { is_expected.to include(:integer) }
+      it { is_expected.to include(:string) }
     end
   end
 
   context 'validations' do
-    it { should validate_presence_of(:attribute) }
-    it { should ensure_inclusion_of(:type).in_array(described_class::TYPES) }
+    it { is_expected.to validate_presence_of(:attribute) }
+    it { is_expected.to ensure_inclusion_of(:type).in_array(described_class::TYPES) }
   end
 
   context '#attribute_enumerable' do

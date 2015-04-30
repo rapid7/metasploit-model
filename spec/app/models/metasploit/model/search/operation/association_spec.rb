@@ -33,7 +33,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Association, type: :model d
             true
           }
 
-          it { should_not include(invalid_error) }
+          it { is_expected.not_to include(invalid_error) }
         end
 
         context 'without valid' do
@@ -41,7 +41,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Association, type: :model d
             false
           }
 
-          it { should include(invalid_error) }
+          it { is_expected.to include(invalid_error) }
         end
       end
 
@@ -54,12 +54,12 @@ RSpec.describe Metasploit::Model::Search::Operation::Association, type: :model d
           nil
         }
 
-        it { should include(blank_error) }
-        it { should_not include(invalid_error) }
+        it { is_expected.to include(blank_error) }
+        it { is_expected.not_to include(invalid_error) }
       end
     end
   end
 
-  it { should_not respond_to :value }
-  it { should_not respond_to :value= }
+  it { is_expected.not_to respond_to :value }
+  it { is_expected.not_to respond_to :value= }
 end

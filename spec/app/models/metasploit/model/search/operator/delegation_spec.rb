@@ -9,7 +9,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Delegation, type: :model do
     Class.new
   end
 
-  it { should be_a Metasploit::Model::Search::Operator::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Base }
 
   context 'operator_name' do
     subject(:operator_name) do

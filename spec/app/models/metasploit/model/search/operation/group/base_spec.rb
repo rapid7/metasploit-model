@@ -3,11 +3,11 @@ RSpec.describe Metasploit::Model::Search::Operation::Group::Base, type: :model d
     described_class.new
   end
 
-  it { should be_a Metasploit::Model::Search::Operation::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operation::Base }
 
   context 'validations' do
     context 'children' do
-      it { should ensure_length_of(:children).is_at_least(1).with_short_message('is too short (minimum is 1 child)') }
+      it { is_expected.to ensure_length_of(:children).is_at_least(1).with_short_message('is too short (minimum is 1 child)') }
 
       context '#children_valid' do
         subject(:children_valid) do

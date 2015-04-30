@@ -1,5 +1,5 @@
 RSpec.describe Metasploit::Model::Search::Operator::Group::Intersection, type: :model do
-  it { should be_a Metasploit::Model::Search::Operator::Group::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Group::Base }
 
   context 'operation_class_name' do
     subject(:operation_class_name) {

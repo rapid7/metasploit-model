@@ -13,7 +13,7 @@ RSpec.describe Metasploit::Model::Invalid do
     end
   end
 
-  it { should be_a Metasploit::Model::Error }
+  it { is_expected.to be_a Metasploit::Model::Error }
 
   it 'should use ActiveModel::Errors#full_messages' do
     expect(model.errors).to receive(:full_messages).and_call_original

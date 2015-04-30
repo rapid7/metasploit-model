@@ -15,7 +15,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Base, type: :model do
   end
 
   context 'validations' do
-    it { should validate_presence_of(:klass) }
+    it { is_expected.to validate_presence_of(:klass) }
   end
 
   context '#name' do

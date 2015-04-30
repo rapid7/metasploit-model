@@ -35,8 +35,8 @@ RSpec.shared_examples_for 'search query' do |options={}|
           }
         end
 
-        it { should_not be_nil }
-        it { should be_valid }
+        it { is_expected.not_to be_nil }
+        it { is_expected.to be_valid }
       end
     end
   end

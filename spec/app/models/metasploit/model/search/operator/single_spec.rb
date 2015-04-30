@@ -3,7 +3,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
     described_class.new
   end
 
-  it { should be_a Metasploit::Model::Search::Operator::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Base }
 
   context 'CONSTANTS' do
     context 'MODULE_SEPARATOR' do

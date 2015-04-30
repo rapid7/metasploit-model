@@ -6,7 +6,7 @@ RSpec.describe Metasploit::Model::Realm::Key do
       end
 
       it { is_expected.to eq('Active Directory Domain') }
-      it { should be_in described_class::ALL }
+      it { is_expected.to be_in described_class::ALL }
     end
 
     context 'ALL' do
@@ -14,10 +14,10 @@ RSpec.describe Metasploit::Model::Realm::Key do
         described_class::ALL
       end
 
-      it { should include described_class::ACTIVE_DIRECTORY_DOMAIN }
-      it { should include described_class::ORACLE_SYSTEM_IDENTIFIER }
-      it { should include described_class::POSTGRESQL_DATABASE }
-      it { should include described_class::WILDCARD }
+      it { is_expected.to include described_class::ACTIVE_DIRECTORY_DOMAIN }
+      it { is_expected.to include described_class::ORACLE_SYSTEM_IDENTIFIER }
+      it { is_expected.to include described_class::POSTGRESQL_DATABASE }
+      it { is_expected.to include described_class::WILDCARD }
     end
 
     context 'ORACLE_SYSTEM_IDENTIFIER' do
@@ -26,7 +26,7 @@ RSpec.describe Metasploit::Model::Realm::Key do
       end
 
       it { is_expected.to eq('Oracle System Identifier') }
-      it { should be_in described_class::ALL }
+      it { is_expected.to be_in described_class::ALL }
     end
 
     context 'POSTGRESQL DATABASE' do
@@ -35,7 +35,7 @@ RSpec.describe Metasploit::Model::Realm::Key do
       end
 
       it { is_expected.to eq('PostgreSQL Database') }
-      it { should be_in described_class::ALL }
+      it { is_expected.to be_in described_class::ALL }
     end
 
     context 'WILDCARD' do
@@ -44,7 +44,7 @@ RSpec.describe Metasploit::Model::Realm::Key do
       end
 
       it { is_expected.to eq('*') }
-      it { should be_in described_class::ALL }
+      it { is_expected.to be_in described_class::ALL }
     end
 
     context 'SHORT_NAMES' do
@@ -56,7 +56,7 @@ RSpec.describe Metasploit::Model::Realm::Key do
       end
       context 'values' do
         subject { described_class::SHORT_NAMES.values.sort }
-        it { should match_array(described_class::ALL.sort) }
+        it { is_expected.to match_array(described_class::ALL.sort) }
       end
     end
   end

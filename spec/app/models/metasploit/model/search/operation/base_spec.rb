@@ -5,7 +5,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Base, type: :model do
 
   context 'validations' do
     context 'operator' do
-      it { should validate_presence_of(:operator) }
+      it { is_expected.to validate_presence_of(:operator) }
 
       context 'valid' do
         let(:errors) do

@@ -1,8 +1,8 @@
 RSpec.describe Metasploit::Model::Visitation::Visitor, type: :model do
   context 'validations' do
-    it { should validate_presence_of :block }
-    it { should validate_presence_of :module_name }
-    it { should validate_presence_of :parent }
+    it { is_expected.to validate_presence_of :block }
+    it { is_expected.to validate_presence_of :module_name }
+    it { is_expected.to validate_presence_of :parent }
   end
 
   context '#initialize' do

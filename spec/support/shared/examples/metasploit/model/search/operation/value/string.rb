@@ -8,7 +8,7 @@ RSpec.shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' 
       operation_class
     end
 
-    it { should include Metasploit::Model::Search::Operation::Value::String }
+    it { is_expected.to include Metasploit::Model::Search::Operation::Value::String }
   end
 
   context '#value' do

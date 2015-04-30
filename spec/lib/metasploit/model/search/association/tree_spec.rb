@@ -97,7 +97,7 @@ RSpec.describe Metasploit::Model::Association::Tree do
               nil
             }
 
-            it { should be_nil }
+            it { is_expected.to be_nil }
           end
 
           context 'without nil' do

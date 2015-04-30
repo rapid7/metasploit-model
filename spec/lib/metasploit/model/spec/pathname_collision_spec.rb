@@ -7,7 +7,7 @@ RSpec.describe Metasploit::Model::Spec::PathnameCollision do
     described_class.new(pathname)
   end
 
-  it { should be_a Metasploit::Model::Spec::Error }
+  it { is_expected.to be_a Metasploit::Model::Spec::Error }
 
   context 'check!' do
     subject(:check!) do

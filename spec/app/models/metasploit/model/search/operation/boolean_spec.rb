@@ -16,9 +16,9 @@ RSpec.describe Metasploit::Model::Search::Operation::Boolean, type: :model do
   end
 
   context 'validations' do
-    it { should allow_value(false).for(:value) }
-    it { should allow_value(true).for(:value) }
-    it { should_not allow_value(nil).for(:value) }
+    it { is_expected.to allow_value(false).for(:value) }
+    it { is_expected.to allow_value(true).for(:value) }
+    it { is_expected.not_to allow_value(nil).for(:value) }
   end
 
   context '#value' do

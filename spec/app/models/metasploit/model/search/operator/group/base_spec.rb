@@ -51,7 +51,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
       allow(operator).to receive(:children).and_return(children)
     end
 
-    it { should be_a Metasploit::Model::Search::Operation::Group::Base }
+    it { is_expected.to be_a Metasploit::Model::Search::Operation::Group::Base }
 
     context 'children' do
       subject(:operation_children) do

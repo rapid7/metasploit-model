@@ -95,7 +95,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Set, type: :model do
               attribute_set.sample
             end
 
-            it { should_not include(error) }
+            it { is_expected.not_to include(error) }
           end
 
           context 'without value in attribute_set' do
@@ -103,7 +103,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Set, type: :model do
               :not_an_member
             end
 
-            it { should include(error) }
+            it { is_expected.to include(error) }
           end
         end
 
@@ -116,7 +116,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Set, type: :model do
             nil
           end
 
-          it { should_not include(error) }
+          it { is_expected.not_to include(error) }
         end
       end
     end

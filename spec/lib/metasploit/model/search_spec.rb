@@ -14,9 +14,9 @@ RSpec.describe Metasploit::Model::Search do
     base_class.send(:include, described_class)
   end
 
-  it { should be_a Metasploit::Model::Search::Association }
-  it { should be_a Metasploit::Model::Search::Attribute }
-  it { should be_a Metasploit::Model::Search::With }
+  it { is_expected.to be_a Metasploit::Model::Search::Association }
+  it { is_expected.to be_a Metasploit::Model::Search::Attribute }
+  it { is_expected.to be_a Metasploit::Model::Search::With }
 
   context 'search_operator_by_name' do
     subject(:search_operator_by_name) do
@@ -88,7 +88,7 @@ RSpec.describe Metasploit::Model::Search do
           "#{association}.#{associated_attribute}".to_sym
         end
 
-        it { should be_a Metasploit::Model::Search::Operator::Association }
+        it { is_expected.to be_a Metasploit::Model::Search::Operator::Association }
 
         context 'association' do
           subject(:operator_association) do
@@ -161,7 +161,7 @@ RSpec.describe Metasploit::Model::Search do
     context 'without search attribute' do
       context 'without search association' do
         context 'without search with' do
-          it { should be_empty }
+          it { is_expected.to be_empty }
         end
       end
     end
