@@ -15,10 +15,18 @@ SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 require 'rspec/rails'
 
-spec_pathname = Metasploit::Model::Engine.root.join('spec')
+# Use find_all_by_name instead of find_by_name as find_all_by_name will return pre-release versions
+gem_specification = Gem::Specification.find_all_by_name('metasploit-version').first
 
-Dir[spec_pathname.join('support', '**', '*.rb')].each do |f|
-  require f
+roots = [
+    Metasploit::Model::Engine.root.to_path,
+    gem_specification.gem_dir
+]
+
+roots.each do |root|
+  Dir[File.join(root, 'spec', 'support', '**', '*.rb')].each do |f|
+    require f
+  end
 end
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
@@ -94,7 +102,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     # this must be explicitly set here because it should always be spec/tmp for w/e project is using
     # Metasploit::Model::Spec to handle file system clean up.
-    Metasploit::Model::Spec.temporary_pathname = spec_pathname.join('tmp')
+    Metasploit::Model::Spec.temporary_pathname = Metasploit::Model::Engine.root.join('spec', 'tmp')
     # Clean up any left over files from a previously aborted suite
     Metasploit::Model::Spec.remove_temporary_pathname
 
