@@ -14,8 +14,6 @@ SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
-
 
 spec_pathname = Metasploit::Model::Engine.root.join('spec')
 
