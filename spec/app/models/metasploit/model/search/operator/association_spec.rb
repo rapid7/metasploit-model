@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operator::Association do
+describe Metasploit::Model::Search::Operator::Association, type: :model do
   subject(:operator) do
     described_class.new(
         :association => association,

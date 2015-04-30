@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operator::Attribute do
+describe Metasploit::Model::Search::Operator::Attribute, type: :model do
   it { should be_a Metasploit::Model::Search::Operator::Single }
 
   context 'CONSTANTS' do

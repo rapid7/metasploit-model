@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Query do
+describe Metasploit::Model::Search::Query, type: :model do
   context 'validations' do
     it { should validate_presence_of :klass }
 

@@ -91,15 +91,19 @@ describe Metasploit::Model::Visitation::Visit do
           visit.should be_an Array
           visit.length.should == module_names.length
 
-          visit.all? { |visitor|
-            visitor.is_a? Metasploit::Model::Visitation::Visitor
-          }.should be_true
+          expect(
+              visit.all? { |visitor|
+                visitor.is_a? Metasploit::Model::Visitation::Visitor
+              }
+          ).to eq(true)
         end
 
         it 'should each Metasploit::Model::Visitation::Visitor to visitor_by_module_name' do
-          module_names.all? { |module_name|
-            visit.include? base_class.visitor_by_module_name[module_name]
-          }.should be_true
+          expect(
+              module_names.all? { |module_name|
+                visit.include? base_class.visitor_by_module_name[module_name]
+              }
+          ).to eq(true)
         end
       end
     end

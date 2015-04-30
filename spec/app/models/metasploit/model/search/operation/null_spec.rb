@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operation::Null do
+describe Metasploit::Model::Search::Operation::Null, type: :model do
   context 'validation' do
     context 'operator' do
       context 'null' do

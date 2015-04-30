@@ -99,9 +99,11 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
 
         default.should be_an Array
 
-        default.all? { |key|
-          key.is_a? Symbol
-        }.should be_true
+        expect(
+            default.all? { |key|
+              key.is_a? Symbol
+            }
+        ).to eq(true)
       end
 
       help

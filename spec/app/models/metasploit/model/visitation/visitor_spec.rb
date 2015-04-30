@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Visitation::Visitor do
+describe Metasploit::Model::Visitation::Visitor, type: :model do
   context 'validations' do
     it { should validate_presence_of :block }
     it { should validate_presence_of :module_name }

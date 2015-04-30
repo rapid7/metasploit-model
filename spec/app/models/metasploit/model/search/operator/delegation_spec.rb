@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operator::Delegation do
+describe Metasploit::Model::Search::Operator::Delegation, type: :model do
   subject(:operator) do
     described_class.new(
         :klass => klass

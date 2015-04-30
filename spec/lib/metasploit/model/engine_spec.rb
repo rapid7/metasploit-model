@@ -21,7 +21,13 @@ describe Metasploit::Model::Engine do
             options[:factory_girl]
           end
 
-          its([:dir]) { should == 'spec/factories' }
+          context 'dir' do
+            subject(:dir) {
+              factory_girl[:dir]
+            }
+
+            it { is_expected.to eq('spec/factories') }
+          end
         end
 
         context 'rails' do
@@ -29,10 +35,37 @@ describe Metasploit::Model::Engine do
             options[:rails]
           end
 
-          its([:assets]) { should be_false }
-          its([:fixture_replacement]) { should == :factory_girl }
-          its([:helper]) { should be_false }
-          its([:test_framework]) { should == :rspec }
+          context 'assets' do
+            subject(:assets) {
+              rails[:assets]
+            }
+
+            it { is_expected.to eq(false) }
+          end
+
+          context 'fixture_replacement' do
+            subject(:fixture_replacement) {
+              rails[:fixture_replacement]
+            }
+
+            it { is_expected.to eq(:factory_girl) }
+          end
+
+          context 'helper' do
+            subject(:helper) {
+              rails[:helper]
+            }
+
+            it { is_expected.to eq(false) }
+          end
+
+          context 'test_framework' do
+            subject(:test_framework) {
+              rails[:test_framework]
+            }
+
+            it { is_expected.to eq(:rspec) }
+          end
         end
 
         context 'rspec' do
@@ -40,7 +73,13 @@ describe Metasploit::Model::Engine do
             options[:rspec]
           end
 
-          its([:fixture]) { should be_false }
+          context 'fixture' do
+            subject(:fixture) {
+              rspec[:fixture]
+            }
+
+            it { is_expected.to eq(false) }
+          end
         end
       end
     end

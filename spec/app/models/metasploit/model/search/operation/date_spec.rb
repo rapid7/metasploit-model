@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operation::Date do
+describe Metasploit::Model::Search::Operation::Date, type: :model do
   context 'validation' do
     context 'value' do
       before(:each) do

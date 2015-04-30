@@ -27,7 +27,7 @@ describe PasswordIsStrongValidator do
         'aaaaa'
       end
 
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
 
     context 'with repeats of 2 characters' do
@@ -35,7 +35,7 @@ describe PasswordIsStrongValidator do
         'abab'
       end
 
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
 
     context 'with repeats of 3 characters' do
@@ -43,7 +43,7 @@ describe PasswordIsStrongValidator do
         'abcabc'
       end
 
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
 
     context 'with repeats of 4 characters' do
@@ -51,7 +51,7 @@ describe PasswordIsStrongValidator do
         'abcdabcd'
       end
 
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
 
     context 'without any repeats' do
@@ -59,7 +59,7 @@ describe PasswordIsStrongValidator do
         'abcdefgh'
       end
 
-      it { should be_false }
+      it { is_expected.to eq(false) }
     end
   end
 
@@ -77,7 +77,7 @@ describe PasswordIsStrongValidator do
         ''
       end
 
-      it { should be_false }
+      it { is_expected.to eq(false) }
     end
 
     context 'without blank password' do
@@ -90,7 +90,7 @@ describe PasswordIsStrongValidator do
           ''
         end
 
-        it { should be_false }
+        it { is_expected.to eq(false) }
       end
 
       context 'without blank username' do
@@ -110,7 +110,7 @@ describe PasswordIsStrongValidator do
               username.titleize
             end
 
-            it { should be_true }
+            it { is_expected.to eq(true) }
           end
 
           context 'of same case' do
@@ -118,7 +118,7 @@ describe PasswordIsStrongValidator do
               username
             end
 
-            it { should be_true }
+            it { is_expected.to eq(true) }
           end
         end
       end

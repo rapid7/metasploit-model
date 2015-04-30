@@ -35,11 +35,11 @@ describe Metasploit::Model::Spec do
         end
 
         it 'should remove file tree' do
-          pathname.exist?.should be_true
+          expect(pathname.exist?).to eq(true)
 
           remove_temporary_pathname
 
-          pathname.exist?.should be_false
+          expect(pathname.exist?).to eq(false)
         end
       end
 

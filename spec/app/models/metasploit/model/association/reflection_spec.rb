@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Association::Reflection do
+describe Metasploit::Model::Association::Reflection, type: :model do
   context 'validations' do
     it { should validate_presence_of :model }
     it { should validate_presence_of :name }

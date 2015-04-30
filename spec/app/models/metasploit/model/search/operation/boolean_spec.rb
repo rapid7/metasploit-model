@@ -1,14 +1,19 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operation::Boolean do
+describe Metasploit::Model::Search::Operation::Boolean, type: :model do
   context 'CONSTANTS' do
     context 'FORMATTED_VALUE_TO_VALUE' do
       subject(:formatted_value_to_value) do
         described_class::FORMATTED_VALUE_TO_VALUE
       end
 
-      its(['false']) { should be_false }
-      its(['true']) { should be_true }
+      it "maps 'false' to false" do
+        expect(formatted_value_to_value['false']).to eq(false)
+      end
+
+      it "maps 'true' to true" do
+        expect(formatted_value_to_value['true']).to eq(true)
+      end
     end
   end
 
@@ -32,7 +37,7 @@ describe Metasploit::Model::Search::Operation::Boolean do
         'false'
       end
 
-      it { should be_false }
+      it { is_expected.to eq(false) }
     end
 
     context "with 'true'" do
@@ -40,7 +45,7 @@ describe Metasploit::Model::Search::Operation::Boolean do
         'true'
       end
 
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
 
     context 'with other' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metasploit::Model::Search::Operation::Group::Base do
+describe Metasploit::Model::Search::Operation::Group::Base, type: :model do
   subject(:group) do
     described_class.new
   end
