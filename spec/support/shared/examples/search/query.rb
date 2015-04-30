@@ -1,4 +1,4 @@
-shared_examples_for 'search query' do |options={}|
+RSpec.shared_examples_for 'search query' do |options={}|
   options.assert_valid_keys(:formatted_operator)
 
   formatted_operator = options.fetch(:formatted_operator)

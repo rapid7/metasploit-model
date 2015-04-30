@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Set, type: :model do
+RSpec.describe Metasploit::Model::Search::Operation::Set, type: :model do
   subject(:set) do
     described_class.new(
         operator: operator,

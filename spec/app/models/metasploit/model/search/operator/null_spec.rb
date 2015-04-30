@@ -1,11 +1,9 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Null, type: :model do
+RSpec.describe Metasploit::Model::Search::Operator::Null, type: :model do
   subject(:operator) do
     described_class.new
   end
 
-  it { should be_a Metasploit::Model::Search::Operator::Single }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Single }
 
   context 'validations' do
     context 'name' do
@@ -18,7 +16,7 @@ describe Metasploit::Model::Search::Operator::Null, type: :model do
       end
 
       it 'should record error' do
-        operator.errors[:name].should include(error)
+        expect(operator.errors[:name]).to include(error)
       end
     end
   end
@@ -28,7 +26,7 @@ describe Metasploit::Model::Search::Operator::Null, type: :model do
       operator.type
     end
 
-    it { should be_nil }
+    it { is_expected.to be_nil }
   end
 
   context '#operation_class' do
@@ -36,6 +34,6 @@ describe Metasploit::Model::Search::Operator::Null, type: :model do
       operator.send(:operation_class)
     end
 
-    it { should == Metasploit::Model::Search::Operation::Null }
+    it { is_expected.to eq(Metasploit::Model::Search::Operation::Null) }
   end
 end

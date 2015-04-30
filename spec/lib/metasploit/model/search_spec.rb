@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search do
+RSpec.describe Metasploit::Model::Search do
   subject(:base_instance) do
     base_class.new
   end
@@ -45,7 +43,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be same as the attribute' do
-            name.should == attribute
+            expect(name).to eq(attribute)
           end
         end
       end
@@ -98,7 +96,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be the registered association' do
-            operator_association.should == association
+            expect(operator_association).to eq(association)
           end
         end
 
@@ -112,7 +110,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be operator from associated class' do
-            source_operator.should == direct_attribute_operator
+            expect(source_operator).to eq(direct_attribute_operator)
           end
         end
 
@@ -122,7 +120,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be class that called search_operator_by_name' do
-            klass.should == base_class
+            expect(klass).to eq(base_class)
           end
         end
       end
@@ -155,7 +153,7 @@ describe Metasploit::Model::Search do
         end
 
         it 'should be in search_operator_by_name' do
-          named_operator.should == operator
+          expect(named_operator).to eq(operator)
         end
       end
     end

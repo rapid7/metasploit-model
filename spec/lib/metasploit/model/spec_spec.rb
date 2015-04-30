@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Spec do
+RSpec.describe Metasploit::Model::Spec do
   before(:each) do
     @before_temporary_pathname = described_class.send(:remove_instance_variable, :@temporary_pathname)
   end
@@ -82,7 +80,7 @@ describe Metasploit::Model::Spec do
       end
 
       it 'should return set pathname' do
-        temporary_pathname.should == pathname
+        expect(temporary_pathname).to eq(pathname)
       end
     end
 

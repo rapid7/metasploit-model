@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Spec::I18nExceptionHandler do
+RSpec.describe Metasploit::Model::Spec::I18nExceptionHandler do
   subject(:i18n_exception_handler) do
     described_class.new
   end
@@ -33,9 +31,9 @@ describe Metasploit::Model::Spec::I18nExceptionHandler do
         call
       }.to raise_error(converted_exception.class) do |actual_exception|
         actual_exception.class == converted_exception.class
-        actual_exception.key.should == converted_exception.key
-        actual_exception.locale.should == converted_exception.locale
-        actual_exception.options.should == converted_exception.options
+        expect(actual_exception.key).to eq(converted_exception.key)
+        expect(actual_exception.locale).to eq(converted_exception.locale)
+        expect(actual_exception.options).to eq(converted_exception.options)
       end
     end
   end

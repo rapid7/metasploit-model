@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::String, type: :model do
+RSpec.describe Metasploit::Model::Search::Operation::String, type: :model do
   context 'validation' do
     it { should validate_presence_of(:value) }
   end

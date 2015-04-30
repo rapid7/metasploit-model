@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Attribute, type: :model do
+RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
   it { should be_a Metasploit::Model::Search::Operator::Single }
 
   context 'CONSTANTS' do
@@ -77,7 +75,7 @@ describe Metasploit::Model::Search::Operator::Attribute, type: :model do
       end
 
       it 'should be #klass #<attribute>_set' do
-        attribute_set.should == expected_attribute_set
+        expect(attribute_set).to eq(expected_attribute_set)
       end
     end
   end
@@ -98,7 +96,7 @@ describe Metasploit::Model::Search::Operator::Attribute, type: :model do
     end
 
     it 'should be #attribute' do
-      name.should == attribute
+      expect(name).to eq(attribute)
     end
   end
 end

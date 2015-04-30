@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Association do
+RSpec.describe Metasploit::Model::Search::Association do
   subject(:base_class) do
     described_class = self.described_class
 

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe NilValidator do
+RSpec.describe NilValidator do
   subject(:nil_validator) do
     described_class.new(
         :attributes => attributes
@@ -50,7 +48,7 @@ describe NilValidator do
       it 'should record error on attribute' do
         validate_each
 
-        record.errors[attribute].should include('must be nil')
+        expect(record.errors[attribute]).to include('must be nil')
       end
     end
 
@@ -62,7 +60,7 @@ describe NilValidator do
       it 'should not record any error' do
         validate_each
 
-        record.errors.should be_empty
+        expect(record.errors).to be_empty
       end
     end
   end

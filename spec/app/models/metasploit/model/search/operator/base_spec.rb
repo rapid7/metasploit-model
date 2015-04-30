@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Base, type: :model do
+RSpec.describe Metasploit::Model::Search::Operator::Base, type: :model do
   subject(:operator) do
     described_class.new
   end
@@ -12,7 +10,7 @@ describe Metasploit::Model::Search::Operator::Base, type: :model do
 
     before(:each) do
       # have to stub since it's not implemented on base
-      operator.stub(name: name)
+      allow(operator).to receive(:name).and_return(name)
     end
   end
 

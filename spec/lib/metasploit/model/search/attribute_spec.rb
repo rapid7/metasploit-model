@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Attribute do
+RSpec.describe Metasploit::Model::Search::Attribute do
   subject(:base_class) do
     described_class = self.described_class
 
@@ -26,7 +24,7 @@ describe Metasploit::Model::Search::Attribute do
           end
 
           it 'should call search_with' do
-            base_class.should_receive(:search_with).with(
+            expect(base_class).to receive(:search_with).with(
                 Metasploit::Model::Search::Operator::Attribute,
                 hash_including(
                     :attribute => attribute,
@@ -40,7 +38,7 @@ describe Metasploit::Model::Search::Attribute do
           it 'should be in search_attribute_operator_by_attribute' do
             # grab operator first since it calls search_attribute and populates search_attribute_operator_by_attribute
             cached = operator
-            base_class.search_with_operator_by_name[attribute].should == cached
+            expect(base_class.search_with_operator_by_name[attribute]).to eq(cached)
           end
 
           context 'attribute' do
@@ -49,7 +47,7 @@ describe Metasploit::Model::Search::Attribute do
             end
 
             it 'should be the attribute passed to search_attribute' do
-              operator_attribute.should == attribute
+              expect(operator_attribute).to eq(attribute)
             end
           end
 
@@ -59,7 +57,7 @@ describe Metasploit::Model::Search::Attribute do
             end
 
             it 'should be class on which search_attribute was called' do
-              klass.should == base_class
+              expect(klass).to eq(base_class)
             end
           end
 
@@ -69,7 +67,7 @@ describe Metasploit::Model::Search::Attribute do
             end
 
             it 'should be type passed to search_attribute' do
-              operator_type.should == type
+              expect(operator_type).to eq(type)
             end
           end
         end

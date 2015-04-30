@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
+RSpec.describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
   subject(:operator) do
     described_class.new
   end
@@ -50,7 +48,7 @@ describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
     #
 
     before(:each) do
-      operator.stub(:children => children)
+      allow(operator).to receive(:children).and_return(children)
     end
 
     it { should be_a Metasploit::Model::Search::Operation::Group::Base }
@@ -75,7 +73,7 @@ describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
       end
 
       it 'should be the operator itself' do
-        operation_operator.should == operator
+        expect(operation_operator).to eq(operator)
       end
     end
 
@@ -85,7 +83,7 @@ describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
       end
 
       it 'should be formatted value' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
   end

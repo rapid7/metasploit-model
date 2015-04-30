@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Delegation, type: :model do
+RSpec.describe Metasploit::Model::Search::Operator::Delegation, type: :model do
   subject(:operator) do
     described_class.new(
         :klass => klass
@@ -32,7 +30,7 @@ describe Metasploit::Model::Search::Operator::Delegation, type: :model do
       end
 
       it 'should remove namespace' do
-        operator_name.should == base_name.downcase.to_sym
+        expect(operator_name).to eq(base_name.downcase.to_sym)
       end
     end
 
@@ -42,7 +40,7 @@ describe Metasploit::Model::Search::Operator::Delegation, type: :model do
       end
 
       it 'should convert name to underscore' do
-        operator_name.should == :camel_case
+        expect(operator_name).to eq(:camel_case)
       end
     end
   end
@@ -67,17 +65,21 @@ describe Metasploit::Model::Search::Operator::Delegation, type: :model do
     end
 
     before(:each) do
-      klass.stub(:search_operator_by_name => search_operator_by_name)
+      outer_search_operator_by_name = search_operator_by_name
+
+      klass.send(:define_singleton_method, :search_operator_by_name) do
+        outer_search_operator_by_name
+      end
     end
 
     it 'should convert formatted_operator to Symbol' do
-      formatted_operator.should_receive(:to_sym)
+      expect(formatted_operator).to receive(:to_sym)
 
       named_operator
     end
 
     it 'should look up operator name in search_operator_by_name of #klass' do
-      named_operator.should == search_operator
+      expect(named_operator).to eq(search_operator)
     end
 
     context 'with name not in klass.search_operator_by_name' do
@@ -100,9 +102,9 @@ describe Metasploit::Model::Search::Operator::Delegation, type: :model do
 
     it 'should delegate to operator_name' do
       operator_name = double('Operator Name')
-      operator.class.stub(:operator_name => operator_name)
+      allow(operator.class).to receive(:operator_name).and_return(operator_name)
 
-      name.should == operator_name
+      expect(name).to eq(operator_name)
     end
   end
 end

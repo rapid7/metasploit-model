@@ -1,4 +1,4 @@
-shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' do
+RSpec.shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' do
   let(:operation_class) do
     described_class
   end
@@ -26,7 +26,7 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' do
       end
 
       it 'should convert to String' do
-        value.should == '5'
+        expect(value).to eq('5')
       end
     end
 
@@ -36,7 +36,7 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' do
       end
 
       it 'should pass through String' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
 
@@ -46,7 +46,7 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::String' do
       end
 
       it 'should convert to String' do
-        value.should == 'a_symbol'
+        expect(value).to eq('a_symbol')
       end
     end
   end

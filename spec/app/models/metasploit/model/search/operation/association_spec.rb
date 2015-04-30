@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Association, type: :model do
+RSpec.describe Metasploit::Model::Search::Operation::Association, type: :model do
   subject(:operation) {
     described_class.new(
         source_operation: source_operation

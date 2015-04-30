@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Integer, type: :model do
+RSpec.describe Metasploit::Model::Search::Operation::Integer, type: :model do
   context 'validation' do
     it { should validate_numericality_of(:value).only_integer }
   end

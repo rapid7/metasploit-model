@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe PasswordIsStrongValidator do
+RSpec.describe PasswordIsStrongValidator do
   subject(:password_is_strong_validator) do
     described_class.new(
         :attributes => attributes
@@ -99,7 +97,7 @@ describe PasswordIsStrongValidator do
         end
 
         it 'should escape username' do
-          Regexp.should_receive(:escape).with(username).and_call_original
+          expect(Regexp).to receive(:escape).with(username).and_call_original
 
           contains_username?
         end
@@ -167,7 +165,7 @@ describe PasswordIsStrongValidator do
       it 'should not record any error' do
         validate_each
 
-        record.errors.should be_empty
+        expect(record.errors).to be_empty
       end
     end
 
@@ -180,7 +178,7 @@ describe PasswordIsStrongValidator do
         it 'should record error on attributes' do
           validate_each
 
-          record.errors[attribute].should include('must contain letters, numbers, and at least one special character')
+          expect(record.errors[attribute]).to include('must contain letters, numbers, and at least one special character')
         end
       end
 
@@ -201,7 +199,7 @@ describe PasswordIsStrongValidator do
           it 'should record error on attribute' do
             validate_each
 
-            record.errors[attribute].should include('must not contain the username')
+            expect(record.errors[attribute]).to include('must not contain the username')
           end
         end
 
@@ -214,7 +212,7 @@ describe PasswordIsStrongValidator do
             it 'should record error on attribute' do
               validate_each
 
-              record.errors[attribute].should include('must not be a common password')
+              expect(record.errors[attribute]).to include('must not be a common password')
             end
           end
 
@@ -227,7 +225,7 @@ describe PasswordIsStrongValidator do
               it 'should record error on attribute' do
                 validate_each
 
-                record.errors[attribute].should include('must not be a predictable sequence of characters')
+                expect(record.errors[attribute]).to include('must not be a predictable sequence of characters')
               end
             end
 
@@ -239,7 +237,7 @@ describe PasswordIsStrongValidator do
               it 'should not record any errors' do
                 validate_each
 
-                record.errors.should be_empty
+                expect(record.errors).to be_empty
               end
             end
           end

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Boolean, type: :model do
+RSpec.describe Metasploit::Model::Search::Operation::Boolean, type: :model do
   context 'CONSTANTS' do
     context 'FORMATTED_VALUE_TO_VALUE' do
       subject(:formatted_value_to_value) do
@@ -54,7 +52,7 @@ describe Metasploit::Model::Search::Operation::Boolean, type: :model do
       end
 
       it 'should return value unparsed' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
   end

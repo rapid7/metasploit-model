@@ -1,8 +1,6 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Query, type: :model do
+RSpec.describe Metasploit::Model::Search::Query, type: :model do
   context 'validations' do
-    it { should validate_presence_of :klass }
+    it { is_expected.to validate_presence_of :klass }
 
     context 'operations' do
       let(:errors) do
@@ -45,11 +43,11 @@ describe Metasploit::Model::Search::Query, type: :model do
           end
 
           it 'should have no operations' do
-            query.operations.length.should == 0
+            expect(query.operations.length).to eq(0)
           end
 
           it 'should record error on operations' do
-            errors.should include(error)
+            expect(errors).to include(error)
           end
         end
 
@@ -59,7 +57,7 @@ describe Metasploit::Model::Search::Query, type: :model do
           end
 
           it 'should not record error on operations' do
-            errors.should_not include(error)
+            expect(errors).not_to include(error)
           end
         end
       end
@@ -75,7 +73,7 @@ describe Metasploit::Model::Search::Query, type: :model do
 
         before(:each) do
           operation = double('Invalid Operation', :valid? => valid)
-          query.stub(:operations).and_return([operation])
+          allow(query).to receive(:operations).and_return([operation])
         end
 
         context 'with invalid operation' do
@@ -84,7 +82,7 @@ describe Metasploit::Model::Search::Query, type: :model do
           end
 
           it 'should record error on operations' do
-            errors.should_not include(error)
+            expect(errors).not_to include(error)
           end
         end
 
@@ -94,7 +92,7 @@ describe Metasploit::Model::Search::Query, type: :model do
           end
 
           it 'should not record error on options' do
-            errors.should_not include(error)
+            expect(errors).not_to include(error)
           end
         end
       end
@@ -117,11 +115,11 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should include operation with space in value' do
-        formatted_operations.should include('formatted_operator1:formatted value:1')
+        expect(formatted_operations).to include('formatted_operator1:formatted value:1')
       end
 
       it 'should include operation without space in value' do
-        formatted_operations.should include('formatted_operator2:formatted_value2')
+        expect(formatted_operations).to include('formatted_operator2:formatted_value2')
       end
     end
 
@@ -172,7 +170,7 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should equal attribute passed to #initialize' do
-        formatted_operations.should == expected_formatted_operations
+        expect(formatted_operations).to eq(expected_formatted_operations)
       end
     end
 
@@ -208,7 +206,7 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should parse #formatted with formatted_operations' do
-        described_class.should_receive(:formatted_operations).with(formatted).and_return([])
+        expect(described_class).to receive(:formatted_operations).with(formatted).and_return([])
 
         formatted_operations
       end
@@ -232,7 +230,7 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should use attribute passed to #initialize' do
-        operations.should == expected_operations
+        expect(operations).to eq(expected_operations)
       end
     end
 
@@ -272,7 +270,7 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should call #formatted_operations' do
-        query.should_receive(:formatted_operations).and_return([])
+        expect(query).to receive(:formatted_operations).and_return([])
 
         operations
       end
@@ -299,14 +297,14 @@ describe Metasploit::Model::Search::Query, type: :model do
             :boolean
           end
 
-          it { should be_a Metasploit::Model::Search::Operation::Boolean }
+          it { is_expected.to be_a Metasploit::Model::Search::Operation::Boolean }
 
           context "with 'true'" do
             let(:formatted_value) do
               'true'
             end
 
-            it { should be_valid }
+            it { is_expected.to be_valid }
           end
 
           context "with 'false'" do
@@ -314,7 +312,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               'false'
             end
 
-            it { should be_valid }
+            it { is_expected.to be_valid }
           end
 
           context "without 'false' or 'true'" do
@@ -322,7 +320,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               'no'
             end
 
-            it { should_not be_valid }
+            it { is_expected.to_not be_valid }
           end
         end
 
@@ -331,14 +329,14 @@ describe Metasploit::Model::Search::Query, type: :model do
             :date
           end
 
-          it { should be_a Metasploit::Model::Search::Operation::Date }
+          it { is_expected.to be_a Metasploit::Model::Search::Operation::Date }
 
           context 'with date' do
             let(:formatted_value) do
               Date.today.to_s
             end
 
-            it { should be_valid }
+            it { is_expected.to be_valid }
           end
 
           context 'without date' do
@@ -346,7 +344,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               'yesterday'
             end
 
-            it { should_not be_valid }
+            it { is_expected.to_not be_valid }
           end
         end
 
@@ -355,14 +353,14 @@ describe Metasploit::Model::Search::Query, type: :model do
             :integer
           end
 
-          it { should be_a Metasploit::Model::Search::Operation::Integer }
+          it { is_expected.to be_a Metasploit::Model::Search::Operation::Integer }
 
           context 'with integer' do
             let(:formatted_value) do
               '100'
             end
 
-            it { should be_valid }
+            it { is_expected.to be_valid }
           end
 
           context 'with float' do
@@ -370,7 +368,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               '100.5'
             end
 
-            it { should be_invalid }
+            it { is_expected.to be_invalid }
           end
 
           context 'with integer embedded in text' do
@@ -378,7 +376,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               'a2c'
             end
 
-            it { should be_invalid }
+            it { is_expected.to be_invalid }
           end
         end
 
@@ -387,14 +385,14 @@ describe Metasploit::Model::Search::Query, type: :model do
             :string
           end
 
-          it { should be_a Metasploit::Model::Search::Operation::String }
+          it { is_expected.to be_a Metasploit::Model::Search::Operation::String }
 
           context 'with value' do
             let(:formatted_value) do
               'formatted_value'
             end
 
-            it { should be_valid }
+            it { is_expected.to be_valid }
           end
 
           context 'without value' do
@@ -402,7 +400,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               ''
             end
 
-            it { should_not be_valid }
+            it { is_expected.to_not be_valid }
           end
         end
       end
@@ -420,9 +418,9 @@ describe Metasploit::Model::Search::Query, type: :model do
           'unknown_value'
         end
 
-        it { should be_a Metasploit::Model::Search::Operation::Base }
+        it { is_expected.to be_a Metasploit::Model::Search::Operation::Base }
 
-        it { should be_invalid }
+        it { is_expected.to be_invalid }
       end
     end
   end
@@ -468,7 +466,7 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should have correct number of groups' do
-        operations_by_operator.length.should == @operators.length
+        expect(operations_by_operator.length).to eq(@operators.length)
       end
 
       it 'should have correct value for each operator' do
@@ -489,7 +487,7 @@ describe Metasploit::Model::Search::Query, type: :model do
           query
         end
 
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
     end
 
@@ -503,7 +501,7 @@ describe Metasploit::Model::Search::Query, type: :model do
           query
         end
 
-        it { should_not be_valid }
+        it { is_expected.to_not be_valid }
       end
     end
   end
@@ -542,7 +540,7 @@ describe Metasploit::Model::Search::Query, type: :model do
 
       context 'with String' do
         it 'should find operator' do
-          parse_operator.should == @operator
+          expect(parse_operator).to eq(@operator)
         end
       end
 
@@ -552,7 +550,7 @@ describe Metasploit::Model::Search::Query, type: :model do
         end
 
         it 'should find operator' do
-          parse_operator.should == @operator
+          expect(parse_operator).to eq(@operator)
         end
       end
     end
@@ -562,7 +560,7 @@ describe Metasploit::Model::Search::Query, type: :model do
         'unknown_operator'
       end
 
-      it { should be_a Metasploit::Model::Search::Operator::Null }
+      it { is_expected.to be_a Metasploit::Model::Search::Operator::Null }
     end
   end
 
@@ -599,7 +597,7 @@ describe Metasploit::Model::Search::Query, type: :model do
         tree
       end
 
-      it { should be_a Metasploit::Model::Search::Group::Intersection }
+      it { is_expected.to be_a Metasploit::Model::Search::Group::Intersection }
 
       context 'children' do
         subject(:children) do
@@ -608,7 +606,7 @@ describe Metasploit::Model::Search::Query, type: :model do
 
         it 'should be an Array<Metasploit::Model::Search::Group::Union>' do
           children.each do |child|
-            child.should be_a Metasploit::Model::Search::Group::Union
+            expect(child).to be_a Metasploit::Model::Search::Group::Union
           end
         end
 
@@ -618,7 +616,7 @@ describe Metasploit::Model::Search::Query, type: :model do
               operator_set.add operation.operator
             }
 
-            operator_set.length.should == 1
+            expect(operator_set.length).to eq(1)
           end
         end
 
@@ -635,7 +633,7 @@ describe Metasploit::Model::Search::Query, type: :model do
 
           it 'should be Array<Metasploit::Model::Search::Operation::Base>' do
             grandchildren.each do |grandchild|
-              grandchild.should be_a Metasploit::Model::Search::Operation::Base
+              expect(grandchild).to be_a Metasploit::Model::Search::Operation::Base
             end
           end
         end
@@ -701,15 +699,15 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should return a new query' do
-        without_operator.should_not be query
+        expect(without_operator).not_to be query
       end
 
       it 'should not have operations on the removed operator' do
-        without_operator.operations_by_operator[filtered_operator].should be_blank
+        expect(without_operator.operations_by_operator[filtered_operator]).to be_blank
       end
 
       it 'should have same #klass as this query' do
-        without_operator.klass.should == query.klass
+        expect(without_operator.klass).to eq(query.klass)
       end
 
       context 'with no other operators' do
@@ -719,11 +717,11 @@ describe Metasploit::Model::Search::Query, type: :model do
           ]
         end
 
-        it { should_not be_valid }
+        it { is_expected.to_not be_valid }
       end
 
       context 'with other operators' do
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
     end
 
@@ -735,7 +733,7 @@ describe Metasploit::Model::Search::Query, type: :model do
       end
 
       it 'should return this query' do
-        without_operator.should be query
+        expect(without_operator).to be query
       end
     end
   end

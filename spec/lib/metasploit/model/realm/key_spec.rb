@@ -1,13 +1,11 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Realm::Key do
+RSpec.describe Metasploit::Model::Realm::Key do
   context 'CONSTANTS' do
     context 'ACTIVE_DIRECTORY_DOMAIN' do
       subject(:active_directory_domain) do
         described_class::ACTIVE_DIRECTORY_DOMAIN
       end
 
-      it { should == 'Active Directory Domain' }
+      it { is_expected.to eq('Active Directory Domain') }
       it { should be_in described_class::ALL }
     end
 
@@ -27,7 +25,7 @@ describe Metasploit::Model::Realm::Key do
         described_class::ORACLE_SYSTEM_IDENTIFIER
       end
 
-      it { should == 'Oracle System Identifier' }
+      it { is_expected.to eq('Oracle System Identifier') }
       it { should be_in described_class::ALL }
     end
 
@@ -36,7 +34,7 @@ describe Metasploit::Model::Realm::Key do
         described_class::POSTGRESQL_DATABASE
       end
 
-      it { should == 'PostgreSQL Database' }
+      it { is_expected.to eq('PostgreSQL Database') }
       it { should be_in described_class::ALL }
     end
 
@@ -45,7 +43,7 @@ describe Metasploit::Model::Realm::Key do
         described_class::WILDCARD
       end
 
-      it { should == '*' }
+      it { is_expected.to eq('*') }
       it { should be_in described_class::ALL }
     end
 
@@ -53,7 +51,7 @@ describe Metasploit::Model::Realm::Key do
       subject { described_class::SHORT_NAMES }
       it 'should have String keys' do
         subject.keys.each { |key|
-          key.should be_a(String)
+          expect(key).to be_a(String)
         }
       end
       context 'values' do

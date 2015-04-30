@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Version do
+RSpec.describe Metasploit::Model::Version do
   context 'CONSTANTS' do
     context 'MAJOR' do
       subject(:major) do

@@ -1,4 +1,4 @@
-shared_examples_for 'search_with' do |operation_class, options={}|
+RSpec.shared_examples_for 'search_with' do |operation_class, options={}|
   name = options.fetch(:name)
 
   context name do

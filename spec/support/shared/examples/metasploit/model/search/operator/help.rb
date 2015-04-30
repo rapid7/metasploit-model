@@ -1,4 +1,4 @@
-shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
+RSpec.shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
   context '#help' do
     subject(:help) do
       operator.help
@@ -24,7 +24,7 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
       # klass needs to be named or model_name will fail.
       stub_const('Klass', klass)
       # since missing translations raise exceptions, and there is no translation for klass, have to stub out.
-      klass.model_name.stub(:human).and_return(model)
+      allow(klass.model_name).to receive(:human).and_return(model)
 
       backend = I18n.backend
 
@@ -59,31 +59,31 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
     end
 
     it 'should use #klass #i18n_scope to lookup translations specific to the #klass or one of its ancestors' do
-      klass.should_receive(:i18n_scope).and_call_original
+      expect(klass).to receive(:i18n_scope).and_call_original
 
       help
     end
 
     it 'should lookup ancestors of #klass to find translations specific to #klass or its ancestors' do
-      klass.should_receive(:lookup_ancestors).and_call_original
+      expect(klass).to receive(:lookup_ancestors).and_call_original
 
       help
     end
 
     it 'should use #class #i18n_scope to lookup translations specific to the operator class or one of its ancestors' do
-      operator.class.should_receive(:i18n_scope)
+      expect(operator.class).to receive(:i18n_scope)
 
       help
     end
 
     it 'should lookup ancestors of the operator class to find translations specific to the operator class or one of its ancestors' do
-      operator.class.should_receive(:lookup_ancestors).and_return([])
+      expect(operator.class).to receive(:lookup_ancestors).and_return([])
 
       help
     end
 
     it "should pass #klass translation key for operator with the given name as the primary translation key" do
-      I18n.should_receive(:translate).with(
+      expect(I18n).to receive(:translate).with(
           :"#{klass.i18n_scope}.ancestors.#{klass.model_name.i18n_key}.search.operator.names.#{name}.help",
           anything
       )
@@ -92,12 +92,12 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
     end
 
     it 'should pass other translation keys as default option' do
-      I18n.should_receive(:translate) do |_key, options|
-        options.should be_a Hash
+      expect(I18n).to receive(:translate) do |_key, options|
+        expect(options).to be_a Hash
 
         default = options[:default]
 
-        default.should be_an Array
+        expect(default).to be_an Array
 
         expect(
             default.all? { |key|
@@ -110,7 +110,7 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
     end
 
     it 'should pass #name of operator as name option' do
-      I18n.should_receive(:translate).with(
+      expect(I18n).to receive(:translate).with(
           anything,
           hash_including(name: name)
       )
@@ -119,7 +119,7 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
     end
 
     it 'should pass the human model name of #klass as model option' do
-      I18n.should_receive(:translate).with(
+      expect(I18n).to receive(:translate).with(
           anything,
           hash_including(model: klass.model_name.human)
       )
@@ -128,7 +128,7 @@ shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
     end
 
     it 'should be translated correctly' do
-      help.should == help_template % { model: model, name: name }
+      expect(help).to eq(help_template % { model: model, name: name })
     end
   end
 end

@@ -1,4 +1,4 @@
-shared_examples_for 'Metasploit::Model::Search::Operation::Value::Integer' do
+RSpec.shared_examples_for 'Metasploit::Model::Search::Operation::Value::Integer' do
   let(:operation_class) do
     described_class
   end
@@ -26,7 +26,7 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::Integer' do
       end
 
       it 'should pass through Integer' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
 
@@ -40,7 +40,7 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::Integer' do
       end
 
       it 'should convert String to Integer' do
-        value.should == integer
+        expect(value).to eq(integer)
       end
     end
 
@@ -54,11 +54,11 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::Integer' do
       end
 
       it 'should not extract the number' do
-        value.should_not == integer
+        expect(value).not_to eq(integer)
       end
 
       it 'should pass through the full value' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
 
@@ -68,11 +68,11 @@ shared_examples_for 'Metasploit::Model::Search::Operation::Value::Integer' do
       end
 
       it 'should not truncate Float to Integer' do
-        value.should_not == formatted_value.to_i
+        expect(value).not_to eq(formatted_value.to_i)
       end
 
       it 'should pass through Float' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
   end

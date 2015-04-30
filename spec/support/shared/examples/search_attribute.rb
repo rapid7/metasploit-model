@@ -1,4 +1,4 @@
-shared_examples_for 'search_attribute' do |name, options={}|
+RSpec.shared_examples_for 'search_attribute' do |name, options={}|
   options.assert_valid_keys(:type)
   type = options.fetch(:type)
 

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Engine do
+RSpec.describe Metasploit::Model::Engine do
   context 'config' do
     subject(:config) do
       described_class.config
@@ -100,7 +98,7 @@ describe Metasploit::Model::Engine do
       end
 
       it 'should run after factory_girl.set_factory_paths' do
-        initializer.after.should == 'factory_girl.set_factory_paths'
+        expect(initializer.after).to eq('factory_girl.set_factory_paths')
       end
 
       context 'running' do
@@ -112,7 +110,7 @@ describe Metasploit::Model::Engine do
           it 'should prepend full path to spec/factories to FactoryGirl.definition_file_paths' do
             definition_file_path = Metasploit::Model::Engine.root.join('spec', 'factories')
 
-            FactoryGirl.definition_file_paths.should_receive(:unshift).with(definition_file_path)
+            expect(FactoryGirl.definition_file_paths).to receive(:unshift).with(definition_file_path)
 
             run
           end
