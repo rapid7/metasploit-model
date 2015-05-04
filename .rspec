@@ -1,4 +1,2 @@
---backtrace
---colour
---drb
---format documentation
+--color
+--require spec_helper

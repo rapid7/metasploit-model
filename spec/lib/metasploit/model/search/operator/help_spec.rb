@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Help do
+RSpec.describe Metasploit::Model::Search::Operator::Help do
   it_should_behave_like 'Metasploit::Model::Search::Operator::Help' do
     let(:operator) do
       operator_class.new(

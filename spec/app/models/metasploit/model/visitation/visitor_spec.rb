@@ -1,10 +1,8 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Visitation::Visitor do
+RSpec.describe Metasploit::Model::Visitation::Visitor, type: :model do
   context 'validations' do
-    it { should validate_presence_of :block }
-    it { should validate_presence_of :module_name }
-    it { should validate_presence_of :parent }
+    it { is_expected.to validate_presence_of :block }
+    it { is_expected.to validate_presence_of :module_name }
+    it { is_expected.to validate_presence_of :parent }
   end
 
   context '#initialize' do
@@ -31,15 +29,15 @@ describe Metasploit::Model::Visitation::Visitor do
     end
 
     it 'should set #block from &block' do
-      instance.block.should == block
+      expect(instance.block).to eq(block)
     end
 
     it 'should set #module_name from :module_name' do
-      instance.module_name.should == module_name
+      expect(instance.module_name).to eq(module_name)
     end
 
     it 'should set #parent from :parent' do
-      instance.parent.should == parent
+      expect(instance.parent).to eq(parent)
     end
   end
 end

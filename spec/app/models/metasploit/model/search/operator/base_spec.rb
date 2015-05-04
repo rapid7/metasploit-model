@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Base do
+RSpec.describe Metasploit::Model::Search::Operator::Base, type: :model do
   subject(:operator) do
     described_class.new
   end
@@ -12,12 +10,12 @@ describe Metasploit::Model::Search::Operator::Base do
 
     before(:each) do
       # have to stub since it's not implemented on base
-      operator.stub(name: name)
+      allow(operator).to receive(:name).and_return(name)
     end
   end
 
   context 'validations' do
-    it { should validate_presence_of(:klass) }
+    it { is_expected.to validate_presence_of(:klass) }
   end
 
   context '#name' do

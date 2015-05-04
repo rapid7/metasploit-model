@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::With do
+RSpec.describe Metasploit::Model::Search::With do
   let(:base_class) do
     described_class = self.described_class
 
@@ -37,7 +35,7 @@ describe Metasploit::Model::Search::With do
     end
 
     it 'should pass given options to operator_class.new' do
-      operator_class.should_receive(:new).with(
+      expect(operator_class).to receive(:new).with(
           hash_including(options)
       ).and_return(operator)
 
@@ -45,7 +43,7 @@ describe Metasploit::Model::Search::With do
     end
 
     it 'should merge :klass into options passed to operator.new' do
-      operator_class.should_receive(:new).with(
+      expect(operator_class).to receive(:new).with(
           hash_including(
               :klass => base_class
           )
@@ -55,9 +53,9 @@ describe Metasploit::Model::Search::With do
     end
 
     it 'should validate operator' do
-      operator_class.stub(:new).and_return(operator)
+      allow(operator_class).to receive(:new).and_return(operator)
 
-      operator.should_receive(:valid!)
+      expect(operator).to receive(:valid!)
 
       search_with_operator
     end
@@ -65,7 +63,7 @@ describe Metasploit::Model::Search::With do
     it 'should add operator to search_with_operator_by_name' do
       search_with_operator
 
-      base_class.search_with_operator_by_name[operator.name].should == operator
+      expect(base_class.search_with_operator_by_name[operator.name]).to eq(operator)
     end
   end
 
@@ -75,7 +73,7 @@ describe Metasploit::Model::Search::With do
     end
 
     it 'should default to empty Hash' do
-      search_with_operator_by_name.should == {}
+      expect(search_with_operator_by_name).to eq({})
     end
   end
 end

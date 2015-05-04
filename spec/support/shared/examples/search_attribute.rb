@@ -1,4 +1,4 @@
-shared_examples_for 'search_attribute' do |name, options={}|
+RSpec.shared_examples_for 'search_attribute' do |name, options={}|
   options.assert_valid_keys(:type)
   type = options.fetch(:type)
 
@@ -19,8 +19,8 @@ shared_examples_for 'search_attribute' do |name, options={}|
           base_class.send(attribute_set_method_name)
         end
 
-        it { should be_a Set }
-        it { should_not be_empty }
+        it { is_expected.to be_a Set }
+        it { is_expected.not_to be_empty }
       end
     end
   end

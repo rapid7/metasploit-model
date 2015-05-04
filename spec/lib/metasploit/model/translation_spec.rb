@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Translation do
+RSpec.describe Metasploit::Model::Translation do
   let(:base_class) do
     described_class = self.described_class
 
@@ -56,21 +54,21 @@ describe Metasploit::Model::Translation do
     end
 
     it 'should have named and unnamed ancestors' do
-      base_class.ancestors.should include(named_class)
-      base_class.ancestors.should include(named_module)
-      base_class.ancestors.should include(unnamed_class)
-      base_class.ancestors.should include(unnamed_module)
+      expect(base_class.ancestors).to include(named_class)
+      expect(base_class.ancestors).to include(named_module)
+      expect(base_class.ancestors).to include(unnamed_class)
+      expect(base_class.ancestors).to include(unnamed_module)
     end
 
     it 'should return all ancestors that respond to model_name' do
-      lookup_ancestors.should include(base_class)
-      lookup_ancestors.should include(named_class)
-      lookup_ancestors.should include(named_module)
+      expect(lookup_ancestors).to include(base_class)
+      expect(lookup_ancestors).to include(named_class)
+      expect(lookup_ancestors).to include(named_module)
     end
 
     it 'should not return ancestors that do not respond to model_name' do
-      lookup_ancestors.should_not include(unnamed_class)
-      lookup_ancestors.should_not include(unnamed_module)
+      expect(lookup_ancestors).not_to include(unnamed_class)
+      expect(lookup_ancestors).not_to include(unnamed_module)
     end
   end
 

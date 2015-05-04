@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Association do
+RSpec.describe Metasploit::Model::Association do
   subject(:base_class) do
     described_class = self.described_class
 
@@ -54,7 +52,7 @@ describe Metasploit::Model::Association do
           end
 
           it 'should be class on which association was called' do
-            model.should == base_class
+            expect(model).to eq(base_class)
           end
         end
 
@@ -64,7 +62,7 @@ describe Metasploit::Model::Association do
           end
 
           it 'should be name passed to association as a Symbol' do
-            reflection_name.should == name.to_sym
+            expect(reflection_name).to eq(name.to_sym)
           end
         end
 
@@ -74,7 +72,7 @@ describe Metasploit::Model::Association do
           end
 
           it 'should be :class_name passed to association' do
-            reflection_class_name.should == class_name
+            expect(reflection_class_name).to eq(class_name)
           end
         end
       end
@@ -87,7 +85,7 @@ describe Metasploit::Model::Association do
     end
 
     it 'should default to empty Hash' do
-      association_by_name.should == {}
+      expect(association_by_name).to eq({})
     end
   end
 
@@ -119,7 +117,7 @@ describe Metasploit::Model::Association do
         end
 
         it 'should be class_name passed to association' do
-          reflection_class_name.should == class_name
+          expect(reflection_class_name).to eq(class_name)
         end
       end
 
@@ -129,7 +127,7 @@ describe Metasploit::Model::Association do
         end
 
         it 'should have the reflected name' do
-          reflection.name.should == reflected_name
+          expect(reflection.name).to eq(reflected_name)
         end
       end
     end
@@ -139,7 +137,7 @@ describe Metasploit::Model::Association do
         :unassociated_things
       end
 
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
   end
 end
