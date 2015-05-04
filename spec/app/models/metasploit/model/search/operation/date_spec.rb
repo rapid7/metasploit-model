@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Date do
+RSpec.describe Metasploit::Model::Search::Operation::Date, type: :model do
   context 'validation' do
     context 'value' do
       before(:each) do
@@ -25,7 +23,7 @@ describe Metasploit::Model::Search::Operation::Date do
         end
 
         it 'should not record error' do
-          errors.should_not include(error)
+          expect(errors).not_to include(error)
         end
       end
 
@@ -35,7 +33,7 @@ describe Metasploit::Model::Search::Operation::Date do
         end
 
         it 'should record error' do
-          errors.should include(error)
+          expect(errors).to include(error)
         end
       end
     end
@@ -56,7 +54,7 @@ describe Metasploit::Model::Search::Operation::Date do
       end
 
       it 'should be passed in Date' do
-        value.should == formatted_value
+        expect(value).to eq(formatted_value)
       end
     end
 
@@ -71,7 +69,7 @@ describe Metasploit::Model::Search::Operation::Date do
         end
 
         it 'should be parsed Date' do
-          value.should == date
+          expect(value).to eq(date)
         end
       end
 
@@ -81,7 +79,7 @@ describe Metasploit::Model::Search::Operation::Date do
         end
 
         it 'should pass through value' do
-          value.should be formatted_value
+          expect(value).to be formatted_value
         end
       end
     end

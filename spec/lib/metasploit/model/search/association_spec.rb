@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Association do
+RSpec.describe Metasploit::Model::Search::Association do
   subject(:base_class) do
     described_class = self.described_class
 
@@ -56,7 +54,7 @@ describe Metasploit::Model::Search::Association do
 
   context 'search_associations' do
     subject(:search_associations) {
-      base_class.search_associations *associations
+      base_class.search_associations(*associations)
     }
 
     let(:associations) {

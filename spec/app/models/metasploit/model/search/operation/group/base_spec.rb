@@ -1,15 +1,13 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Group::Base do
+RSpec.describe Metasploit::Model::Search::Operation::Group::Base, type: :model do
   subject(:group) do
     described_class.new
   end
 
-  it { should be_a Metasploit::Model::Search::Operation::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operation::Base }
 
   context 'validations' do
     context 'children' do
-      it { should ensure_length_of(:children).is_at_least(1).with_short_message('is too short (minimum is 1 child)') }
+      it { is_expected.to ensure_length_of(:children).is_at_least(1).with_short_message('is too short (minimum is 1 child)') }
 
       context '#children_valid' do
         subject(:children_valid) do
@@ -48,25 +46,25 @@ describe Metasploit::Model::Search::Operation::Group::Base do
           context 'with all valid' do
             before(:each) do
               children.each do |child|
-                child.stub(valid?: true)
+                allow(child).to receive(:valid?).and_return(true)
               end
             end
 
             it 'does not add error on :children' do
               group.valid?
 
-              group.errors[:children].should_not include(error)
+              expect(group.errors[:children]).not_to include(error)
             end
           end
 
           context 'with later valid' do
             before(:each) do
-              children.first.stub(valid?: false)
-              children.second.stub(valid?: true)
+              allow(children.first).to receive(:valid?).and_return(false)
+              allow(children.second).to receive(:valid?).and_return(true)
             end
 
             it 'does not short-circuit and validates all children' do
-              children.second.should_receive(:valid?).and_return(true)
+              expect(children.second).to receive(:valid?).and_return(true)
 
               children_valid
             end
@@ -74,7 +72,7 @@ describe Metasploit::Model::Search::Operation::Group::Base do
             it 'should add error on :children' do
               group.valid?
 
-              group.errors[:children].should include(error)
+              expect(group.errors[:children]).to include(error)
             end
           end
         end
@@ -87,7 +85,7 @@ describe Metasploit::Model::Search::Operation::Group::Base do
           it 'does not add error on :children' do
             group.valid?
 
-            group.errors[:children].should_not include(error)
+            expect(group.errors[:children]).not_to include(error)
           end
         end
       end
@@ -100,7 +98,7 @@ describe Metasploit::Model::Search::Operation::Group::Base do
     end
 
     context 'default' do
-      it { should == [] }
+      it { is_expected.to eq([]) }
     end
 
     context 'with attribute' do
@@ -117,7 +115,7 @@ describe Metasploit::Model::Search::Operation::Group::Base do
       end
 
       it 'is the value passed with :children to #new' do
-        children.should == expected_children
+        expect(children).to eq(expected_children)
       end
     end
   end

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::File do
+RSpec.describe Metasploit::Model::File do
   unless RUBY_PLATFORM =~ /java/ && Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.14')
     it 'aliases ::File' do
       expect(described_class).to equal(::File)
@@ -38,12 +36,12 @@ describe Metasploit::Model::File do
 
     if RUBY_PLATFORM =~ /java/ && Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.14')
       it 'should be necessary because File.realpath does not resolve symlinks' do
-        File.realpath(symlink_pathname.to_path).should_not == real_pathname.to_path
+        expect(File.realpath(symlink_pathname.to_path)).not_to eq(real_pathname.to_path)
       end
     end
 
     it 'should resolve symlink to real (canonical) path' do
-      realpath.should == real_pathname.to_path
+      expect(realpath).to eq(real_pathname.to_path)
     end
   end
 end

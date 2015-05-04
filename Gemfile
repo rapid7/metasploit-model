@@ -16,8 +16,8 @@ group :test do
   # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
   # between its dependencies, which is now handled by this constraint.
   rails_version_constraint = [
-      '>= 3.2.0',
-      '< 4.0.0'
+      '>= 4.0.9',
+      '< 4.1.0'
   ]
 
   # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
@@ -26,9 +26,9 @@ group :test do
   gem 'coveralls', require: false
   # Engine tasks are loaded using railtie
   gem 'railties', *rails_version_constraint
-  gem 'rspec'
+  gem 'rspec', '~> 3.1'
   # need rspec-core >= 2.14.0 because 2.14.0 introduced RSpec::Core::SharedExampleGroup::TopLevel
-  gem 'rspec-core', '>= 2.14.0', '< 3.0.0'
+  gem 'rspec-core', '>= 2.14.0'
   # need rspec-rails >= 2.12.0 as 2.12.0 adds support for redefining named subject in nested context that uses the
   # named subject from the outer context without causing a stack overflow.
   gem 'rspec-rails', '>= 2.12.0'

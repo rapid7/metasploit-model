@@ -1,13 +1,11 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Base do
+RSpec.describe Metasploit::Model::Search::Operation::Base, type: :model do
   subject(:operation) do
     described_class.new
   end
 
   context 'validations' do
     context 'operator' do
-      it { should validate_presence_of(:operator) }
+      it { is_expected.to validate_presence_of(:operator) }
 
       context 'valid' do
         let(:errors) do
@@ -40,7 +38,7 @@ describe Metasploit::Model::Search::Operation::Base do
             end
 
             it 'should not record error on operator' do
-              errors.should_not include(error)
+              expect(errors).not_to include(error)
             end
           end
 
@@ -50,7 +48,7 @@ describe Metasploit::Model::Search::Operation::Base do
             end
 
             it 'should record error on operator' do
-              errors.should include(error)
+              expect(errors).to include(error)
             end
           end
         end
@@ -61,7 +59,7 @@ describe Metasploit::Model::Search::Operation::Base do
           end
 
           it 'should not record error on operator' do
-            errors.should_not include(error)
+            expect(errors).not_to include(error)
           end
         end
       end

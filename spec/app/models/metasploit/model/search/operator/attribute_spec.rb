@@ -1,7 +1,5 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Attribute do
-  it { should be_a Metasploit::Model::Search::Operator::Single }
+RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Single }
 
   context 'CONSTANTS' do
     context 'TYPES' do
@@ -9,30 +7,30 @@ describe Metasploit::Model::Search::Operator::Attribute do
         described_class::TYPES
       end
 
-      it { should include(:boolean) }
-      it { should include(:date) }
+      it { is_expected.to include(:boolean) }
+      it { is_expected.to include(:date) }
       it {
-        should include(
+        is_expected.to include(
                    {
                        set: :integer
                    }
                )
       }
       it {
-        should include(
+        is_expected.to include(
                    {
                        set: :string
                    }
                )
       }
-      it { should include(:integer) }
-      it { should include(:string) }
+      it { is_expected.to include(:integer) }
+      it { is_expected.to include(:string) }
     end
   end
 
   context 'validations' do
-    it { should validate_presence_of(:attribute) }
-    it { should ensure_inclusion_of(:type).in_array(described_class::TYPES) }
+    it { is_expected.to validate_presence_of(:attribute) }
+    it { is_expected.to validate_inclusion_of(:type).in_array(described_class::TYPES) }
   end
 
   context '#attribute_enumerable' do
@@ -77,7 +75,7 @@ describe Metasploit::Model::Search::Operator::Attribute do
       end
 
       it 'should be #klass #<attribute>_set' do
-        attribute_set.should == expected_attribute_set
+        expect(attribute_set).to eq(expected_attribute_set)
       end
     end
   end
@@ -98,7 +96,7 @@ describe Metasploit::Model::Search::Operator::Attribute do
     end
 
     it 'should be #attribute' do
-      name.should == attribute
+      expect(name).to eq(attribute)
     end
   end
 end

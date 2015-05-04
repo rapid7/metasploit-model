@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Spec::PathnameCollision do
+RSpec.describe Metasploit::Model::Spec::PathnameCollision do
   let(:pathname) do
     Metasploit::Model::Spec.temporary_pathname.join('pathname')
   end
@@ -9,7 +7,7 @@ describe Metasploit::Model::Spec::PathnameCollision do
     described_class.new(pathname)
   end
 
-  it { should be_a Metasploit::Model::Spec::Error }
+  it { is_expected.to be_a Metasploit::Model::Spec::Error }
 
   context 'check!' do
     subject(:check!) do
@@ -44,11 +42,11 @@ describe Metasploit::Model::Spec::PathnameCollision do
       end
 
       it 'should include pathname' do
-        message.should include("#{pathname} already exists.")
+        expect(message).to include("#{pathname} already exists.")
       end
 
       it 'should include potential cause' do
-        message.should include('Metasploit::Model::Spec.remove_temporary_pathname was not called after the previous spec.')
+        expect(message).to include('Metasploit::Model::Spec.remove_temporary_pathname was not called after the previous spec.')
       end
     end
   end

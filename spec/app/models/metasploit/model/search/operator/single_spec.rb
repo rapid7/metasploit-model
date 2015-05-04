@@ -1,11 +1,9 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Single do
+RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
   subject(:operator) do
     described_class.new
   end
 
-  it { should be_a Metasploit::Model::Search::Operator::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Base }
 
   context 'CONSTANTS' do
     context 'MODULE_SEPARATOR' do
@@ -13,7 +11,7 @@ describe Metasploit::Model::Search::Operator::Single do
         described_class::MODULE_SEPARATOR
       end
 
-      it { should == '::' }
+      it { is_expected.to eq('::') }
     end
 
     context 'OPERATION_NAMESPACE_NAME' do
@@ -21,7 +19,7 @@ describe Metasploit::Model::Search::Operator::Single do
         described_class::OPERATION_NAMESPACE_NAME
       end
 
-      it { should == 'Metasploit::Model::Search::Operation' }
+      it { is_expected.to eq('Metasploit::Model::Search::Operation') }
     end
   end
 
@@ -67,7 +65,7 @@ describe Metasploit::Model::Search::Operator::Single do
         end
 
         it 'should be the constant_name of the key and value separated by MODULE_SEPARATOR' do
-          constant_name.should == "#{key_constant_name}#{described_class::MODULE_SEPARATOR}#{value_constant_name}"
+          expect(constant_name).to eq("#{key_constant_name}#{described_class::MODULE_SEPARATOR}#{value_constant_name}")
         end
       end
 
@@ -93,7 +91,7 @@ describe Metasploit::Model::Search::Operator::Single do
       end
 
       it 'should constantize string version of Symbol' do
-        constant_name.should == 'Integer'
+        expect(constant_name).to eq('Integer')
       end
     end
 
@@ -124,20 +122,20 @@ describe Metasploit::Model::Search::Operator::Single do
     end
 
     before(:each) do
-      operator.stub(:operation_class => operation_class)
+      allow(operator).to receive(:operation_class).and_return(operation_class)
     end
 
     it 'should call new on #operation_class' do
-      operation_class.should_receive(:new).with(:value => formatted_value, :operator => operator)
+      expect(operation_class).to receive(:new).with(:value => formatted_value, :operator => operator)
 
       operate_on
     end
 
     it 'should return instance of #operation_class' do
       operation = double('Operation')
-      operation_class.stub(:new => operation)
+      allow(operation_class).to receive(:new).and_return(operation)
 
-      operate_on.should == operation
+      expect(operate_on).to eq(operation)
     end
   end
 
@@ -147,7 +145,7 @@ describe Metasploit::Model::Search::Operator::Single do
     end
 
     before(:each) do
-      operator.stub(:type => type)
+      allow(operator).to receive(:type).and_return(type)
     end
 
     context 'type' do
@@ -156,7 +154,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :boolean
         end
 
-        it { should == Metasploit::Model::Search::Operation::Boolean }
+        it { is_expected.to eq(Metasploit::Model::Search::Operation::Boolean) }
       end
 
       context 'with :date' do
@@ -164,7 +162,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :date
         end
 
-        it { should == Metasploit::Model::Search::Operation::Date }
+        it { is_expected.to eq(Metasploit::Model::Search::Operation::Date) }
       end
 
       context 'with set: :integer' do
@@ -174,7 +172,7 @@ describe Metasploit::Model::Search::Operator::Single do
           }
         end
 
-        it { should == Metasploit::Model::Search::Operation::Set::Integer }
+        it { is_expected.to eq(Metasploit::Model::Search::Operation::Set::Integer) }
       end
 
       context 'with set: :string' do
@@ -184,7 +182,7 @@ describe Metasploit::Model::Search::Operator::Single do
           }
         end
 
-        it { should == Metasploit::Model::Search::Operation::Set::String }
+        it { is_expected.to eq(Metasploit::Model::Search::Operation::Set::String) }
       end
 
       context 'with :integer' do
@@ -192,7 +190,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :integer
         end
 
-        it { should == Metasploit::Model::Search::Operation::Integer }
+        it { is_expected.to eq(Metasploit::Model::Search::Operation::Integer) }
       end
 
       context 'with :string' do
@@ -200,7 +198,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :string
         end
 
-        it { should == Metasploit::Model::Search::Operation::String }
+        it { is_expected.to eq(Metasploit::Model::Search::Operation::String) }
       end
 
       context 'with nil' do
@@ -213,7 +211,7 @@ describe Metasploit::Model::Search::Operator::Single do
         end
 
         before(:each) do
-          operator.stub(:name => name)
+          allow(operator).to receive(:name).and_return(name)
         end
 
         it 'should raise ArgumentError' do
@@ -233,7 +231,7 @@ describe Metasploit::Model::Search::Operator::Single do
     end
 
     before(:each) do
-      operator.stub(:type => type)
+      allow(operator).to receive(:type).and_return(type)
     end
 
     context 'type' do
@@ -242,7 +240,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :boolean
         end
 
-        it { should == 'Metasploit::Model::Search::Operation::Boolean' }
+        it { is_expected.to eq('Metasploit::Model::Search::Operation::Boolean') }
       end
 
       context 'with :date' do
@@ -250,7 +248,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :date
         end
 
-        it { should == 'Metasploit::Model::Search::Operation::Date' }
+        it { is_expected.to eq('Metasploit::Model::Search::Operation::Date') }
       end
 
       context 'with set: :integer' do
@@ -260,7 +258,7 @@ describe Metasploit::Model::Search::Operator::Single do
           }
         end
 
-        it { should == 'Metasploit::Model::Search::Operation::Set::Integer' }
+        it { is_expected.to eq('Metasploit::Model::Search::Operation::Set::Integer') }
       end
 
       context 'with set: :string' do
@@ -270,7 +268,7 @@ describe Metasploit::Model::Search::Operator::Single do
           }
         end
 
-        it { should == 'Metasploit::Model::Search::Operation::Set::String' }
+        it { is_expected.to eq('Metasploit::Model::Search::Operation::Set::String') }
       end
 
       context 'with :integer' do
@@ -278,7 +276,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :integer
         end
 
-        it { should == 'Metasploit::Model::Search::Operation::Integer' }
+        it { is_expected.to eq('Metasploit::Model::Search::Operation::Integer') }
       end
 
       context 'with :string' do
@@ -286,7 +284,7 @@ describe Metasploit::Model::Search::Operator::Single do
           :string
         end
 
-        it { should == 'Metasploit::Model::Search::Operation::String' }
+        it { is_expected.to eq('Metasploit::Model::Search::Operation::String') }
       end
 
       context 'with nil' do
@@ -299,7 +297,7 @@ describe Metasploit::Model::Search::Operator::Single do
         end
 
         before(:each) do
-          operator.stub(:name => name)
+          allow(operator).to receive(:name).and_return(name)
         end
 
         it 'should raise ArgumentError' do

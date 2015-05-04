@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Login::Status do
+RSpec.describe Metasploit::Model::Login::Status do
   context 'CONSTANTS' do
     context 'ALL' do
       subject(:all) {

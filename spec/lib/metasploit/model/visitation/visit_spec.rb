@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Visitation::Visit do
+RSpec.describe Metasploit::Model::Visitation::Visit do
   let(:base_class) do
     described_class = self.described_class
 
@@ -54,15 +52,15 @@ describe Metasploit::Model::Visitation::Visit do
         end
 
         it 'should return Array(Metasploit::Model::Visitation::Visitor)' do
-          visit.should be_an Array
-          visit.length.should == 1
-          visit.first.should be_a Metasploit::Model::Visitation::Visitor
+          expect(visit).to be_an Array
+          expect(visit.length).to eq(1)
+          expect(visit.first).to be_a Metasploit::Model::Visitation::Visitor
         end
 
         it 'should add Metasploit::Model::Visitation::Visitor to visitor_by_module_name' do
           visitor = visit.first
 
-          base_class.visitor_by_module_name[mod.name].should == visitor
+          expect(base_class.visitor_by_module_name[mod.name]).to eq(visitor)
         end
       end
 
@@ -88,18 +86,22 @@ describe Metasploit::Model::Visitation::Visit do
         end
 
         it 'should return Array<Metasploit::Model::Visitation::Visitor>' do
-          visit.should be_an Array
-          visit.length.should == module_names.length
+          expect(visit).to be_an Array
+          expect(visit.length).to eq(module_names.length)
 
-          visit.all? { |visitor|
-            visitor.is_a? Metasploit::Model::Visitation::Visitor
-          }.should be_true
+          expect(
+              visit.all? { |visitor|
+                visitor.is_a? Metasploit::Model::Visitation::Visitor
+              }
+          ).to eq(true)
         end
 
         it 'should each Metasploit::Model::Visitation::Visitor to visitor_by_module_name' do
-          module_names.all? { |module_name|
-            visit.include? base_class.visitor_by_module_name[module_name]
-          }.should be_true
+          expect(
+              module_names.all? { |module_name|
+                visit.include? base_class.visitor_by_module_name[module_name]
+              }
+          ).to eq(true)
         end
       end
     end
@@ -158,7 +160,7 @@ describe Metasploit::Model::Visitation::Visit do
       end
 
       it 'should return visitor from visitor_by_module' do
-        visitor.should == klass_visitor
+        expect(visitor).to eq(klass_visitor)
       end
     end
 
@@ -187,13 +189,13 @@ describe Metasploit::Model::Visitation::Visit do
         end
 
         it 'should return ancestor visitor' do
-          visitor.should == ancestor_visitor
+          expect(visitor).to eq(ancestor_visitor)
         end
 
         it 'should cache ancestor visitor as visitor for klass in visitor_by_module' do
           visitor
 
-          base_class.visitor_by_module[klass].should == ancestor_visitor
+          expect(base_class.visitor_by_module[klass]).to eq(ancestor_visitor)
         end
       end
 
@@ -203,13 +205,13 @@ describe Metasploit::Model::Visitation::Visit do
         end
 
         it 'should return ancestor visitor' do
-          visitor.should == ancestor_visitor
+          expect(visitor).to eq(ancestor_visitor)
         end
 
         it 'should cache ancestor visitor as visitor for klass in visitor_by_module' do
           visitor
 
-          base_class.visitor_by_module[klass].should == ancestor_visitor
+          expect(base_class.visitor_by_module[klass]).to eq(ancestor_visitor)
         end
       end
 
@@ -229,7 +231,7 @@ describe Metasploit::Model::Visitation::Visit do
     end
 
     it 'should default to empty Hash' do
-      visitor_by_module.should == {}
+      expect(visitor_by_module).to eq({})
     end
   end
 
@@ -239,7 +241,7 @@ describe Metasploit::Model::Visitation::Visit do
     end
 
     it 'should default to empty Hash' do
-      visitor_by_module_name.should == {}
+      expect(visitor_by_module_name).to eq({})
     end
   end
 
@@ -274,13 +276,13 @@ describe Metasploit::Model::Visitation::Visit do
     end
 
     it 'should find visitor for node.class' do
-      base_class.should_receive(:visitor).with(node.class).and_call_original
+      expect(base_class).to receive(:visitor).with(node.class).and_call_original
 
       visit
     end
 
     it 'should visit on visitor' do
-      @visitor.should_receive(:visit).with(base_instance, node)
+      expect(@visitor).to receive(:visit).with(base_instance, node)
 
       visit
     end
@@ -309,7 +311,7 @@ describe Metasploit::Model::Visitation::Visit do
       end
 
       it "should be able to call visit from inside a visitor's block" do
-        visit.should == leaf_node
+        expect(visit).to eq(leaf_node)
       end
     end
   end

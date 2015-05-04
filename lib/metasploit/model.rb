@@ -1,6 +1,11 @@
 #
 # Gems
 #
+# gems must load explicitly any gem declared in gemspec
+# @see https://github.com/bundler/bundler/issues/2018#issuecomment-6819359
+#
+#
+
 require 'active_model'
 require 'active_support'
 

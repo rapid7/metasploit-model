@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Base do
+RSpec.describe Metasploit::Model::Base do
   subject(:base_class) do
     Class.new(described_class)
   end
@@ -12,7 +10,7 @@ describe Metasploit::Model::Base do
     it 'should use public_send to set attributes' do
       attribute = :attribute
       value = double('Value')
-      base_class.any_instance.should_receive(:public_send).with("#{attribute}=", value)
+      expect_any_instance_of(base_class).to receive(:public_send).with("#{attribute}=", value)
 
       base_class.new(attribute => value)
     end
@@ -28,7 +26,7 @@ describe Metasploit::Model::Base do
     end
 
     before(:each) do
-      base_instance.stub(:valid? => valid)
+      allow(base_instance).to receive(:valid?).and_return(valid)
     end
 
     context 'with valid' do
