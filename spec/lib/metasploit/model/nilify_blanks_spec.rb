@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::NilifyBlanks do
+RSpec.describe Metasploit::Model::NilifyBlanks do
   let(:base_class) do
     # capture for class_eval scope
     described_class = self.described_class
@@ -24,7 +22,7 @@ describe Metasploit::Model::NilifyBlanks do
     end
 
     it 'should register #nilify_blanks as a before validation callback' do
-      base_class.should_receive(:before_validation).with(:nilify_blanks)
+      expect(base_class).to receive(:before_validation).with(:nilify_blanks)
 
       # capture for class_eval scope
       described_class = self.described_class
@@ -39,10 +37,10 @@ describe Metasploit::Model::NilifyBlanks do
     it 'should support adding multiple attributes' do
       attributes = [:a, :b]
 
-      base_class.nilify_blank *attributes
+      base_class.nilify_blank(*attributes)
 
       attributes.each do |attribute|
-        base_class.nilify_blank_attribute_set.should include(attribute)
+        expect(base_class.nilify_blank_attribute_set).to include(attribute)
       end
     end
 
@@ -52,7 +50,7 @@ describe Metasploit::Model::NilifyBlanks do
       base_class.nilify_blank attribute
       base_class.nilify_blank attribute
 
-      base_class.nilify_blank_attribute_set.length.should == 1
+      expect(base_class.nilify_blank_attribute_set.length).to eq(1)
     end
   end
 
@@ -90,14 +88,14 @@ describe Metasploit::Model::NilifyBlanks do
     end
 
     it 'should check if value responds to blank?' do
-      value.should_receive(:respond_to?).with(:blank?)
+      expect(value).to receive(:respond_to?).with(:blank?)
 
       nilify_blanks
     end
 
     context 'with value responds to blank?' do
       it 'should call blank?' do
-        value.should_receive(:blank?)
+        expect(value).to receive(:blank?)
 
         nilify_blanks
       end
@@ -110,7 +108,7 @@ describe Metasploit::Model::NilifyBlanks do
         it 'should set attribute to nil' do
           nilify_blanks
 
-          base_instance.blank.should be_nil
+          expect(base_instance.blank).to be_nil
         end
       end
 
@@ -133,11 +131,11 @@ describe Metasploit::Model::NilifyBlanks do
       end
 
       before(:each) do
-        value.stub(:respond_to?).with(:blank?).and_return(false)
+        allow(value).to receive(:respond_to?).with(:blank?).and_return(false)
       end
 
       it 'should not call blank?' do
-        value.should_not_receive(:blank?)
+        expect(value).not_to receive(:blank?)
 
         nilify_blanks
       end
@@ -150,7 +148,7 @@ describe Metasploit::Model::NilifyBlanks do
     end
 
     it 'should default to an empty Set' do
-      nilify_blank_attribute_set.should == Set.new
+      expect(nilify_blank_attribute_set).to eq(Set.new)
     end
   end
 end

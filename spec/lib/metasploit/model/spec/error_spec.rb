@@ -1,5 +1,3 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Spec::Error do
-  it { should be_a StandardError }
+RSpec.describe Metasploit::Model::Spec::Error do
+  it { is_expected.to be_a StandardError }
 end

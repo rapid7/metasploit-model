@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operator::Association do
+RSpec.describe Metasploit::Model::Search::Operator::Association, type: :model do
   subject(:operator) do
     described_class.new(
         :association => association,
@@ -16,11 +14,11 @@ describe Metasploit::Model::Search::Operator::Association do
     double('Metasploit::Model::Search::Operator::Base')
   end
 
-  it { should be_a Metasploit::Model::Search::Operator::Base }
+  it { is_expected.to be_a Metasploit::Model::Search::Operator::Base }
 
   context 'validations' do
-    it { should validate_presence_of(:association) }
-    it { should validate_presence_of(:source_operator) }
+    it { is_expected.to validate_presence_of(:association) }
+    it { is_expected.to validate_presence_of(:source_operator) }
   end
 
   context '#help' do
@@ -51,7 +49,7 @@ describe Metasploit::Model::Search::Operator::Association do
       'source_operator_name'
     }
 
-    it { should be_a Symbol }
+    it { is_expected.to be_a Symbol }
 
     it 'should be <association>.<source_operator.name>' do
       expect(name).to eq :"#{association}.#{source_operator_name}"
@@ -81,7 +79,7 @@ describe Metasploit::Model::Search::Operator::Association do
       }
     }
 
-    it { should be_a Metasploit::Model::Search::Operation::Association }
+    it { is_expected.to be_a Metasploit::Model::Search::Operation::Association }
 
     context 'Metasploit::Model::Search::Operation::Association' do
       context '#operator' do

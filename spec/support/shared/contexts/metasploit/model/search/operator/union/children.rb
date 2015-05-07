@@ -1,4 +1,4 @@
-shared_context 'Metasploit::Model::Search::Operator::Group::Union#children' do
+RSpec.shared_context 'Metasploit::Model::Search::Operator::Group::Union#children' do
   subject(:children) do
     operator.children(formatted_value)
   end

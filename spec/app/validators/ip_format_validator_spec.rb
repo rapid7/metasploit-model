@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe IpFormatValidator do
+RSpec.describe IpFormatValidator do
   subject(:ip_format_validator) do
     described_class.new(
         :attributes => attributes
@@ -55,7 +53,7 @@ describe IpFormatValidator do
         it 'should not record any errors' do
           validate_each
 
-          record.errors.should be_empty
+          expect(record.errors).to be_empty
         end
       end
 
@@ -67,7 +65,7 @@ describe IpFormatValidator do
         it 'should not record any errors' do
           validate_each
 
-          record.errors.should be_empty
+          expect(record.errors).to be_empty
         end
       end
 
@@ -79,7 +77,7 @@ describe IpFormatValidator do
         it 'should record error' do
           validate_each
 
-          record.errors[attribute].should include("#{error} and not an IPv4 address range in CIDR or netmask notation")
+          expect(record.errors[attribute]).to include("#{error} and not an IPv4 address range in CIDR or netmask notation")
         end
       end
 
@@ -91,7 +89,7 @@ describe IpFormatValidator do
         it 'should record error' do
           validate_each
 
-          record.errors[attribute].should include("#{error} and not an IPv6 address range in CIDR or netmask notation")
+          expect(record.errors[attribute]).to include("#{error} and not an IPv6 address range in CIDR or netmask notation")
         end
       end
 
@@ -103,7 +101,7 @@ describe IpFormatValidator do
         it 'should record error' do
           validate_each
 
-          record.errors[attribute].should include(error)
+          expect(record.errors[attribute]).to include(error)
         end
       end
 
@@ -117,7 +115,7 @@ describe IpFormatValidator do
       it 'should record error on attribute' do
         validate_each
 
-        record.errors[attribute].should include(error)
+        expect(record.errors[attribute]).to include(error)
       end
     end
   end

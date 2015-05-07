@@ -1,4 +1,4 @@
-shared_examples_for 'Metasploit::Model::Translation' do |options={}|
+RSpec.shared_examples_for 'Metasploit::Model::Translation' do |options={}|
   options.assert_valid_keys(:metasploit_model_ancestor)
 
   metasploit_model_ancestor = options.fetch(:metasploit_model_ancestor)
@@ -14,7 +14,7 @@ shared_examples_for 'Metasploit::Model::Translation' do |options={}|
           metasploit_model_ancestor.instance_variable_get :@_dependencies
         end
 
-        it { should include Metasploit::Model::Translation }
+        it { is_expected.to include Metasploit::Model::Translation }
       end
     end
   end
@@ -24,7 +24,7 @@ shared_examples_for 'Metasploit::Model::Translation' do |options={}|
       base_class.i18n_scope
     end
 
-    it { should == 'metasploit.model' }
+    it { is_expected.to eq('metasploit.model') }
   end
 
   context 'lookup_ancestors' do
@@ -32,6 +32,6 @@ shared_examples_for 'Metasploit::Model::Translation' do |options={}|
       base_class.lookup_ancestors
     end
 
-    it { should include metasploit_model_ancestor }
+    it { is_expected.to include metasploit_model_ancestor }
   end
 end

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Association::Error do
+RSpec.describe Metasploit::Model::Association::Error do
   context '#initialize' do
     let(:attributes) do
       {

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Engine do
+RSpec.describe Metasploit::Model::Engine do
   context 'config' do
     subject(:config) do
       described_class.config
@@ -21,7 +19,13 @@ describe Metasploit::Model::Engine do
             options[:factory_girl]
           end
 
-          its([:dir]) { should == 'spec/factories' }
+          context 'dir' do
+            subject(:dir) {
+              factory_girl[:dir]
+            }
+
+            it { is_expected.to eq('spec/factories') }
+          end
         end
 
         context 'rails' do
@@ -29,10 +33,37 @@ describe Metasploit::Model::Engine do
             options[:rails]
           end
 
-          its([:assets]) { should be_false }
-          its([:fixture_replacement]) { should == :factory_girl }
-          its([:helper]) { should be_false }
-          its([:test_framework]) { should == :rspec }
+          context 'assets' do
+            subject(:assets) {
+              rails[:assets]
+            }
+
+            it { is_expected.to eq(false) }
+          end
+
+          context 'fixture_replacement' do
+            subject(:fixture_replacement) {
+              rails[:fixture_replacement]
+            }
+
+            it { is_expected.to eq(:factory_girl) }
+          end
+
+          context 'helper' do
+            subject(:helper) {
+              rails[:helper]
+            }
+
+            it { is_expected.to eq(false) }
+          end
+
+          context 'test_framework' do
+            subject(:test_framework) {
+              rails[:test_framework]
+            }
+
+            it { is_expected.to eq(:rspec) }
+          end
         end
 
         context 'rspec' do
@@ -40,7 +71,13 @@ describe Metasploit::Model::Engine do
             options[:rspec]
           end
 
-          its([:fixture]) { should be_false }
+          context 'fixture' do
+            subject(:fixture) {
+              rspec[:fixture]
+            }
+
+            it { is_expected.to eq(false) }
+          end
         end
       end
     end
@@ -61,7 +98,7 @@ describe Metasploit::Model::Engine do
       end
 
       it 'should run after factory_girl.set_factory_paths' do
-        initializer.after.should == 'factory_girl.set_factory_paths'
+        expect(initializer.after).to eq('factory_girl.set_factory_paths')
       end
 
       context 'running' do
@@ -73,7 +110,7 @@ describe Metasploit::Model::Engine do
           it 'should prepend full path to spec/factories to FactoryGirl.definition_file_paths' do
             definition_file_path = Metasploit::Model::Engine.root.join('spec', 'factories')
 
-            FactoryGirl.definition_file_paths.should_receive(:unshift).with(definition_file_path)
+            expect(FactoryGirl.definition_file_paths).to receive(:unshift).with(definition_file_path)
 
             run
           end

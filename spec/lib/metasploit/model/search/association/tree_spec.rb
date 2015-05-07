@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Association::Tree do
+RSpec.describe Metasploit::Model::Association::Tree do
   context 'expand' do
     subject(:expand) {
       described_class.expand(associations)
@@ -99,7 +97,7 @@ describe Metasploit::Model::Association::Tree do
               nil
             }
 
-            it { should be_nil }
+            it { is_expected.to be_nil }
           end
 
           context 'without nil' do
@@ -311,7 +309,7 @@ describe Metasploit::Model::Association::Tree do
         nil
       }
 
-      it { should == [] }
+      it { is_expected.to eq([]) }
     end
   end
 
