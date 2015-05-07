@@ -26,12 +26,7 @@ group :test do
   gem 'coveralls', require: false
   # Engine tasks are loaded using railtie
   gem 'railties', *rails_version_constraint
-  gem 'rspec', '~> 3.1'
-  # need rspec-core >= 2.14.0 because 2.14.0 introduced RSpec::Core::SharedExampleGroup::TopLevel
-  gem 'rspec-core', '>= 2.14.0'
-  # need rspec-rails >= 2.12.0 as 2.12.0 adds support for redefining named subject in nested context that uses the
-  # named subject from the outer context without causing a stack overflow.
-  gem 'rspec-rails', '>= 2.12.0'
+  gem 'rspec-rails', '~> 3.1'
   # In a full rails project, factory_girl_rails would be in both the :development, and :test group, but since we only
   # want rails in :test, factory_girl_rails must also only be in :test.
   # add matchers from shoulda, such as validates_presence_of, which are useful for testing validations
