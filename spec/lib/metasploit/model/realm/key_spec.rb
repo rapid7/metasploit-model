@@ -19,6 +19,7 @@ describe Metasploit::Model::Realm::Key do
       it { should include described_class::ACTIVE_DIRECTORY_DOMAIN }
       it { should include described_class::ORACLE_SYSTEM_IDENTIFIER }
       it { should include described_class::POSTGRESQL_DATABASE }
+      it { should include described_class::SAP_CLIENT }
       it { should include described_class::WILDCARD }
     end
 
@@ -37,6 +38,15 @@ describe Metasploit::Model::Realm::Key do
       end
 
       it { should == 'PostgreSQL Database' }
+      it { should be_in described_class::ALL }
+    end
+
+    context 'SAP CLIENT' do
+      subject(:sap_client) do
+        described_class::SAP_CLIENT
+      end
+
+      it { should == 'SAP Client' }
       it { should be_in described_class::ALL }
     end
 
