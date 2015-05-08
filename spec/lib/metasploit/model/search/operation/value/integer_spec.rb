@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Value::Integer do
+RSpec.describe Metasploit::Model::Search::Operation::Value::Integer do
   it_should_behave_like 'Metasploit::Model::Search::Operation::Value::Integer' do
     let(:operation_class) do
       described_class = self.described_class

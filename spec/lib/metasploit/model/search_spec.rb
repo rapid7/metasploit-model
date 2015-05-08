@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search do
+RSpec.describe Metasploit::Model::Search do
   subject(:base_instance) do
     base_class.new
   end
@@ -16,9 +14,9 @@ describe Metasploit::Model::Search do
     base_class.send(:include, described_class)
   end
 
-  it { should be_a Metasploit::Model::Search::Association }
-  it { should be_a Metasploit::Model::Search::Attribute }
-  it { should be_a Metasploit::Model::Search::With }
+  it { is_expected.to be_a Metasploit::Model::Search::Association }
+  it { is_expected.to be_a Metasploit::Model::Search::Attribute }
+  it { is_expected.to be_a Metasploit::Model::Search::With }
 
   context 'search_operator_by_name' do
     subject(:search_operator_by_name) do
@@ -45,7 +43,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be same as the attribute' do
-            name.should == attribute
+            expect(name).to eq(attribute)
           end
         end
       end
@@ -90,7 +88,7 @@ describe Metasploit::Model::Search do
           "#{association}.#{associated_attribute}".to_sym
         end
 
-        it { should be_a Metasploit::Model::Search::Operator::Association }
+        it { is_expected.to be_a Metasploit::Model::Search::Operator::Association }
 
         context 'association' do
           subject(:operator_association) do
@@ -98,7 +96,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be the registered association' do
-            operator_association.should == association
+            expect(operator_association).to eq(association)
           end
         end
 
@@ -112,7 +110,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be operator from associated class' do
-            source_operator.should == direct_attribute_operator
+            expect(source_operator).to eq(direct_attribute_operator)
           end
         end
 
@@ -122,7 +120,7 @@ describe Metasploit::Model::Search do
           end
 
           it 'should be class that called search_operator_by_name' do
-            klass.should == base_class
+            expect(klass).to eq(base_class)
           end
         end
       end
@@ -155,7 +153,7 @@ describe Metasploit::Model::Search do
         end
 
         it 'should be in search_operator_by_name' do
-          named_operator.should == operator
+          expect(named_operator).to eq(operator)
         end
       end
     end
@@ -163,7 +161,7 @@ describe Metasploit::Model::Search do
     context 'without search attribute' do
       context 'without search association' do
         context 'without search with' do
-          it { should be_empty }
+          it { is_expected.to be_empty }
         end
       end
     end

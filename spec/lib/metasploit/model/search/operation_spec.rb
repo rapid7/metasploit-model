@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation do
+RSpec.describe Metasploit::Model::Search::Operation do
   context 'parse' do
     subject(:parse) do
       described_class.parse(options)
@@ -48,8 +46,8 @@ describe Metasploit::Model::Search::Operation do
 
         context "with at least one ':' in :formatted_operation" do
           before(:each) do
-            query.stub(:parse_operator).with(formatted_operator).and_return(operator)
-            operator.stub(:operate_on).with(formatted_value).and_return(operation)
+            allow(query).to receive(:parse_operator).with(formatted_operator).and_return(operator)
+            allow(operator).to receive(:operate_on).with(formatted_value).and_return(operation)
           end
 
           context "with multiple ':' in :formatted_operation" do
@@ -58,13 +56,13 @@ describe Metasploit::Model::Search::Operation do
             end
 
             it "should treat portion before first ':' as formatted operator" do
-              query.should_receive(:parse_operator).with(formatted_operator)
+              expect(query).to receive(:parse_operator).with(formatted_operator)
 
               parse
             end
 
             it "should treat portion after first ':' as formatted value including later ':'" do
-              operator.should_receive(:operate_on).with(formatted_value)
+              expect(operator).to receive(:operate_on).with(formatted_value)
 
               parse
             end
@@ -76,13 +74,13 @@ describe Metasploit::Model::Search::Operation do
             end
 
             it "should use portion before ':' as formatted operator" do
-              query.should_receive(:parse_operator).with(formatted_operator)
+              expect(query).to receive(:parse_operator).with(formatted_operator)
 
               parse
             end
 
             it "should use portion after ':' as formatted value" do
-              operator.should_receive(:operate_on).with(formatted_value)
+              expect(operator).to receive(:operate_on).with(formatted_value)
 
               parse
             end
@@ -103,17 +101,17 @@ describe Metasploit::Model::Search::Operation do
           end
 
           it "should use entirety as formatted operator" do
-            operator.stub(:operate_on).and_return(operation)
+            allow(operator).to receive(:operate_on).and_return(operation)
 
-            query.should_receive(:parse_operator).with(formatted_operator).and_return(operator)
+            expect(query).to receive(:parse_operator).with(formatted_operator).and_return(operator)
 
             parse
           end
 
           it "should use '' as formatted value instead of nil" do
-            query.stub(:parse_operator).and_return(operator)
+            allow(query).to receive(:parse_operator).and_return(operator)
 
-            operator.should_receive(:operate_on).with('')
+            expect(operator).to receive(:operate_on).with('')
 
             parse
           end

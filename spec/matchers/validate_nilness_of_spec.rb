@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe 'validate_nilness_of' do
   let(:record) {
     record_class.new

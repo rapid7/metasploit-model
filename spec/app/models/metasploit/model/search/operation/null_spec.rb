@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Search::Operation::Null do
+RSpec.describe Metasploit::Model::Search::Operation::Null, type: :model do
   context 'validation' do
     context 'operator' do
       context 'null' do
@@ -41,7 +39,7 @@ describe Metasploit::Model::Search::Operation::Null do
           end
 
           it 'should not record error' do
-            errors.should_not include(error)
+            expect(errors).not_to include(error)
           end
         end
 
@@ -51,11 +49,11 @@ describe Metasploit::Model::Search::Operation::Null do
           end
 
           it 'should record error' do
-            errors.should include(error)
+            expect(errors).to include(error)
           end
 
           it 'should have no other errors, so that it would be valid without this type check on operator' do
-            operation.errors.size.should == 1
+            expect(operation.errors.size).to eq(1)
           end
         end
       end

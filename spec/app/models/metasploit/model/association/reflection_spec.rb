@@ -1,10 +1,8 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Association::Reflection do
+RSpec.describe Metasploit::Model::Association::Reflection, type: :model do
   context 'validations' do
-    it { should validate_presence_of :model }
-    it { should validate_presence_of :name }
-    it { should validate_presence_of :class_name }
+    it { is_expected.to validate_presence_of :model }
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :class_name }
   end
 
   context '#klass' do
@@ -42,7 +40,7 @@ describe Metasploit::Model::Association::Reflection do
     end
 
     it 'should return Class with Class#name #class_name' do
-      klass.should == class_name_class
+      expect(klass).to eq(class_name_class)
     end
   end
 end

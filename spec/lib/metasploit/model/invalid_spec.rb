@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Invalid do
+RSpec.describe Metasploit::Model::Invalid do
   subject(:invalid) do
     described_class.new(model)
   end
@@ -15,16 +13,16 @@ describe Metasploit::Model::Invalid do
     end
   end
 
-  it { should be_a Metasploit::Model::Error }
+  it { is_expected.to be_a Metasploit::Model::Error }
 
   it 'should use ActiveModel::Errors#full_messages' do
-    model.errors.should_receive(:full_messages).and_call_original
+    expect(model.errors).to receive(:full_messages).and_call_original
 
     described_class.new(model)
   end
 
   it 'should translate errors using metasploit.model.invalid' do
-    I18n.should_receive(:translate).with(
+    expect(I18n).to receive(:translate).with(
         'metasploit.model.errors.messages.model_invalid',
         hash_including(
             :errors => anything
@@ -36,10 +34,10 @@ describe Metasploit::Model::Invalid do
 
   it 'should set translated errors as message' do
     message = "translated message"
-    I18n.stub(:translate).with('metasploit.model.errors.messages.model_invalid', anything).and_return(message)
+    allow(I18n).to receive(:translate).with('metasploit.model.errors.messages.model_invalid', anything).and_return(message)
     instance = described_class.new(model)
 
-    instance.message.should == message
+    expect(instance.message).to eq(message)
   end
 
   context '#model' do
@@ -48,7 +46,7 @@ describe Metasploit::Model::Invalid do
     end
 
     it 'should be the passed in model' do
-      error_model.should == model
+      expect(error_model).to eq(model)
     end
   end
 end

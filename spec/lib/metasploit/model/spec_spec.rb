@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Metasploit::Model::Spec do
+RSpec.describe Metasploit::Model::Spec do
   before(:each) do
     @before_temporary_pathname = described_class.send(:remove_instance_variable, :@temporary_pathname)
   end
@@ -35,11 +33,11 @@ describe Metasploit::Model::Spec do
         end
 
         it 'should remove file tree' do
-          pathname.exist?.should be_true
+          expect(pathname.exist?).to eq(true)
 
           remove_temporary_pathname
 
-          pathname.exist?.should be_false
+          expect(pathname.exist?).to eq(false)
         end
       end
 
@@ -82,7 +80,7 @@ describe Metasploit::Model::Spec do
       end
 
       it 'should return set pathname' do
-        temporary_pathname.should == pathname
+        expect(temporary_pathname).to eq(pathname)
       end
     end
 
@@ -107,7 +105,11 @@ describe Metasploit::Model::Spec do
       expect {
         described_class.temporary_pathname = temporary_pathname
       }.to change {
-        described_class.instance_variable_get(:@temporary_pathname)
+                   if described_class.instance_variable_defined? :@temporary_pathname
+                     described_class.instance_variable_get(:@temporary_pathname)
+                   else
+                     nil
+                   end
       }.to(temporary_pathname)
     end
   end
