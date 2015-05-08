@@ -1,7 +1,7 @@
 RSpec.shared_examples_for 'search_with' do |operation_class, options={}|
   name = options.fetch(:name)
 
-  context name do
+  context name.to_s do
     subject(:with_operator) do
       base_class.search_with_operator_by_name[name]
     end
