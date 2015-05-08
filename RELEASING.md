@@ -12,14 +12,14 @@ Complete these steps on DESTINATION
 
 ### Terminology
 
-* "Enhancements" are widdening the API, such as by adding new classes or methods.
+* "Enhancements" are widening the API, such as by adding new classes or methods.
 * "Bug Fixes" are fixes to the implementation that do not affect the public API.  If the public API is affected then
   the change should be listed as both a "Bug Fix" and either an "Enhancement" or "Incompatible Change" depending on how
   the bug was fixed.
 * "Deprecations" are changes to the implementation that cause deprecation warnings to be issued for APIs which will be
   removed in a future major release.  "Deprecations" are usually accompanied by an Enhancement that creates a new API
   that is meant to be used in favor of the deprecated API.
-* "Incompatbile Changes" are the removal of classes or methods or new required arguments or setup that shrink the API.
+* "Incompatible Changes" are the removal of classes or methods or new required arguments or setup that shrink the API.
   It is best practice to make a "Deprecation" for the API prior to its removal.
 
 ### Task List
