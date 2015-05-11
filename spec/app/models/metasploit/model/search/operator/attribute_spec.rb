@@ -30,7 +30,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
 
   context 'validations' do
     it { is_expected.to validate_presence_of(:attribute) }
-    it { is_expected.to ensure_inclusion_of(:type).in_array(described_class::TYPES) }
+    it { is_expected.to validate_inclusion_of(:type).in_array(described_class::TYPES) }
   end
 
   context '#attribute_enumerable' do

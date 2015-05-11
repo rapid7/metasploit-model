@@ -12,14 +12,14 @@ Complete these steps on DESTINATION
 
 ### Terminology
 
-* "Enhancements" are widdening the API, such as by adding new classes or methods.
+* "Enhancements" are widening the API, such as by adding new classes or methods.
 * "Bug Fixes" are fixes to the implementation that do not affect the public API.  If the public API is affected then
   the change should be listed as both a "Bug Fix" and either an "Enhancement" or "Incompatible Change" depending on how
   the bug was fixed.
 * "Deprecations" are changes to the implementation that cause deprecation warnings to be issued for APIs which will be
   removed in a future major release.  "Deprecations" are usually accompanied by an Enhancement that creates a new API
   that is meant to be used in favor of the deprecated API.
-* "Incompatbile Changes" are the removal of classes or methods or new required arguments or setup that shrink the API.
+* "Incompatible Changes" are the removal of classes or methods or new required arguments or setup that shrink the API.
   It is best practice to make a "Deprecation" for the API prior to its removal.
 
 ### Task List
@@ -40,18 +40,21 @@ Complete these steps on DESTINATION
 
 The entries in the [CHANGELOG.md](CHANGELOG.md) can be used to help determine how the `VERSION` should be bumped.
 
-### Compatible changes
+### Bug fixes
 
-If the [CHANGELOG.md](CHANGELOG.md) contains only Enhancements, Bug Fixes, and/or Deprecations for the Next Release then
-increment [`PATCH`](lib/metasploit/model/version.rb).
+If the [CHANGELOG.md](CHANGELOG.md) contains only Bug Fixes for the Next Release, then increment
+[`PATCH`](lib/metasploit/model/version.rb).
 
-### Incompatible changes
+### Compatible API changes
 
-If the [CHANGELOG.md](CHANGELOG.md) contains any Incompatible Changes for the Next Release, then you can either (1)
-decide to remain pre-1.0.0 or (2) advance to 1.0.0.
+If the [CHANGELOG.md](CHANGELOG.md) contains any Enhancements or Deprecations, then increment
+[`MINOR`](lib/metasploit/model/version.rb) and reset [`PATCH`](lib/metasploit/model/version.rb) to `0`.
 
-1. To remain pre-1..0.0, then increment [`MINOR`](lib/metasploit/model/version.rb) and reset [`PATCH`](lib/metasploit/model/version.rb) to `0`.
-2. To advance to 1.0.0, increment [`MAJOR`](lib/metasploit/model/version.rb) and reset [`MINOR`](lib/metasploit/model/version.rb and [`PATCH`](lib/metasploit/model/version.rb) to `0`.
+### Incompatible API changes
+
+If the [CHANGELOG.md](CHANGELOG.md) contains any Incompatible Change, then increment
+[`MAJOR`](lib/metasploit/model/version.rb) and reset [`MINOR`](lib/metasploit/model/version.rb and
+[`PATCH`](lib/metasploit/model/version.rb) to `0`.
 
 ## Setup [CHANGELOG.md](CHANGELOG.md) for next release
 
