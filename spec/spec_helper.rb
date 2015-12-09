@@ -114,3 +114,12 @@ RSpec.configure do |config|
     Metasploit::Model::Spec.remove_temporary_pathname
   end
 end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.library :active_record
+    with.library :active_model
+
+    with.test_framework :rspec
+  end
+end
