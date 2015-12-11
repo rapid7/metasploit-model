@@ -13,8 +13,6 @@ module Metasploit
       # The patch version number, scoped to the {MAJOR} and {MINOR} version numbers.
       PATCH = 1
 
-      # the prerelease identifier
-      PRERELEASE = 'shoulda-matchers-broken'
       #
       # Module Methods
       #
