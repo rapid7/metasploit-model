@@ -5,6 +5,7 @@
 #
 # 1. Add a String constant where the constant name is in SCREAMING_SNAKE_CASE and the String in Title Case.
 # 2. Add the new constant to {ALL}.
+# 3. Add a new key/value to {SHORT_NAMES} for this constant.
 module Metasploit::Model::Realm::Key
   #
   # CONSTANTS
@@ -27,6 +28,9 @@ module Metasploit::Model::Realm::Key
   # database and does not allow authenticating to just a server (which would be an `Mdm::Service`).
   POSTGRESQL_DATABASE = 'PostgreSQL Database'
 
+  # An RSYNC module (share) name, which can optionally require authentication.
+  RSYNC_MODULE = 'RSYNC Module'
+
   # This is a Wildcard Realm Type which indicates we don't know or care what type of Realm it is.
   WILDCARD = '*'
 
@@ -36,6 +40,7 @@ module Metasploit::Model::Realm::Key
     DB2_DATABASE,
     ORACLE_SYSTEM_IDENTIFIER,
     POSTGRESQL_DATABASE,
+    RSYNC_MODULE,
     WILDCARD
   ]
 
@@ -46,6 +51,7 @@ module Metasploit::Model::Realm::Key
     'db2db'    => DB2_DATABASE,
     'sid'      => ORACLE_SYSTEM_IDENTIFIER,
     'pgdb'     => POSTGRESQL_DATABASE,
+    'rsync'    => RSYNC_MODULE,
     'wildcard' => WILDCARD
   }
 end
