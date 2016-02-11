@@ -47,7 +47,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Group::Base, type: :model do
     # Callbacks
     #
 
-    before(:each) do
+    before(:example) do
       allow(operator).to receive(:children).and_return(children)
     end
 

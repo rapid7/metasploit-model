@@ -1,9 +1,9 @@
 RSpec.describe Metasploit::Model::Spec do
-  before(:each) do
+  before(:example) do
     @before_temporary_pathname = described_class.send(:remove_instance_variable, :@temporary_pathname)
   end
 
-  after(:each) do
+  after(:example) do
     described_class.instance_variable_set(:@temporary_pathname, @before_temporary_pathname)
   end
 
@@ -17,12 +17,12 @@ RSpec.describe Metasploit::Model::Spec do
     end
 
     context 'with temporary_pathname set' do
-      before(:each) do
+      before(:example) do
         described_class.temporary_pathname = pathname
       end
 
       context 'that exists' do
-        before(:each) do
+        before(:example) do
           pathname.mkpath
 
           child_pathname = pathname.join('child')
@@ -69,7 +69,7 @@ RSpec.describe Metasploit::Model::Spec do
         Metasploit::Model::Engine.root.join('spec', 'pathname')
       end
 
-      before(:each) do
+      before(:example) do
         described_class.temporary_pathname = pathname
       end
 

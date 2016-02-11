@@ -31,7 +31,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Help do
       end
     end
 
-    before(:each) do
+    before(:example) do
       # operator needs to be named or mode_name will fail.
       stub_const('OperatorClass', operator_class)
     end

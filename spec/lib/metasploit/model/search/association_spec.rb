@@ -17,7 +17,7 @@ RSpec.describe Metasploit::Model::Search::Association do
     }
 
     context 'with previous call to search_association with same association' do
-      before(:each) do
+      before(:example) do
         base_class.search_association association
       end
 
@@ -29,7 +29,7 @@ RSpec.describe Metasploit::Model::Search::Association do
     end
 
     context 'with association tree rooted on association' do
-      before(:each) do
+      before(:example) do
         base_class.search_associations association => :child_association
       end
 

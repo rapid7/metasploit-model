@@ -22,7 +22,7 @@ RSpec.describe Metasploit::Model::File do
       Metasploit::Model::Spec.temporary_pathname.join(symlink_basename)
     end
 
-    before(:each) do
+    before(:example) do
       real_pathname.mkpath
 
       Dir.chdir(Metasploit::Model::Spec.temporary_pathname.to_path) do

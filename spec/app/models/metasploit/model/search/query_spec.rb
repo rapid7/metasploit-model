@@ -18,7 +18,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
         )
       end
 
-      before(:each) do
+      before(:example) do
         stub_const('Queried', klass)
 
         # include after stubbing constant so that Class#name can be used for search_i18n_scope
@@ -33,7 +33,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
           )
         end
 
-        before(:each) do
+        before(:example) do
           query.valid?
         end
 
@@ -71,7 +71,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
           described_class.new
         end
 
-        before(:each) do
+        before(:example) do
           operation = double('Invalid Operation', :valid? => valid)
           allow(query).to receive(:operations).and_return([operation])
         end
@@ -198,7 +198,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
         )
       end
 
-      before(:each) do
+      before(:example) do
         stub_const('QueriedClass', klass)
 
         # include after stubbing const so that search_i18n_scope can use Class#name
@@ -262,7 +262,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
         )
       end
 
-      before(:each) do
+      before(:example) do
         stub_const('QueriedClass', klass)
 
         # include after stubbing const so that search_i18n_scope can use Class#name
@@ -288,7 +288,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
           ''
         end
 
-        before(:each) do
+        before(:example) do
           @operator = klass.search_attribute attribute, :type => type
         end
 
@@ -441,7 +441,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
       )
     end
 
-    before(:each) do
+    before(:example) do
       stub_const('Queried', klass)
 
       klass.send(:include, Metasploit::Model::Search)
@@ -525,7 +525,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
       )
     end
 
-    before(:each) do
+    before(:example) do
       stub_const('QueriedClass', klass)
 
       # include after stubbing const so that search_i18n_scope can use Class#name
@@ -584,7 +584,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
       )
     end
 
-    before(:each) do
+    before(:example) do
       stub_const('Queried', klass)
 
       klass.send(:include, Metasploit::Model::Search)
@@ -685,7 +685,7 @@ RSpec.describe Metasploit::Model::Search::Query, type: :model do
     # Callbacks
     #
 
-    before(:each) do
+    before(:example) do
       stub_const('Queried', klass)
 
       klass.send(:include, Metasploit::Model::Search)

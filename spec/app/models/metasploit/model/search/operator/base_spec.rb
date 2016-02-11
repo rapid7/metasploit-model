@@ -8,7 +8,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Base, type: :model do
       described_class.new(klass: klass)
     end
 
-    before(:each) do
+    before(:example) do
       # have to stub since it's not implemented on base
       allow(operator).to receive(:name).and_return(name)
     end

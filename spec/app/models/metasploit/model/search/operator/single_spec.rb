@@ -121,7 +121,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
       double('Operation Class')
     end
 
-    before(:each) do
+    before(:example) do
       allow(operator).to receive(:operation_class).and_return(operation_class)
     end
 
@@ -144,7 +144,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
       operator.send(:operation_class)
     end
 
-    before(:each) do
+    before(:example) do
       allow(operator).to receive(:type).and_return(type)
     end
 
@@ -210,7 +210,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
           nil
         end
 
-        before(:each) do
+        before(:example) do
           allow(operator).to receive(:name).and_return(name)
         end
 
@@ -230,7 +230,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
       operator.send(:operation_class_name)
     end
 
-    before(:each) do
+    before(:example) do
       allow(operator).to receive(:type).and_return(type)
     end
 
@@ -296,7 +296,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Single, type: :model do
           nil
         end
 
-        before(:each) do
+        before(:example) do
           allow(operator).to receive(:name).and_return(name)
         end
 

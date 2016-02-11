@@ -46,7 +46,7 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
           Module.new
         end
 
-        before(:each) do
+        before(:example) do
           # give mod a Module#name for use in options
           stub_const('Visited', mod)
         end
@@ -80,7 +80,7 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
           Module.new
         end
 
-        before(:each) do
+        before(:example) do
           stub_const('Visited::First', first_module)
           stub_const('Visited::Second', second_module)
         end
@@ -150,12 +150,12 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
       Class.new
     end
 
-    before(:each) do
+    before(:example) do
       stub_const('Visited::Class', klass)
     end
 
     context 'with klass in visitor_by_module' do
-      before(:each) do
+      before(:example) do
         base_class.visitor_by_module[klass] = klass_visitor
       end
 
@@ -177,14 +177,14 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
         )
       end
 
-      before(:each) do
+      before(:example) do
         stub_const('Visited::Ancestor', ancestor)
 
         klass.send(:include, ancestor)
       end
 
       context 'with ancestor in visitor_by_module' do
-        before(:each) do
+        before(:example) do
           base_class.visitor_by_module[ancestor] = ancestor_visitor
         end
 
@@ -200,7 +200,7 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
       end
 
       context "with ancestor Module#name in visitor_by_module_name" do
-        before(:each) do
+        before(:example) do
           base_class.visitor_by_module_name[ancestor.name] = ancestor_visitor
         end
 
@@ -268,7 +268,7 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
       Class.new
     end
 
-    before(:each) do
+    before(:example) do
       stub_const('Visited::Class', node_class)
 
       visitors = base_class.visit node.class.name, &block
@@ -302,7 +302,7 @@ RSpec.describe Metasploit::Model::Visitation::Visit do
         node_class.new
       end
 
-      before(:each) do
+      before(:example) do
         node_class.class_eval do
           attr_accessor :child
         end

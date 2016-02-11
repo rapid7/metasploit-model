@@ -192,7 +192,7 @@ RSpec.describe PasswordIsStrongValidator do
             username
           end
 
-          before(:each) do
+          before(:example) do
             record.username = username
           end
 

@@ -10,7 +10,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Association, type: :model d
   }
 
   context 'validation' do
-    before(:each) do
+    before(:example) do
       operation.valid?
     end
 

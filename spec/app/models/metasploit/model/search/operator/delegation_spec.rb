@@ -25,7 +25,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Delegation, type: :model do
         'Demodulized'
       end
 
-      before(:each) do
+      before(:example) do
         stub_const("Namespace::#{base_name}", subclass)
       end
 
@@ -35,7 +35,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Delegation, type: :model do
     end
 
     context 'with Camelized' do
-      before(:each) do
+      before(:example) do
         stub_const("CamelCase", subclass)
       end
 
@@ -64,7 +64,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Delegation, type: :model do
       }
     end
 
-    before(:each) do
+    before(:example) do
       outer_search_operator_by_name = search_operator_by_name
 
       klass.send(:define_singleton_method, :search_operator_by_name) do

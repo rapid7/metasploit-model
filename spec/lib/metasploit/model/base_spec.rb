@@ -25,7 +25,7 @@ RSpec.describe Metasploit::Model::Base do
       base_class.new
     end
 
-    before(:each) do
+    before(:example) do
       allow(base_instance).to receive(:valid?).and_return(valid)
     end
 

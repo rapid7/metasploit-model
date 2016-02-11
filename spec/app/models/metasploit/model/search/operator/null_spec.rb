@@ -11,7 +11,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Null, type: :model do
         I18n.translate('metasploit.model.errors.models.metasploit/model/search/operator/null.attributes.name.unknown')
       end
 
-      before(:each) do
+      before(:example) do
         operator.valid?
       end
 

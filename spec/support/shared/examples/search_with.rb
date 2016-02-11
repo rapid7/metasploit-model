@@ -23,7 +23,7 @@ RSpec.shared_examples_for 'search_with' do |operation_class, options={}|
       end
 
       context 'with en locale' do
-        around(:each) do |example|
+        around(:example) do |example|
           I18n.with_locale(:en) do
             example.run
           end

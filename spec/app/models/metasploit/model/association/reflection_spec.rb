@@ -35,7 +35,7 @@ RSpec.describe Metasploit::Model::Association::Reflection, type: :model do
       )
     end
 
-    before(:each) do
+    before(:example) do
       stub_const(class_name, class_name_class)
     end
 

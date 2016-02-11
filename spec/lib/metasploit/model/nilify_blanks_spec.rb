@@ -67,7 +67,7 @@ RSpec.describe Metasploit::Model::NilifyBlanks do
       'value'
     end
 
-    before(:each) do
+    before(:example) do
       base_class.class_eval do
         #
         # Attributes
@@ -130,7 +130,7 @@ RSpec.describe Metasploit::Model::NilifyBlanks do
         double('Value')
       end
 
-      before(:each) do
+      before(:example) do
         allow(value).to receive(:respond_to?).with(:blank?).and_return(false)
       end
 

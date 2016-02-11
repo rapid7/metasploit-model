@@ -44,7 +44,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Group::Base, type: :model d
           #
 
           context 'with all valid' do
-            before(:each) do
+            before(:example) do
               children.each do |child|
                 allow(child).to receive(:valid?).and_return(true)
               end
@@ -58,7 +58,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Group::Base, type: :model d
           end
 
           context 'with later valid' do
-            before(:each) do
+            before(:example) do
               allow(children.first).to receive(:valid?).and_return(false)
               allow(children.second).to receive(:valid?).and_return(true)
             end

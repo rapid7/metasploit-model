@@ -1,7 +1,7 @@
 RSpec.describe Metasploit::Model::Search::Operation::Date, type: :model do
   context 'validation' do
     context 'value' do
-      before(:each) do
+      before(:example) do
         operation.valid?
       end
 

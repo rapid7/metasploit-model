@@ -29,7 +29,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Null, type: :model do
           )
         end
 
-        before(:each) do
+        before(:example) do
           operation.valid?
         end
 

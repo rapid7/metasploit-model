@@ -102,7 +102,7 @@ RSpec.describe Metasploit::Model::Association do
       :associated_things
     end
 
-    before(:each) do
+    before(:example) do
       base_class.association name, :class_name => class_name
     end
 

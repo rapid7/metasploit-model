@@ -7,7 +7,7 @@ RSpec.describe Metasploit::Model::Search do
     Class.new
   end
 
-  before(:each) do
+  before(:example) do
     # class needs to be named or search_i18n_scope will error
     stub_const('Searched', base_class)
 
@@ -28,7 +28,7 @@ RSpec.describe Metasploit::Model::Search do
         :searched_attribute
       end
 
-      before(:each) do
+      before(:example) do
         base_class.search_attribute attribute, :type => :string
       end
 
@@ -66,7 +66,7 @@ RSpec.describe Metasploit::Model::Search do
         'AssociatedThing'
       end
 
-      before(:each) do
+      before(:example) do
         base_class.search_association association
         base_class.send(:include, Metasploit::Model::Association)
 
@@ -143,7 +143,7 @@ RSpec.describe Metasploit::Model::Search do
         double('Operator Class', :new => operator)
       end
 
-      before(:each) do
+      before(:example) do
         base_class.search_with operator_class
       end
 

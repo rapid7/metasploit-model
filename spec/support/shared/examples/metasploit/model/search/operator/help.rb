@@ -20,7 +20,7 @@ RSpec.shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
       'operator_name'
     end
 
-    before(:each) do
+    before(:example) do
       # klass needs to be named or model_name will fail.
       stub_const('Klass', klass)
       # since missing translations raise exceptions, and there is no translation for klass, have to stub out.
@@ -54,7 +54,7 @@ RSpec.shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
       }
     end
 
-    after(:each) do
+    after(:example) do
       @metasploit_model_translations.delete(:ancestors)
     end
 

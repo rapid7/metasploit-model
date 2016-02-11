@@ -12,7 +12,7 @@ RSpec.describe Metasploit::Model::Association::Error do
     end
 
     context 'without :model' do
-      before(:each) do
+      before(:example) do
         attributes.delete(:model)
       end
 
@@ -24,7 +24,7 @@ RSpec.describe Metasploit::Model::Association::Error do
     end
 
     context 'without :name' do
-      before(:each) do
+      before(:example) do
         attributes.delete(:name)
       end
 

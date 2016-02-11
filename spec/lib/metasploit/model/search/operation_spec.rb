@@ -45,7 +45,7 @@ RSpec.describe Metasploit::Model::Search::Operation do
         end
 
         context "with at least one ':' in :formatted_operation" do
-          before(:each) do
+          before(:example) do
             allow(query).to receive(:parse_operator).with(formatted_operator).and_return(operator)
             allow(operator).to receive(:operate_on).with(formatted_value).and_return(operation)
           end

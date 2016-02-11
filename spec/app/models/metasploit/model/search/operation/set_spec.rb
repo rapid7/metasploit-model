@@ -12,7 +12,7 @@ RSpec.describe Metasploit::Model::Search::Operation::Set, type: :model do
         set.errors[:value]
       end
 
-      before(:each) do
+      before(:example) do
         set.valid?
       end
 

@@ -15,7 +15,7 @@ RSpec.describe Metasploit::Model::Spec::PathnameCollision do
     end
 
     context 'with existing Pathname' do
-      before(:each) do
+      before(:example) do
         pathname.mkpath
       end
 
