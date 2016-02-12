@@ -13,7 +13,7 @@ module Metasploit
       # The patch version number, scoped to the {MAJOR} and {MINOR} version numbers.
       PATCH = 3
 
-      PRERELEASE = 'transpec-conversion'
+      
 
       #
       # Module Methods
