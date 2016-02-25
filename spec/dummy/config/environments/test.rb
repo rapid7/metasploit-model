@@ -23,7 +23,4 @@ Dummy::Application.configure do
 
   # Disable request forgery protection in test environment
   config.action_controller.allow_forgery_protection    = false
-
-  # Print deprecation notices to the stderr
-  config.active_support.deprecation = :stderr
 end

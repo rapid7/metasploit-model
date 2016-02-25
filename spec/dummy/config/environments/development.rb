@@ -13,9 +13,6 @@ Dummy::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Print deprecation notices to the Rails logger
-  config.active_support.deprecation = :log
-
   # Do not compress assets
   config.assets.compress = false
 
