@@ -1,13 +1,13 @@
 addons:
-  postgresql: '9.3'
+  postgresql: '9.5'
+group: stable
+sudo: false
 cache: bundler
+addons:
+  apt:
+    packages:
+      - graphviz
 language: ruby
 rvm:
-  - '2.1'
-  # JRuby failing for redcarpet and shoulda-matchers gems
-  # < 1.7.14
-  #- 'jruby-1.7.13'
-  # >= 1.7.14
-  #- 'jruby-1.7.14'
+  - 2.2
 script: bundle exec rake spec yard
-sudo: false
