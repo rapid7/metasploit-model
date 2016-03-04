@@ -12,8 +12,8 @@ module Metasploit
       MINOR = 0
       # The patch version number, scoped to the {MAJOR} and {MINOR} version numbers.
       PATCH = 3
-
-      
+      # the prerelease branch
+      PRERELEASE = 'rails-upgrade'
 
       #
       # Module Methods
