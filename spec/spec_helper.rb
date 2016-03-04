@@ -15,19 +15,8 @@ SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 require 'rspec/rails'
 
-# Use find_all_by_name instead of find_by_name as find_all_by_name will return pre-release versions
-gem_specification = Gem::Specification.find_all_by_name('metasploit-version').first
-
-roots = [
-    Metasploit::Model::Engine.root.to_path,
-    gem_specification.gem_dir
-]
-
-roots.each do |root|
-  Dir[File.join(root, 'spec', 'support', '**', '*.rb')].each do |f|
-    require f
-  end
-end
+# Requiring all support/**/*.rb files
+Dir["./spec/support/**/*.rb"].sort.each { |f| require f}
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

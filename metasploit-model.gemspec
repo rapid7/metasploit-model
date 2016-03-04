@@ -5,7 +5,7 @@ require 'metasploit/model/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'metasploit-model'
-  spec.version       = Metasploit::Model::GEM_VERSION
+  spec.version       = Metasploit::Model::VERSION
   spec.authors       = ['Luke Imhoff']
   spec.email         = ['luke_imhoff@rapid7.com']
   spec.description   = %q{Common code, such as validators and mixins, that are shared between ActiveModels in metasploit-framework and ActiveRecords in metasploit_data_models.}
@@ -19,8 +19,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.1'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
-  spec.add_development_dependency 'metasploit-version', '~> 0.1.3'
-  spec.add_development_dependency 'metasploit-yard', '~> 1.0'
+  spec.add_development_dependency 'metasploit-yard', '~> 1.1'
   spec.add_development_dependency 'rake'
 
   # documentation

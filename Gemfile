@@ -3,6 +3,9 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in metasploit-model.gemspec
 gemspec
 
+# gem 'metasploit-yard', github: 'rapid7/metasploit-yard', branch: 'staging/rails-upgrade'
+# gem 'metasploit-erd',  github: 'rapid7/metasploit-erd',  branch: 'staging/rails-upgrade'
+
 # used by dummy application
 group :development, :test do
   # supplies factories for producing model instance for specs
