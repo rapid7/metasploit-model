@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in metasploit-model.gemspec
 gemspec
 
-# gem 'metasploit-yard', github: 'rapid7/metasploit-yard', branch: 'staging/rails-upgrade'
-# gem 'metasploit-erd',  github: 'rapid7/metasploit-erd',  branch: 'staging/rails-upgrade'
+ gem 'metasploit-yard', github: 'rapid7/metasploit-yard', branch: 'staging/rails-upgrade'
+ gem 'metasploit-erd',  github: 'rapid7/metasploit-erd',  branch: 'staging/rails-upgrade'
 
 # used by dummy application
 group :development, :test do
@@ -19,8 +19,8 @@ group :test do
   # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
   # between its dependencies, which is now handled by this constraint.
   rails_version_constraint = [
-      '>= 4.0.9',
-      '< 4.1.0'
+      '>= 4.1',
+      '< 4.2'
   ]
 
   # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
