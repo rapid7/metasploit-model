@@ -30,6 +30,10 @@ group :test do
   # Engine tasks are loaded using railtie
   gem 'railties', *rails_version_constraint
   gem 'rspec-rails', '~> 3.1'
+  # Used for Postgres
+  gem 'pg'
+  # provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking.
+  gem "minitest"
   # In a full rails project, factory_girl_rails would be in both the :development, and :test group, but since we only
   # want rails in :test, factory_girl_rails must also only be in :test.
   # add matchers from shoulda, such as validates_presence_of, which are useful for testing validations
