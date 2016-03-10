@@ -23,3 +23,5 @@ doc
 Gemfile.lock
 # Packaging directory for builds
 pkg/*
+# Database configuration (with passwords) for specs
+spec/dummy/config/database.yml
