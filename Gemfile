@@ -13,6 +13,8 @@ group :development, :test do
   gem 'factory_girl', '>= 4.1.0'
   # auto-load factories from spec/factories
   gem 'factory_girl_rails'
+  # running documentation generation tasks and rspec tasks
+  gem 'rake', '~> 10.5'
 end
 
 group :test do
