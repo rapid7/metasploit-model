@@ -10,28 +10,24 @@ gemspec
 group :development, :test do
   # supplies factories for producing model instance for specs
   # Version 4.1.0 or newer is needed to support generate calls without the 'FactoryGirl.' in factory definitions syntax.
-  gem 'factory_girl', '>= 4.1.0'
+  gem 'factory_girl'
   # auto-load factories from spec/factories
   gem 'factory_girl_rails'
   # running documentation generation tasks and rspec tasks
-  gem 'rake', '~> 10.5'
+  gem 'rake'
 end
 
 group :test do
   # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
   # between its dependencies, which is now handled by this constraint.
-  rails_version_constraint = [
-      '>= 4.1',
-      '< 4.2'
-  ]
 
   # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
-  gem 'actionpack', *rails_version_constraint
+  gem 'actionpack', '~>4.1.15'
   # Uploads simplecov reports to coveralls.io
   gem 'coveralls', require: false
   # Engine tasks are loaded using railtie
-  gem 'railties', *rails_version_constraint
-  gem 'rspec-rails', '~> 3.1'
+  gem 'railties', '~>4.1.15'
+  gem 'rspec-rails'
   # Used for Postgres
   gem 'pg'
   # provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking.
