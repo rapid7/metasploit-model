@@ -28,10 +28,10 @@ Gem::Specification.new do |spec|
 
   # Dependency loading
 
-  spec.add_runtime_dependency 'activemodel', '~>4.1.15'
-  spec.add_runtime_dependency 'activesupport', '~>4.1.15'
+  spec.add_runtime_dependency 'activemodel', '~> 4.2.6'
+  spec.add_runtime_dependency 'activesupport', '~> 4.2.6'
 
-  spec.add_runtime_dependency 'railties', '~>4.1.15'
+  spec.add_runtime_dependency 'railties', '~> 4.2.6'
 
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard

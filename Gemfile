@@ -13,8 +13,6 @@ group :development, :test do
   gem 'factory_girl'
   # auto-load factories from spec/factories
   gem 'factory_girl_rails'
-  # running documentation generation tasks and rspec tasks
-  gem 'rake'
 end
 
 group :test do
@@ -22,11 +20,11 @@ group :test do
   # between its dependencies, which is now handled by this constraint.
 
   # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
-  gem 'actionpack', '~>4.1.15'
+  gem 'actionpack'
   # Uploads simplecov reports to coveralls.io
   gem 'coveralls', require: false
   # Engine tasks are loaded using railtie
-  gem 'railties', '~>4.1.15'
+  gem 'railties'
   gem 'rspec-rails'
   # Used for Postgres
   gem 'pg'
