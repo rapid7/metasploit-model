@@ -1,16 +1,19 @@
-addons:
-  postgresql: '9.5'
 group: stable
 sudo: false
 cache: bundler
+language: ruby
 addons:
+  postgresql: '9.3'
   apt:
     packages:
       - graphviz
-language: ruby
 rvm:
-  - 2.2.4
+  - 2.3.1
 before_script:
   - cp spec/dummy/config/database.yml.travis spec/dummy/config/database.yml
   - bundle exec rake db:setup
-script: bundle exec rake spec yard
+before_install:
+  - gem update bundler
+script:
+  - bundle exec rake spec
+  - bundle exec rake yard
