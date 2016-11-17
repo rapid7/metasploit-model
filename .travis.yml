@@ -9,9 +9,6 @@ addons:
       - graphviz
 rvm:
   - 2.3.1
-before_script:
-  - cp spec/dummy/config/database.yml.travis spec/dummy/config/database.yml
-  - bundle exec rake db:setup
 before_install:
   - gem update bundler
 script:
