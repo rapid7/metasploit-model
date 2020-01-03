@@ -1,5 +1,5 @@
 # Superclass for all Metasploit::Models.  Just adds a default {#initialize} to make models mimic behavior of
-# ActiveRecord::Base subclasses.
+# ApplicationRecord subclasses.
 class Metasploit::Model::Base
   include ActiveModel::Validations
 

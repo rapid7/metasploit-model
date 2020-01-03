@@ -4,7 +4,7 @@
 class NilValidator < ActiveModel::EachValidator
   # Validates that `value` is `nil`.
   #
-  # @param record [#errors, ActiveRecord::Base] an ActiveModel or ActiveRecord
+  # @param record [#errors, ApplicationRecord] an ActiveModel or ActiveRecord
   # @param attribute [Symbol] name of attribute being validated.
   # @param value [#nil?] value of `attribute` to check with `nil?`
   # @return [void]

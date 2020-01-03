@@ -7,7 +7,7 @@ class ParametersValidator < ActiveModel::EachValidator
   # Validates that attribute's value is Array<Array(String, String)> which is the only valid type signature for
   # serialized parameters.  Errors are specific to the how different `value` is compared to correct format.
   #
-  # @param record [#errors, ActiveRecord::Base] ActiveModel or ActiveRecord
+  # @param record [#errors, ApplicationRecord] ActiveModel or ActiveRecord
   # @param attribute [Symbol] serialized parameters attribute name.
   # @param value [Object, nil, Array, Array<Array>, Array<Array(String, String)>] serialized parameters.
   # @return [void]

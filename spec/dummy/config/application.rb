@@ -3,6 +3,7 @@ require File.expand_path('../boot', __FILE__)
 # Pick the frameworks you want:
 require 'active_model/railtie'
 require 'action_controller/railtie'
+require 'active_record/railtie'
 
 Bundler.require(*Rails.groups)
 
@@ -40,11 +41,6 @@ module Dummy
     # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true
 
-    # Enable the asset pipeline
-    config.assets.enabled = false
-
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
   end
 end
 

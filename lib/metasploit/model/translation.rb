@@ -1,6 +1,6 @@
 # ActiveRecord::Translation is a dirty bastard and overrides `ActiveModel::Translation#lookup_ancestors`, so that it
 # will only count superclasses, and not all ancestors.  Metasploit::Model needs the original behavior so that its
-# {Metasploit::Model::Module} modules can supply translations to both `ActiveRecord::Base` descendants in `Mdm` and
+# {Metasploit::Model::Module} modules can supply translations to both `ApplicationRecord` descendants in `Mdm` and
 # `ActiveModel` descendants in `Metasploit::Framework`
 #
 # @see https://github.com/rails/rails/issues/11409
