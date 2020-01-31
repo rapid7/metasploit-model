@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :metasploit_model_search_operator_attribute_attribute do |n|
     "metasploit_model_search_operator_attribute_attribute#{n}".to_sym
   end

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   trait :metasploit_model_base do
     to_create do |instance|
       # validate so before validation derivation occurs to mimic create for ActiveRecord.

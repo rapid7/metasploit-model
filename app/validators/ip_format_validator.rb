@@ -4,7 +4,7 @@ require 'ipaddr'
 class IpFormatValidator < ActiveModel::EachValidator
   # Validates that `value` is an IPv4 or IPv4 address.  Ranges in CIDR or netmask notation are not allowed.
   #
-  # @param record [#errors, ActiveRecord::Base] ActiveModel or ActiveRecord
+  # @param record [#errors, ApplicationRecord] ActiveModel or ActiveRecord
   # @param attribute [Symbol] name of IP address attribute.
   # @param value [String, nil] IP address.
   # @return [void]

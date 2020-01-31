@@ -16,7 +16,7 @@
 # The help for each operator is uses the `I18n` system, so the help for an attribute operator on a given class can
 # added to `config/locales/<lang>.yml`.  The scope of the lookup, under the language key is the `Class`'s
 # `i18n_scope`, which is `metasploit.model` if the `Class` includes {Metasploit::Model::Translation} or
-# `active_record` for `ActiveRecord::Base` subclasses.  Under the `i18n_scope`, any `Module#ancestor`'s
+# `active_record` for `ApplicationRecord` subclasses.  Under the `i18n_scope`, any `Module#ancestor`'s
 # `model_name.i18n_key` can be used to look up the help for an attribute's operator.  This allows for super
 # classes or mixins to define the search operator help for subclasses.
 #

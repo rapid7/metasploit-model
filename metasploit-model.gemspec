@@ -12,13 +12,11 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Metasploit Model Mixins and Validators}
 
   spec.files         = `git ls-files`.split($/)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = %w{app/models app/validators lib}
 
   spec.required_ruby_version = '>= 2.2.0'
 
-  spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'metasploit-yard'
   spec.add_development_dependency 'metasploit-erd'
   spec.add_development_dependency 'rake'
@@ -29,10 +27,10 @@ Gem::Specification.new do |spec|
 
   # Dependency loading
 
-  spec.add_runtime_dependency 'activemodel', '~> 4.2.6'
-  spec.add_runtime_dependency 'activesupport', '~> 4.2.6'
+  spec.add_runtime_dependency 'activemodel', '~> 5.2.2'
+  spec.add_runtime_dependency 'activesupport', '~> 5.2.2'
 
-  spec.add_runtime_dependency 'railties', '~> 4.2.6'
+  spec.add_runtime_dependency 'railties', '~> 5.2.2'
 
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :metasploit_model_association_reflection_class_name do |n|
     "Metasploit::Model::Association::Reflection::Class#{n}"
   end

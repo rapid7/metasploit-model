@@ -86,7 +86,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
     end
 
     let(:attribute) do
-      FactoryGirl.generate :metasploit_model_search_operator_attribute_attribute
+      FactoryBot.generate :metasploit_model_search_operator_attribute_attribute
     end
 
     let(:attribute_operator) do

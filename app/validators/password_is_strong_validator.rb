@@ -19,7 +19,7 @@ class PasswordIsStrongValidator < ActiveModel::EachValidator
   # * SHOULD NOT be in {COMMON_PASSWORDS}.
   # * SHOULD NOT repetitions.
   #
-  # @param record [#errors, #username, ActiveRecord::Base] ActiveModel or ActiveRecord that supports #username method.
+  # @param record [#errors, #username, ApplicationRecord] ActiveModel or ActiveRecord that supports #username method.
   # @param attribute [Symbol] password attribute name.
   # @param value [String] a password.
   # @return [void]
