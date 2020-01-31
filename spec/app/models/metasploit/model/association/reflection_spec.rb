@@ -12,7 +12,7 @@ RSpec.describe Metasploit::Model::Association::Reflection, type: :model do
 
 
     let(:class_name) do
-      FactoryGirl.generate :metasploit_model_association_reflection_class_name
+      FactoryBot.generate :metasploit_model_association_reflection_class_name
     end
 
     let(:class_name_class) do
@@ -24,7 +24,7 @@ RSpec.describe Metasploit::Model::Association::Reflection, type: :model do
     end
 
     let(:name) do
-      FactoryGirl.generate :metasploit_model_association_reflection_name
+      FactoryBot.generate :metasploit_model_association_reflection_name
     end
 
     let(:reflection) do

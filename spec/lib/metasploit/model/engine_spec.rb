@@ -106,11 +106,11 @@ RSpec.describe Metasploit::Model::Engine do
           initializer.run
         end
 
-        context 'with FactoryGirl defined' do
-          it 'should prepend full path to spec/factories to FactoryGirl.definition_file_paths' do
+        context 'with FactoryBot defined' do
+          it 'should prepend full path to spec/factories to FactoryBot.definition_file_paths' do
             definition_file_path = Metasploit::Model::Engine.root.join('spec', 'factories')
 
-            expect(FactoryGirl.definition_file_paths).to receive(:unshift).with(definition_file_path)
+            expect(FactoryBot.definition_file_paths).to receive(:unshift).with(definition_file_path)
 
             run
           end

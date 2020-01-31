@@ -7,7 +7,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Association, type: :model do
   end
 
   let(:association) do
-    FactoryGirl.generate :metasploit_model_search_operator_association_association
+    FactoryBot.generate :metasploit_model_search_operator_association_association
   end
 
   let(:source_operator) do

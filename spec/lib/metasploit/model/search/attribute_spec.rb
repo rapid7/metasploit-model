@@ -10,12 +10,12 @@ RSpec.describe Metasploit::Model::Search::Attribute do
   context 'search_attribute' do
     context 'with attribute' do
       let(:attribute) do
-        FactoryGirl.generate :metasploit_model_search_operator_attribute_attribute
+        FactoryBot.generate :metasploit_model_search_operator_attribute_attribute
       end
 
       context 'with :type' do
         let(:type) do
-          FactoryGirl.generate :metasploit_model_search_operator_attribute_type
+          FactoryBot.generate :metasploit_model_search_operator_attribute_type
         end
 
         context 'operator' do

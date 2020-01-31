@@ -22,12 +22,12 @@ class Metasploit::Model::Engine < Rails::Engine
   end
 
   initializer 'metasploit-model.prepend_factory_path', :after => 'factory_girl.set_factory_paths' do
-    if defined? FactoryGirl
+    if defined? FactoryBot
       relative_definition_file_path = config.generators.options[:factory_girl][:dir]
       definition_file_path = root.join(relative_definition_file_path)
 
       # unshift so that dependent gems can modify metasploit-model's factories
-      FactoryGirl.definition_file_paths.unshift definition_file_path
+      FactoryBot.definition_file_paths.unshift definition_file_path
     end
   end
 end
