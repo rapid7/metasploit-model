@@ -1,11 +1,19 @@
 # Validates that attribute's value is Array<Array(String, String)> which is the only valid type signature for serialized
 # parameters.
 class ParametersValidator < ActiveModel::EachValidator
+  #
+  # CONSTANTS
+  #
+
   # Sentence explaining the valid type signature for parameters.
   TYPE_SIGNATURE_SENTENCE = 'Valid parameters are an Array<Array(String, String)>.'
 
-  # Validates that attribute's value is Array<Array(String, String)> which is the only valid type signature for
-  # serialized parameters.  Errors are specific to the how different `value` is compared to correct format.
+  #
+  # Instance Methods
+  #
+
+  # Validates that `attribute`'s `value` on `record` is `Array<Array(String, String)>` which is the only valid type
+  # signature for serialized parameters.
   #
   # @param record [#errors, ApplicationRecord] ActiveModel or ActiveRecord
   # @param attribute [Symbol] serialized parameters attribute name.
@@ -28,7 +36,7 @@ class ParametersValidator < ActiveModel::EachValidator
                 :index => index
             )
 
-            record.errors[attribute] << length_error
+            record.errors.add attribute, length_error
           else
             parameter_name = element.first
 
@@ -39,7 +47,7 @@ class ParametersValidator < ActiveModel::EachValidator
                     :index => index,
                     :prefix => "has blank parameter name"
                 )
-                record.errors[attribute] << error
+                record.errors.add attribute, error
               end
             else
               error = error_at(
@@ -47,7 +55,7 @@ class ParametersValidator < ActiveModel::EachValidator
                   :index => index,
                   :prefix => "has non-String parameter name (#{parameter_name.inspect})"
               )
-              record.errors[attribute] << error
+              record.errors.add attribute, error
             end
 
             parameter_value = element.second
@@ -58,7 +66,7 @@ class ParametersValidator < ActiveModel::EachValidator
                   :index => index,
                   :prefix => "has non-String parameter value (#{parameter_value.inspect})"
               )
-              record.errors[attribute] << error
+              record.errors.add attribute, error
             end
           end
         else
@@ -67,11 +75,11 @@ class ParametersValidator < ActiveModel::EachValidator
               :index => index,
               :prefix => 'has non-Array'
           )
-          record.errors[attribute] << error
+          record.errors.add attribute, error
         end
       end
     else
-      record.errors[attribute] << "is not an Array.  #{TYPE_SIGNATURE_SENTENCE}"
+      record.errors.add attribute, "is not an Array.  #{TYPE_SIGNATURE_SENTENCE}"
     end
   end
 

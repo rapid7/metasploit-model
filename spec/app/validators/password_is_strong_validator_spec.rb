@@ -15,9 +15,9 @@ RSpec.describe PasswordIsStrongValidator do
     ]
   end
 
-  context '#contains_repetition' do
-    subject(:contains_repetition?) do
-      password_is_strong_validator.send(:contains_repetition?, password)
+  context '#is_only_repetition' do
+    subject(:is_only_repetition?) do
+      password_is_strong_validator.send(:is_only_repetition?, password)
     end
 
     context 'with all the same character' do
@@ -56,8 +56,8 @@ RSpec.describe PasswordIsStrongValidator do
       let(:password) do
         'abcdefgh'
       end
-
       it { is_expected.to eq(false) }
+
     end
   end
 
@@ -66,59 +66,48 @@ RSpec.describe PasswordIsStrongValidator do
       password_is_strong_validator.send(:contains_username?, username, password)
     end
 
-    let(:username) do
-      ''
-    end
-
-    context 'with blank password' do
-      let(:password) do
-        ''
+    context 'without blank username' do
+      let(:username) do
+        'username'
       end
 
-      it { is_expected.to eq(false) }
-    end
-
-    context 'without blank password' do
-      let(:password) do
-        'password'
-      end
-
-      context 'with blank username' do
-        let(:username) do
+      context 'with blank password' do
+        let(:password) do
           ''
         end
-
         it { is_expected.to eq(false) }
       end
 
-      context 'without blank username' do
+      context 'with reserved regex characters in username' do
         let(:username) do
-          'username'
+          "user(with)regex"
         end
 
-        it 'should escape username' do
-          expect(Regexp).to receive(:escape).with(username).and_call_original
-
-          contains_username?
+        context 'with username in password' do
+          let(:password) do
+            "myPassworduser(with)regexValue"
+          end
+          it { is_expected.to eq(false)}
         end
+      end
 
-        context 'with matching password' do
-          context 'of different case' do
-            let(:password) do
-              username.titleize
-            end
-
-            it { is_expected.to eq(true) }
+      context 'with matching password' do
+        context 'of different case' do
+          let(:password) do
+            username.titleize
           end
 
-          context 'of same case' do
-            let(:password) do
-              username
-            end
-
-            it { is_expected.to eq(true) }
-          end
+          it { is_expected.to eq(true) }
         end
+
+        context 'of same case' do
+          let(:password) do
+            username
+          end
+
+          it { is_expected.to eq(true) }
+        end
+
       end
     end
   end
@@ -231,7 +220,7 @@ RSpec.describe PasswordIsStrongValidator do
 
             context 'without repetition' do
               let(:value) do
-                'A$uperg00dp@ssw0rd'
+                'A$uperg00dp@sw0rd'
               end
 
               it 'should not record any errors' do

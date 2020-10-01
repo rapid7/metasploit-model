@@ -10,7 +10,7 @@ class NilValidator < ActiveModel::EachValidator
   # @return [void]
   def validate_each(record, attribute, value)
     unless value.nil?
-      record.errors[attribute] << 'must be nil'
+      record.errors.add attribute, 'must be nil'
     end
   end
 end
