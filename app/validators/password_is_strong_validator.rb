@@ -28,7 +28,7 @@ class PasswordIsStrongValidator < ActiveModel::EachValidator
       record.errors.add attribute, 'must contain letters, numbers, and at least one special character'
     end
 
-    if contains_username?(record.username, value) && !record.username.blank?
+    if !record.username.blank? && contains_username?(record.username, value)
       record.errors.add attribute, 'must not contain the username'
     end
 
