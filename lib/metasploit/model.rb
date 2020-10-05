@@ -9,6 +9,7 @@
 require 'active_model'
 require 'active_support'
 
+autoload :AddressFormatValidator, 'address_format_validator'
 autoload :IpFormatValidator, 'ip_format_validator'
 autoload :NilValidator, 'nil_validator'
 autoload :ParametersValidator, 'parameters_validator'

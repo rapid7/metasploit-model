@@ -69,30 +69,6 @@ RSpec.describe IpFormatValidator do
         end
       end
 
-      context 'with IPv4 range' do
-        let(:value) do
-          '127.0.0.1/8'
-        end
-
-        it 'should record error' do
-          validate_each
-
-          expect(record.errors[attribute]).to include("#{error} and not an IPv4 address range in CIDR or netmask notation")
-        end
-      end
-
-      context 'with IPv6 range' do
-        let(:value) do
-          '3ffe:505:2::1/48'
-        end
-
-        it 'should record error' do
-          validate_each
-
-          expect(record.errors[attribute]).to include("#{error} and not an IPv6 address range in CIDR or netmask notation")
-        end
-      end
-
       context 'without IPv4 or IPv6 address' do
         let(:value) do
           'localhost'
