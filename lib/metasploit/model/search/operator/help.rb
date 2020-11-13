@@ -72,6 +72,6 @@ module Metasploit::Model::Search::Operator::Help
         name: name
     }
 
-    ::I18n.translate(key, options)
+    ::I18n.translate(key, **options)
   end
 end
