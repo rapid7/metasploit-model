@@ -22,10 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'metasploit-yard'
   spec.add_development_dependency 'metasploit-erd'
   spec.add_development_dependency 'rake'
-
-  # documentation
-  # 0.8.7.4 has a bug where attribute setters show up as undocumented
-  spec.add_development_dependency 'yard', '< 0.8.7.4'
+  spec.add_development_dependency 'yard'
+  spec.add_development_dependency 'e2mmap'
 
   # Dependency loading
 
