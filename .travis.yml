@@ -9,7 +9,7 @@ addons:
     packages:
       - graphviz
 rvm:
-  - 2.6.5
+  - 2.7.2
 before_install:
   - gem install bundler
   - cp spec/dummy/config/database.yml.travis spec/dummy/config/database.yml

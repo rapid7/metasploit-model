@@ -41,5 +41,6 @@ if RUBY_PLATFORM =~ /java/ && Gem::Version.new(JRUBY_VERSION) < Gem::Version.new
     end
   end
 else
+  # Alias for ::File when not in jruby.
   Metasploit::Model::File = ::File
 end
