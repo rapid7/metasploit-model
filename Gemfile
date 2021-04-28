@@ -18,8 +18,6 @@ group :test do
 
   # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
   gem 'actionpack'
-  # Uploads simplecov reports to coveralls.io
-  gem 'coveralls', require: false
   # Engine tasks are loaded using railtie
   gem 'railties'
   gem 'rspec-rails'

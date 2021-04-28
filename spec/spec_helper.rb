@@ -8,9 +8,8 @@ Bundler.setup(:default, :test)
 # Require simplecov before loading ..dummy/config/environment.rb because it will cause metasploit_data_models/lib to
 # be loaded, which would result in Coverage not recording hits for any of the files.
 require 'simplecov'
-require 'coveralls'
 
-SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 require 'rspec/rails'
