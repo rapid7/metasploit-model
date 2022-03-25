@@ -32,14 +32,14 @@ RSpec.shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
         backend.send(:init_translations)
       end
 
-      translations_by_locale = I18n.backend.send(:translations)
+      translations_by_locale = I18n.backend.send(:translations).deep_dup
       english_translations = translations_by_locale.fetch(:en)
       metasploit_translations = english_translations.fetch(:metasploit)
-      @metasploit_model_translations = metasploit_translations.fetch(:model)
+      metasploit_model_translations = metasploit_translations.fetch(:model)
 
-      expect(@metasploit_model_translations).not_to have_key(:ancestors)
+      expect(metasploit_model_translations).not_to have_key(:ancestors)
 
-      @metasploit_model_translations[:ancestors] = {
+      metasploit_model_translations[:ancestors] = {
           klass.model_name.i18n_key => {
               search: {
                   operator: {
@@ -52,10 +52,8 @@ RSpec.shared_examples_for 'Metasploit::Model::Search::Operator::Help' do
               }
           }
       }
-    end
 
-    after(:example) do
-      @metasploit_model_translations.delete(:ancestors)
+      allow(I18n.backend).to receive(:translations).and_return(translations_by_locale)
     end
 
     it 'should use #klass #i18n_scope to lookup translations specific to the #klass or one of its ancestors' do

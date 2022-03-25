@@ -22,9 +22,26 @@ Or install it yourself as:
 
     $ gem install metasploit-model
 
-## Usage
+## Running tests
 
-TODO: Write usage instructions here
+Copy the database configuration and modify as appropriate:
+
+```
+cp spec/dummy/config/database.yml.github_actions spec/dummy/config/database.yml
+```
+
+Set up the database:
+
+```
+bundle exec rake db:test:prepare
+bundle exec rake db:migrate RAILS_ENV=test
+```
+
+Run the test suite:
+
+```
+bundle exec rspec
+```
 
 ## Contributing
 
