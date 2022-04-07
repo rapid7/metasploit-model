@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in metasploit-model.gemspec
 gemspec
 
+group :development do
+  gem 'pry-byebug'
+end
+
 # used by dummy application
 group :development, :test do
   # supplies factories for producing model instance for specs
