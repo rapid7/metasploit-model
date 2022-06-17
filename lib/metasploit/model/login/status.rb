@@ -36,6 +36,10 @@ module Metasploit::Model::Login::Status
   # When `Metasploit::Credential::Login#service` reports that `Metasploit::Credential::Login#core` are not correct.
   INCORRECT = 'Incorrect'
 
+  # When `Metasploit::Credential::Login#service` reports that `Metasploit::Credential::Login#core` has a public part
+  # that is verified as being invalid.
+  INVALID_PUBLIC_PART = 'Invalid Public Part'
+
   # When `Metasploit::Credential::Login#service` reports that account tied to `Metasploit::Credential::Login#core`
   # has had too many incorrect credentials attempted for authorization, so it is locked out to prevent bruteforce
   # guessing
@@ -59,6 +63,7 @@ module Metasploit::Model::Login::Status
       DENIED_ACCESS,
       DISABLED,
       INCORRECT,
+      INVALID_PUBLIC_PART,
       LOCKED_OUT,
       NO_AUTH_REQUIRED,
       SUCCESSFUL,
