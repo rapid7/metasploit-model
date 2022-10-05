@@ -46,7 +46,6 @@ jobs:
       fail-fast: true
       matrix:
         ruby:
-          - 2.6
           - 2.7
           - 3.0
           - 3.1
@@ -54,7 +53,6 @@ jobs:
           - ubuntu-18.04
           - ubuntu-22.04
         exclude:
-          - { os: ubuntu-22.04, ruby: 2.6 }
           - { os: ubuntu-22.04, ruby: 2.7 }
           - { os: ubuntu-22.04, ruby: 3.0 }
 
