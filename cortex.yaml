@@ -1,0 +1,16 @@
+---
+info:
+  title: Metasploit Model
+  description: Common code, such as validators and mixins, that are shared between
+    ActiveModels in metasploit-framework and ActiveRecords in metasploit_data_models
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/metasploit-model
+  x-cortex-tag: metasploit-model
+  x-cortex-type: service
+  x-cortex-domain-parents:
+  - tag: metasploit
+openapi: 3.0.1
+servers:
+- url: "/"
