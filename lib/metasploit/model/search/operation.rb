@@ -13,6 +13,7 @@ module Metasploit::Model::Search::Operation
   autoload :Set
   autoload :String
   autoload :Value
+  autoload :Jsonb
 
   # @param options [Hash{Symbol => Object}]
   # @option options [Metasploit::Module::Search::Query] :query The query that the parsed operation is a part.
