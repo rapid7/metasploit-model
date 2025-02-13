@@ -9,6 +9,9 @@ end
 
 # used by dummy application
 group :development, :test do
+  # Temporary, remove once the Rails 7.1 update is complete
+  # see: https://stackoverflow.com/questions/79360526/uninitialized-constant-activesupportloggerthreadsafelevellogger-nameerror
+  gem 'concurrent-ruby', '1.3.4'
   # supplies factories for producing model instance for specs
   # Version 4.1.0 or newer is needed to support generate calls without the 'FactoryGirl.' in factory definitions syntax.
   gem 'factory_bot'

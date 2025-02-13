@@ -25,6 +25,7 @@ RSpec.describe Metasploit::Model::Search::Operator::Attribute, type: :model do
       }
       it { is_expected.to include(:integer) }
       it { is_expected.to include(:string) }
+      it { is_expected.to include(:jsonb) }
     end
   end
 

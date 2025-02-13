@@ -16,7 +16,8 @@ class Metasploit::Model::Search::Operator::Attribute < Metasploit::Model::Search
       {
           set: :string
       },
-      :string
+      :string,
+      :jsonb
   ]
 
   #
