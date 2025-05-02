@@ -43,4 +43,13 @@ Gem::Specification.new do |spec|
 
     spec.platform = Gem::Platform::RUBY
   end
+
+  # Standard libraries: https://www.ruby-lang.org/en/news/2023/12/25/ruby-3-3-0-released/
+  %w[
+    bigdecimal
+    drb
+    mutex_m
+  ].each do |library|
+    spec.add_runtime_dependency library
+  end
 end
