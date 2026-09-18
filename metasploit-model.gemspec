@@ -26,13 +26,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'e2mmap'
 
   # Dependency loading
-  # Rails 8.0 upgrade: widened from '~> 7.0' (which means >= 7.0, < 8.0) to
-  # '>= 7.0', '< 8.1' so this gem resolves with both Rails 7.x and 8.0.
-  # The old pessimistic constraint hard-blocked Bundler from pulling Rails 8.
-  spec.add_runtime_dependency 'activemodel', '>= 7.0', '< 8.1'
-  spec.add_runtime_dependency 'activesupport', '>= 7.0', '< 8.1'
+  # Rails 8.1 upgrade: widened upper bound to < 9.0 so this gem resolves
+  # with Rails 7.x, 8.0, and 8.1.
+  spec.add_runtime_dependency 'activemodel', '>= 7.0', '< 9.0'
+  spec.add_runtime_dependency 'activesupport', '>= 7.0', '< 9.0'
 
-  spec.add_runtime_dependency 'railties', '>= 7.0', '< 8.1'
+  spec.add_runtime_dependency 'railties', '>= 7.0', '< 9.0'
 
   if RUBY_PLATFORM =~ /java/
     # markdown formatting for yard
