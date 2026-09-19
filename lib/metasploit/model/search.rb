@@ -22,8 +22,8 @@
 #
 # ## Custom search operators
 #
-# If a search operator does not directly correspond to an attribute or a the attribute needs custom validation, then
-# a custom {Metasploit::Model::Search::Operator operator class} can be setup as the search operator
+# If a search operator does not directly correspond to an attribute or the attribute needs custom validation, then
+# a custom {Metasploit::Model::Search::Operator operator class} can be set up as the search operator
 #
 #     class Search::Operator::UUID
 #       def name
