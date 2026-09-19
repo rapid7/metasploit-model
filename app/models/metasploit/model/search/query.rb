@@ -59,7 +59,7 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
             :length => {
                 :minimum => 1
             }
-  # validate recursive so misnamed operators or bad values for operator's types cause the query to be invalid as a whole
+  # validate recursively so misnamed operators or bad values for operator's types cause the query to be invalid as a whole
   validate :operations_valid
 
   #
@@ -85,7 +85,7 @@ class Metasploit::Model::Search::Query < Metasploit::Model::Base
   end
 
   # Parses {#formatted} to create search operations that can validate if the
-  # {Metasploit::Model::Search::Operation::Base#value value} is correct the operation's
+  # {Metasploit::Model::Search::Operation::Base#value value} is correct for the operation's
   # {Metasploit::Model::Search::Operation::Base#operator operator's} type.
   #
   # @return [Array<Metasploit::Model::Search::Operation::Base>] an Array of operation parsed from {#formatted}.

@@ -1,4 +1,4 @@
-# If all you want do is customize the name and operation `Class` that your custom operator class returns from
+# If all you want to do is customize the name and operation `Class` that your custom operator class returns from
 # `#operate_on`, then you can subclass {Metasploit::Model::Search::Operator::Single} instead of
 # {Metasploit::Model::Search::Operator::Base}.
 #

@@ -85,7 +85,7 @@ class ParametersValidator < ActiveModel::EachValidator
 
   private
 
-  # Generates error message for element at the given index.  Prefix is prepened to {#location_clause} to make a
+  # Generates error message for element at the given index.  Prefix is prepended to {#location_clause} to make a
   # sentence.  {TYPE_SIGNATURE_SENTENCE} is appended to that sentence.
   #
   # @param options [Hash{Symbol => Object}]

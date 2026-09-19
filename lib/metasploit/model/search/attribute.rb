@@ -5,7 +5,7 @@
 #
 # # Set attributes
 #
-# Search attributes declared as having an integer set or string set type integer or string set require a
+# Search attributes declared as having an integer set or string set type require a
 # `<attribute>_set` method to be defined on the `Class`, which returns the set of allowed values for the search
 # attribute's operation.  This method will be called, indirectly by
 # {Metasploit::Model::Search::Operation::Set::Integer}'s and {Metasploit::Model::Search::Operation::Set::String}'s
@@ -13,7 +13,7 @@
 #
 # # Help
 #
-# The help for each operator is uses the `I18n` system, so the help for an attribute operator on a given class can
+# The help for each operator uses the `I18n` system, so the help for an attribute operator on a given class can
 # added to `config/locales/<lang>.yml`.  The scope of the lookup, under the language key is the `Class`'s
 # `i18n_scope`, which is `metasploit.model` if the `Class` includes {Metasploit::Model::Translation} or
 # `active_record` for `ApplicationRecord` subclasses.  Under the `i18n_scope`, any `Module#ancestor`'s
@@ -106,7 +106,7 @@
 #      @endianness_set ||= Set.new(['big', 'litte'])
 #    end
 #
-# @example search an attribute by substring (case-insensitve LIKE)
+# @example search an attribute by substring (case-insensitive LIKE)
 #    search_attribute :description,
 #                     type: :string
 module Metasploit::Model::Search::Attribute
