@@ -1,5 +1,5 @@
 # {ClassMethods#visit DSL} to declare {Metasploit::Model::Visitation::Visitor visitors} for a given `Module#name`
-# (or any Class that has an ancestor in `Class#ancestors` with that `Module#name`) and then use then to {#visit}
+# (or any Class that has an ancestor in `Class#ancestors` with that `Module#name`) and then use them to {#visit}
 # instances of those class and/or modules.
 module Metasploit::Model::Visitation::Visit
   extend ActiveSupport::Concern

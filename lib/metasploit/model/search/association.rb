@@ -2,7 +2,7 @@
 # {Metasploit::Model::Search::Attribute::ClassMethods#search_attribute},
 # {Metasploit::Model::Search::With::ClassMethods#search_with}.
 #
-# Searchable associations are declared explicitly so that associations cycles can be avoided and the search
+# Searchable associations are declared explicitly so that association cycles can be avoided and the search
 # interface can be tuned for clarity and complexity.
 #
 # # Testing
@@ -109,7 +109,7 @@ module Metasploit::Model::Search::Association
     end
 
     # Registers a tree of near and far associations for search.  When a tree is used, all intermediate association
-    # on the paths are used, so `search_association children: :grandchildren` makes both `children.granchildren`
+    # on the paths are used, so `search_association children: :grandchildren` makes both `children.grandchildren`
     # *and* `children` as search operator prefixes.
     #
     # @example a single search association

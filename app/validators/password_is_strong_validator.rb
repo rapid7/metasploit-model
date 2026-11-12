@@ -79,7 +79,7 @@ class PasswordIsStrongValidator < ActiveModel::EachValidator
   # Returns a leet mutated variant of the original password
   #
   # @param password [String]
-  # @return [String] containing the password with leet mutations
+  # @return [Array<String>] containing the password with leet mutations
   def mutate_pass(password)
     mutations = {
         'a' => '@',

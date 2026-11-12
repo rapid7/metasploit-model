@@ -1,4 +1,4 @@
-# Functions for turning a compact tree of compact as passed to
+# Functions for turning a compact tree of associations as passed to
 # {Metasploit::Model::Search::Association::ClassMethods#search_associations} into an expanded
 # {Metasploit::Model::Search::Association::ClassMethods#search_association_tree}.
 module Metasploit::Model::Association::Tree
