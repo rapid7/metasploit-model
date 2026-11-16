@@ -5,7 +5,7 @@ RSpec.describe Metasploit::Model do
         described_class::VERSION
       }
 
-      it 'is Metasploit::ERD::Version.full' do
+      it 'is Metasploit::Model::VERSION' do
         expect(version).to eq(Metasploit::Model::VERSION)
       end
     end
