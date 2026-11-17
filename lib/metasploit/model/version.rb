@@ -1,7 +1,7 @@
 module Metasploit
   module Model
     # VERSION is managed by GemRelease
-    VERSION = '5.0.8'
+    VERSION = '5.0.9'
 
     # @return [String]
     #
