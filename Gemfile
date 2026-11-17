@@ -20,11 +20,9 @@ group :development, :test do
 end
 
 group :test do
-  # rails is not used because activerecord should not be included, but rails would normally coordinate the versions
-  # between its dependencies, which is now handled by this constraint.
-
-  # Dummy app uses actionpack for ActionController, but not rails since it doesn't use activerecord.
+  # Rails components required by the dummy application.
   gem 'actionpack'
+  gem 'activerecord'
   # Engine tasks are loaded using railtie
   gem 'railties'
   gem 'rspec-rails'
@@ -38,6 +36,6 @@ group :test do
   gem 'shoulda-matchers'
   # code coverage of tests
   gem 'simplecov', :require => false
-  # defines time zones for activesupport.  Must be explicit since it is normally implicit with activerecord
+  # defines time zones for activesupport.
   gem 'tzinfo'
 end
